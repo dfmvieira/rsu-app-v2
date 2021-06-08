@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers;
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\Authenticate;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +22,7 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::group(['middleware' => 'api'], function ($router) {
+Route::group(['middleware' => 'api', 'cors'], function ($router) {
     Route::get('menu', 'MenuController@index');
 
     Route::post('login', 'AuthController@login');
@@ -30,7 +34,7 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::resource('resource/{table}/resource', 'ResourceController');
     
-    Route::group(['middleware' => 'admin'], function ($router) {
+    Route::group(['middleware' => 'admin', 'cors'], function ($router) {
 
         Route::resource('mail',        'MailController');
         Route::get('prepareSend/{id}', 'MailController@prepareSend')->name('prepareSend');

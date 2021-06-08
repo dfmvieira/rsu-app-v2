@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>CoreUI - Vue Open Source Bootstrap Admin Template</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script> -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
