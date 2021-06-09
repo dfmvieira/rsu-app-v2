@@ -138,7 +138,46 @@ class MenusTableSeeder extends Seeder
         $this->insertLink('guest,user,admin', 'Dashboard', '/', 'cil-speedometer');
         $this->insertLink('guest', 'Login', '/login', 'cil-account-logout');
         $this->insertLink('guest', 'Register', '/register', 'cil-account-logout');
-        $this->beginDropdown('admin', 'Settings', '/settings', 'cil-puzzle');
+        
+        
+        $this->beginDropdown('user,admin', 'Map', '/map', 'cil-map');
+            $this->insertLink('user,admin', 'View', '/map');
+            $this->insertLink('user,admin', 'Add', '/map/add');
+        $this->endDropdown();
+
+        $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
+            $this->insertLink('user,admin', 'View', '/vienna');
+            $this->insertLink('user,admin', 'Add', '/vienna/add');
+        $this->endDropdown();
+        
+        /* $this->beginDropdown('user,admin', 'Services', '#', 'cli-puzzle');
+            $this->beginDropdown('user,admin', 'Ivi Messages', '/ivimessages', 'cli-puzzle');
+                $this->insertLink('user,admin', 'View Ivi Messages', '/ivimessages');
+                $this->insertLink('user,admin', 'Create Ivi Message', '/ivimessages/create');
+            $this->endDropdown();
+            $this->insertLink('user,admin', 'Published Signs', '/publishedsigns');
+        $this->endDropdown(); */
+
+        $this->beginDropdown('user,admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
+            $this->insertLink('user,admin', 'View Ivi Messages', '/ivimessages');
+            $this->insertLink('user,admin', 'Create Ivi Message', '/ivimessages/create');
+        $this->endDropdown();
+        
+        $this->insertLink('user,admin', 'Published Signs', '/publishedsigns', 'cil-newspaper');
+
+        $this->beginDropdown('user,admin', 'Deploy Groups', '/deploygroups', 'cil-group');
+            $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
+        $this->endDropdown();
+
+        $this->beginDropdown('user,admin', 'Settings', '#', 'cil-settings');
+            $this->insertLink('user,admin', 'Entity', '/entity');
+            $this->insertLink('admin', 'Users', '/users');
+            $this->insertLink('admin', 'Roles', '/roles');
+        $this->endDropdown();
+
+
+
+        /* $this->beginDropdown('admin', 'Settings', '/settings', 'cil-puzzle');
             $this->insertLink('admin', 'Media',    '/media');
             $this->insertLink('admin', 'Users',    '/users');
             $this->insertLink('admin', 'Menu',    '/menu');
@@ -161,7 +200,6 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Pagination',    '/base/pagination');
             $this->insertLink('user,admin', 'Popovers',      '/base/popovers');
             $this->insertLink('user,admin', 'Progress',      '/base/progress');
-           // $this->insertLink('user,admin', 'Scrollspy',     '/base/scrollspy');  
             $this->insertLink('user,admin', 'Switches',      '/base/switches');
             $this->insertLink('user,admin', 'Tables',        '/base/tables');
             $this->insertLink('user,admin', 'Tabs',          '/base/tabs');
@@ -191,27 +229,29 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Register',      '/register');
             $this->insertLink('user,admin', 'Error 404',     '/404');
             $this->insertLink('user,admin', 'Error 500',     '/500');
-        $this->endDropdown();
-        $this->insertLink('guest,user,admin', 'Download CoreUI', 'https://coreui.io', 'cil-cloud-download');
-        $this->insertLink('guest,user,admin', 'Try CoreUI PRO', 'https://coreui.io/pro/', 'cil-layers');
+        $this->endDropdown(); */
+
 
         /* Create top menu */
         DB::table('menulist')->insert([
             'name' => 'top_menu'
         ]);
         $this->menuId = DB::getPdo()->lastInsertId();  //set menuId
-        $this->beginDropdown('guest,user,admin', 'Pages');
+       /*  $this->beginDropdown('guest,user,admin', 'Pages');
             $this->insertLink('guest,user,admin', 'Dashboard',    '/');
             $this->insertLink('user,admin', 'Notes',              '/notes');
             $this->insertLink('admin', 'Users',                   '/users');
-        $this->endDropdown();
-        $this->beginDropdown('admin', 'Settings');
+        $this->endDropdown(); */
+
+       /*  $this->beginDropdown('admin', 'Settings');
             $this->insertLink('admin', 'Edit menu',               '/menu');
             $this->insertLink('admin', 'Edit roles',              '/roles');
-            $this->insertLink('admin', 'Media',                   '/media');
+            $this->insertLink('admin', 'Users',                   '/users'); */
+
+            /* $this->insertLink('admin', 'Media',                   '/media');
             $this->insertLink('admin', 'BREAD',                   '/bread');
-            $this->insertLink('admin', 'E-mail',                  '/email');
-        $this->endDropdown();
+            $this->insertLink('admin', 'E-mail',                  '/email'); 
+        $this->endDropdown(); */
 
         $this->joinAllByTransaction(); ///   <===== Must by use on end of this seeder
     }
