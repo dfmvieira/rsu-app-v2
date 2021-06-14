@@ -16,6 +16,8 @@ const Widgets = () => import('../views/widgets/Widgets.vue')
 // Views - Components
 const Map = () => import('../views/map/Map.vue')
 const InsertSign = () => import('../views/map/InsertSign.vue')
+const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
+const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 
 // Views - Buttons
 const StandardButtons = () => import('../views/buttons/StandardButtons.vue')
@@ -183,6 +185,25 @@ function configRoutes () {
           meta:{
             requiresUser: true
           }
+        },
+        {
+          path: 'vienna',
+          meta: { label: 'vienna'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: ViennaSigns,
+              meta: {
+                requiresAdmin: false
+              }
+            },
+            {
+              path: ''
+            }
+          ]
         },
         {
           path: 'menu',
@@ -540,7 +561,7 @@ function configRoutes () {
             },
           ]
         },
-        {
+        /* {
           path: 'base',
           redirect: '/base/cards',
           name: 'Base',
@@ -677,7 +698,7 @@ function configRoutes () {
               }
             }
           ]
-        },
+        }, */
         {
           path: 'buttons',
           redirect: '/buttons/standard-buttons',

@@ -148,6 +148,8 @@ class MenusTableSeeder extends Seeder
         $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
             $this->insertLink('user,admin', 'View', '/vienna');
             $this->insertLink('user,admin', 'Add', '/vienna/add');
+            $this->insertLink('user,admin', 'Signs Categories', '/signsCategories');
+            $this->insertLink('user,admin', 'Add Sign Category', '/signsCategories/add');
         $this->endDropdown();
         
         /* $this->beginDropdown('user,admin', 'Services', '#', 'cli-puzzle');

@@ -3,10 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\ViennaSign;
+use App\Services\RolesService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ViennaSignController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +28,7 @@ class ViennaSignController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -81,5 +95,18 @@ class ViennaSignController extends Controller
     public function destroy(ViennaSign $viennaSign)
     {
         //
+    }
+
+    /**
+     * Display a listing of the signs categories.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getSignsCategories() {
+        $categories = DB::table('vienna_sign_categories')
+        ->select('vienna_sign_categories.id', 'vienna_sign_categories.name')
+        ->get();
+
+        return response()->json($categories);
     }
 }
