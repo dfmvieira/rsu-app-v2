@@ -22,7 +22,7 @@ use App\Http\Middleware\Authenticate;
     return $request->user();
 }); */
 
-Route::group(['middleware' => 'api', 'cors'], function ($router) {
+Route::group(['middleware' => 'api'], function ($router) {
     Route::get('menu', 'MenuController@index');
 
     Route::post('login', 'AuthController@login');
@@ -34,7 +34,7 @@ Route::group(['middleware' => 'api', 'cors'], function ($router) {
 
     Route::resource('resource/{table}/resource', 'ResourceController');
     
-    Route::group(['middleware' => 'admin', 'cors'], function ($router) {
+    Route::group(['middleware' => 'admin'], function ($router) {
 
         Route::resource('mail',        'MailController');
         Route::get('prepareSend/{id}', 'MailController@prepareSend')->name('prepareSend');
@@ -43,6 +43,12 @@ Route::group(['middleware' => 'api', 'cors'], function ($router) {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)
 
         Route::resource('users', 'UsersController')->except( ['create', 'store'] );
+
+        Route::prefix('vienna')->group(function () {
+            Route::get('/', 'ViennaSignController@index')->name('vienna.index');
+            Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
+        });
+
 
         Route::prefix('menu/menu')->group(function () { 
             Route::get('/',         'MenuEditController@index')->name('menu.menu.index');
