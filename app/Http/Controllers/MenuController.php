@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Menus\GetSidebarMenu;
+use App;
 
 class MenuController extends Controller
 {
@@ -14,6 +15,10 @@ class MenuController extends Controller
      */
     public function index(Request $request)
     {
+        //if (session()->has('locale')) {
+        //    App::setLocale(session()->get('locale'));
+        //}
+        App::setLocale($request->locale);
         try {
             $user = auth()->user();
             if($user && !empty($user)){
@@ -23,14 +28,15 @@ class MenuController extends Controller
             }
         } catch (Exception $e) {
             $roles = '';
-        }   
+        }  
         if($request->has('menu')){
             $menuName = $request->input('menu');
         }else{
             $menuName = 'sidebar menu';
-        }
+        } 
         $menus = new GetSidebarMenu();
-        return response()->json( $menus->get( $roles, $menuName ) );
+        dump($menus);
+        return response()->json( $menus->get( $roles, App::getLocale(), $menuName ) );
     }
 
 }

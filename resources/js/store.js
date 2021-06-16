@@ -4,7 +4,9 @@ Vue.use(Vuex)
 
 const state = {
   sidebarShow: 'responsive',
-  sidebarMinimize: false
+  sidebarMinimize: false,
+  asideShow: false,
+  darkMode: true
 }
 
 const mutations = {
@@ -18,6 +20,9 @@ const mutations = {
   },
   set (state, [variable, value]) {
     state[variable] = value
+  },
+  toggle (state, variable) {
+    state[variable] = !state[variable]
   }
 }
 

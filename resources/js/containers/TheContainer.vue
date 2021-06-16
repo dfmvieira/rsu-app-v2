@@ -1,8 +1,9 @@
 <template>
-  <div class="c-app">
-    <TheSidebar/>
+  <div class="c-app" :class="{ 'c-dark-theme': $store.state.darkMode }">
+    <TheSidebar :locale="locale"/>
+    <TheAside/>
     <CWrapper>
-      <TheHeader/>
+      <TheHeader v-on:change-locale="changeLocale"/>
       <div class="c-body">
         <main class="c-main">
           <CContainer fluid>
@@ -21,13 +22,25 @@
 import TheSidebar from './TheSidebar'
 import TheHeader from './TheHeader'
 import TheFooter from './TheFooter'
+import TheAside from './TheAside'
 
 export default {
   name: 'TheContainer',
   components: {
     TheSidebar,
     TheHeader,
-    TheFooter
+    TheFooter,
+    TheAside
+  },
+  data(){
+    return {
+      locale: 'en',
+    }
+  },
+  methods: {
+    changeLocale(value){
+      this.locale = value;
+    }
   }
 }
 </script>

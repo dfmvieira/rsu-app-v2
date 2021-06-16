@@ -19,21 +19,6 @@ const InsertSign = () => import('../views/map/InsertSign.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 
-// Views - Buttons
-const StandardButtons = () => import('../views/buttons/StandardButtons.vue')
-const ButtonGroups = () => import('../views/buttons/ButtonGroups.vue')
-const Dropdowns = () => import('../views/buttons/Dropdowns.vue')
-const BrandButtons = () => import('../views/buttons/BrandButtons.vue')
-
-// Views - Icons
-const CoreUIIcons = () => import('../views/icons/CoreUIIcons.vue')
-const Brands = () => import('../views/icons/Brands.vue')
-const Flags = () => import('../views/icons/Flags.vue')
-
-// Views - Notifications
-const Alerts = () => import('../views/notifications/Alerts.vue')
-const Badges = () => import('../views/notifications/Badges.vue')
-const Modals = () => import('../views/notifications/Modals.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -65,20 +50,7 @@ const EditBread = () => import('../views/bread/EditBread.vue')
 const CreateBread = () => import('../views/bread/CreateBread.vue')
 const DeleteBread = () => import('../views/bread/DeleteBread.vue')
 
-//Resources
-const Resources = () => import('../views/resources/Resources.vue')
-const CreateResource = () => import('../views/resources/CreateResources.vue')
-const Resource = () => import('../views/resources/Resource.vue')
-const EditResource = () => import('../views/resources/EditResource.vue')
-const DeleteResource = () => import('../views/resources/DeleteResource.vue')
-
-//Email
-const Emails        = () => import('../views/email/Emails.vue')
-const CreateEmail   = () => import('../views/email/CreateEmail.vue')
-const EditEmail     = () => import('../views/email/EditEmail.vue')
-const ShowEmail     = () => import('../views/email/ShowEmail.vue')
-const SendEmail     = () => import('../views/email/SendEmail.vue')
-
+///Menu
 const Menus       = () => import('../views/menu/MenuIndex.vue')
 const CreateMenu  = () => import('../views/menu/CreateMenu.vue')
 const EditMenu    = () => import('../views/menu/EditMenu.vue')
@@ -89,8 +61,6 @@ const CreateMenuElement = () => import('../views/menuElements/CreateMenuElement.
 const EditMenuElement = () => import('../views/menuElements/EditMenuElement.vue')
 const ShowMenuElement = () => import('../views/menuElements/ShowMenuElement.vue')
 const DeleteMenuElement = () => import('../views/menuElements/DeleteMenuElement.vue')
-
-const Media = () => import('../views/media/Media.vue')
 
 
 Vue.use(Router)
@@ -142,49 +112,9 @@ function configRoutes () {
       component: TheContainer,
       children: [
         {
-          path: 'media',
-          name: 'Media',
-          component: Media,
-          meta:{
-            requiresAdmin: true
-          }
-        },
-        {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
-        },
-        {
-          path: 'colors',
-          name: 'Colors',
-          component: Colors,
-          meta:{
-            requiresUser: true
-          }
-        },
-        {
-          path: 'typography',
-          name: 'Typography',
-          component: Typography,
-          meta:{
-            requiresUser: true
-          }
-        },
-        {
-          path: 'charts',
-          name: 'Charts',
-          component: Charts,
-          meta:{
-            requiresUser: true
-          }
-        },
-        {
-          path: 'widgets',
-          name: 'Widgets',
-          component: Widgets,
-          meta:{
-            requiresUser: true
-          }
         },
         {
           path: 'vienna',
@@ -335,49 +265,6 @@ function configRoutes () {
           ]
         },
         {
-          path: 'notes',
-          meta: { label: 'Notes'},
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: '',
-              component: Notes,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'create',
-              meta: { label: 'Create Note' },
-              name: 'Create Note',
-              component: CreateNote,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: ':id',
-              meta: { label: 'Note Details'},
-              name: 'Note',
-              component: Note,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: ':id/edit',
-              meta: { label: 'Edit Note' },
-              name: 'Edit Note',
-              component: EditNote,
-              meta:{
-                requiresUser: true
-              }
-            },
-          ]
-        },
-        {
           path: 'roles',
           meta: { label: 'Roles'},
           component: {
@@ -472,58 +359,7 @@ function configRoutes () {
             },
           ]
         },
-        {
-          path: 'email',
-          meta: { label: 'Emails'},
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: '',
-              component: Emails,
-              meta:{
-                requiresAdmin: true
-              }
-            },
-            {
-              path: 'create',
-              meta: { label: 'Create Email Template' },
-              name: 'Create Email Template',
-              component: CreateEmail,
-              meta:{
-                requiresAdmin: true
-              }
-            },
-            {
-              path: ':id',
-              meta: { label: 'Show Email Template'},
-              name: 'Show Email Tempalte',
-              component: ShowEmail,
-              meta:{
-                requiresAdmin: true
-              }
-            },
-            {
-              path: ':id/edit',
-              meta: { label: 'Edit Email Tempalate' },
-              name: 'Edit Email Template',
-              component: EditEmail,
-              meta:{
-                requiresAdmin: true
-              }
-            },
-            {
-              path: ':id/sendEmail',
-              meta: { label: 'Send Email' },
-              name: 'Send Email',
-              component: SendEmail,
-              meta:{
-                requiresAdmin: true
-              }
-            },
-          ]
-        },
+        
         {
           path: 'resource',
           meta: { label: 'Resources'},
@@ -559,254 +395,6 @@ function configRoutes () {
               name: 'Delete Resource',
               component: DeleteResource
             },
-          ]
-        },
-        /* {
-          path: 'base',
-          redirect: '/base/cards',
-          name: 'Base',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'cards',
-              name: 'Cards',
-              component: Cards,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'forms',
-              name: 'Forms',
-              component: Forms,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'switches',
-              name: 'Switches',
-              component: Switches,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'tables',
-              name: 'Tables',
-              component: Tables,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'tabs',
-              name: 'Tabs',
-              component: Tabs,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'breadcrumb',
-              name: 'Breadcrumb',
-              component: Breadcrumbs,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'carousel',
-              name: 'Carousel',
-              component: Carousels,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'collapse',
-              name: 'Collapse',
-              component: Collapses,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'jumbotron',
-              name: 'Jumbotron',
-              component: Jumbotrons,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'list-group',
-              name: 'List Group',
-              component: ListGroups,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'navs',
-              name: 'Navs',
-              component: Navs,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'navbars',
-              name: 'Navbars',
-              component: Navbars,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'pagination',
-              name: 'Pagination',
-              component: Paginations,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'popovers',
-              name: 'Popovers',
-              component: Popovers,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'progress',
-              name: 'Progress',
-              component: ProgressBars,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'tooltips',
-              name: 'Tooltips',
-              component: Tooltips,
-              meta:{
-                requiresUser: true
-              }
-            }
-          ]
-        }, */
-        {
-          path: 'buttons',
-          redirect: '/buttons/standard-buttons',
-          name: 'Buttons',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'buttons',
-              name: 'Standard Buttons',
-              component: StandardButtons,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'button-group',
-              name: 'Button Group',
-              component: ButtonGroups,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'dropdowns',
-              name: 'Dropdowns',
-              component: Dropdowns,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'brand-buttons',
-              name: 'Brand Buttons',
-              component: BrandButtons,
-              meta:{
-                requiresUser: true
-              }
-            }
-          ]
-        },
-        {
-          path: 'icon',
-          redirect: '/icons/coreui-icons',
-          name: 'CoreUI Icons',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'coreui-icons',
-              name: 'Icons library',
-              component: CoreUIIcons,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'brands',
-              name: 'Brands',
-              component: Brands,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'flags',
-              name: 'Flags',
-              component: Flags,
-              meta:{
-                requiresUser: true
-              }
-            }
-          ]
-        },
-        {
-          path: 'notifications',
-          redirect: '/notifications/alerts',
-          name: 'Notifications',
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'alerts',
-              name: 'Alerts',
-              component: Alerts,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'badge',
-              name: 'Badge',
-              component: Badges,
-              meta:{
-                requiresUser: true
-              }
-            },
-            {
-              path: 'modals',
-              name: 'Modals',
-              component: Modals,
-              meta:{
-                requiresUser: true
-              }
-            }
           ]
         }
       ]

@@ -53,8 +53,8 @@ class EditMenuViewService{
 
 
     public function getDataForView( $role ){
-        $this->menu = $this->getSidebarMenu->getAll();
-        $this->roleMenu = $this->getSidebarMenu->get( $role );
+        $this->menu = $this->getSidebarMenu->getAll( 'en' );
+        $this->roleMenu = $this->getSidebarMenu->get( $role, 'en' );
         return $this->joinMenuDataArrays();
     }
 

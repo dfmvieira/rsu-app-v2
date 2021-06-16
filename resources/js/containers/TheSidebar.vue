@@ -1,45 +1,54 @@
 <template>
-  <CSidebar 
-    fixed 
+  <CSidebar
     :minimize="minimize"
+    unfoldable
     :show="show"
     @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
     <CSidebarBrand class="d-md-down-none" to="/">
-      <CIcon 
-        class="d-block" 
-        name="logo" 
-        size="custom-size" 
-        :height="35" 
-        :viewBox="`0 0 ${minimize ? 110 : 556} 134`"
+      <CIcon
+        class="c-sidebar-brand-full"
+        name="logo"
+        size="custom-size"
+        :height="35"
+        viewBox="0 0 556 134"
+      />
+      <CIcon
+        class="c-sidebar-brand-minimized"
+        name="logo"
+        size="custom-size"
+        :height="35"
+        viewBox="0 0 110 134"
       />
     </CSidebarBrand>
-    <CRenderFunction flat :content-to-render="nav"/>
+    <CRenderFunction flat :contentToRender="nav"/>
     <CSidebarMinimizer
-      class="d-md-down-none"
-      @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
+      class="c-d-md-down-none"
+      @click.native="$store.commit('toggle', 'sidebarMinimize')"
     />
   </CSidebar>
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'TheSidebar',
+  props: ['locale'],
   data () {
     return {
-      //minimize: false,
+      // minimize: false,
       nav: [],
-      //show: true,
+      // show: 'responsive',
       buffor: [],
     }
   },
   computed: {
     show () {
-      return this.$store.state.sidebarShow 
+      return this.$store.state.sidebarShow
     },
     minimize () {
-      return this.$store.state.sidebarMinimize 
+      return this.$store.state.sidebarMinimize
     }
   },
   methods: {
@@ -61,14 +70,14 @@ export default {
                    name:   data['elements'][i]['name'],
                    to:     data['elements'][i]['href'],
                    icon:   data['elements'][i]['icon']
-            } 
+            }
           );
         }
       }
       return result;
     },
     rebuildData(data){
-      this.buffor = [{    
+      this.buffor = [{
         _name: 'CSidebarNav',
         _children: []
       }];
@@ -110,6 +119,25 @@ export default {
         }
       }
       return this.buffor;
+    },
+    downloadSidebarData(){
+      let self = this;
+      let locale = 'en';
+      if(typeof localStorage.locale !== 'undefined'){
+        locale = localStorage.getItem("locale")
+      }
+      axios.get( this.$apiAdress + '/api/menu?token=' + localStorage.getItem("api_token") + '&locale=' + this.locale )
+      .then(function (response) {
+        self.nav = self.rebuildData(response.data);
+      }).catch(function (error) {
+        console.log(error)
+        self.$router.push({ path: '/login' })
+      });
+    }
+  },
+  watch: {
+    locale: function(newVal, oldVal) { // watch it
+      this.downloadSidebarData()
     }
   },
   mounted () {
@@ -121,17 +149,7 @@ export default {
       const sidebarClosed = this.show === 'responsive' || this.show === false
       this.show = sidebarClosed ? true : 'responsive'
     })
-    let self = this;
-
-    console.log(this.$apiAdress);
-
-    axios.get( this.$apiAdress + '/api/menu?token=' + localStorage.getItem("api_token") )
-    .then(function (response) {
-      self.nav = self.rebuildData(response.data);
-    }).catch(function (error) {
-      console.log(error);
-      self.$router.push({ path: '/login' });
-    });
+    this.downloadSidebarData()
   }
 }
 </script>

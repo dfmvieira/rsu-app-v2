@@ -113,8 +113,11 @@ export default {
   },
   mounted () {
     let self = this;
-    console.log(this.$apiAdress)
-    axios.get( this.$apiAdress + '/api/menu?token=' + localStorage.getItem("api_token") + '&menu=' + 'top_menu' )
+    let locale = 'en';
+    if(typeof localStorage.locale !== 'undefined'){
+      locale = localStorage.getItem("locale")
+    }
+    axios.get(    this.$apiAdress + '/api/menu?token=' + localStorage.getItem("api_token") + '&menu=' + 'top_menu' + '&locale=' + locale)
     .then(function (response) {
       self.nav = self.rebuildData(response.data);
     }).catch(function (error) {
