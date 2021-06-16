@@ -6,6 +6,8 @@ use App\Models\ViennaSign;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
 
 
 class ViennaSignController extends Controller
@@ -17,8 +19,8 @@ class ViennaSignController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('admin');
+        /* $this->middleware('auth:api'); */
+        /* $this->middleware('auth:admin'); */
     }
 
     /**
@@ -26,8 +28,15 @@ class ViennaSignController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+       
+        $signs = DB::table('vienna_signs')
+        ->leftjoin('vienna_sign_categories', 'vienna_signs.IDCategory', '=', 'vienna_sign_categories.id')
+        ->select('vienna_signs.id', 'vienna_signs.name', 'vienna_sign_categories.category', 'vienna_signs.image')
+        ->get();
+
+        return response()->json($signs);
         
     }
 
@@ -49,7 +58,16 @@ class ViennaSignController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            
+
+        ]);
+
+        $sign = new sign();
+        $sign->fill($request->all());
+        $sign->save();
+
+        return response()->json($sign, 201);
     }
 
     /**

@@ -15,28 +15,28 @@ class ViennaSignCategorySeeder extends Seeder
     public function run()
     {
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'A: Danger warning'
+            'category' => 'A: Danger warning'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'B: Priority warning'
+            'category' => 'B: Priority warning'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'C: Prohibitory or restrictive warning'
+            'category' => 'C: Prohibitory or restrictive warning'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'D: Mandatory'
+            'category' => 'D: Mandatory'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'E: Special regulation'
+            'category' => 'E: Special regulation'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'F: Information, facilities, or service'
+            'category' => 'F: Information, facilities, or service'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'G: Direction, position, or indication'
+            'category' => 'G: Direction, position, or indication'
         ]);
         DB::table('vienna_sign_categories')->insert([
-            'name' => 'H: Additional panels'
+            'category' => 'H: Additional panels'
         ]);
     }
 }

@@ -18,6 +18,7 @@ const Map = () => import('../views/map/Map.vue')
 const InsertSign = () => import('../views/map/InsertSign.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
+const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 
 // Views - Buttons
 const StandardButtons = () => import('../views/buttons/StandardButtons.vue')
@@ -201,7 +202,18 @@ function configRoutes () {
               }
             },
             {
-              path: ''
+              path: '/vienna/add',
+              component: InsertViennaSign,
+              meta: {
+                requiresAdmin: false
+              }
+            },
+            {
+              path: '/signscategories',
+              component: ViennaSignsCategories,
+              meta: {
+                requiresAdmin: false
+              }
             }
           ]
         },

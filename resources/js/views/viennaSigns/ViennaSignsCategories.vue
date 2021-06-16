@@ -5,13 +5,12 @@
                 <CIcon name="cil-grid"/> {{caption}}
             </slot>
         </CCardHeader>
-
     </CCard>
 </template>
 
 <script>
 export default {
-    name: 'Vienna Signs',
+    name: 'ViennaSignsCategories',
     props: {
         items: Array,
         fields: {

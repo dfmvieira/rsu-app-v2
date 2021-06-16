@@ -15,7 +15,7 @@ class CreateViennaSignCategoriesTable extends Migration
     {
         Schema::create('vienna_sign_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('category');
             $table->timestamps();
         });
     }
