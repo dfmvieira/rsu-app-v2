@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             BREADSeeder::class,
             EmailSeeder::class,
             ViennaSignCategorySeeder::class,
+            ViennaSignSeeder::class,
         ]);
     }
 }
