@@ -39,49 +39,33 @@
                             {{item.name}}
                         </h4>
                         <p class="text-muted">Type: {{item.category}}</p>
-                        <!-- <CButton size="sm" color="info" class="">
-                            User Settings
-                        </CButton> -->
-                        <CButton size="sm" color="danger" class="ml-1" data-toggle="modal" data-target="#exampleModalCenter">
+                        <CButton
+                            @click="warningModal = true"
+                            size="sm" 
+                            color="danger"
+                        >
                             Delete
                         </CButton>
-                        <CButton type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            modal
-                        </CButton>
-                            <!-- Button trigger modal -->
-                            
-
-                            
+                        <CModal
+                            title="Delete sign?!"
+                            color="danger"
+                            :show.sync="warningModal"
+                            :centered = true
+                        >
+                            By deleting this sign, you will delete all the jobs and results that
+                            are related to this sign.<br><br>
+                            <span class="font-weight-bold">Are you sure you want to delete this sign?</span>
+                            <template #footer>
+                                <CButton @click="warningModal = false" color="danger">Discard</CButton>
+                                <CButton @click=" deleteSigns(item); warningModal = false;" color="success">Accept</CButton>
+                            </template>
+                        </CModal>
                         </CMedia>
                     </CCardBody>
                 </CCollapse>
             </template>
             </CDataTable>
         </CCardBody>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Launch demo modal
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-    
     </CCard>
 </template>
 
@@ -105,6 +89,8 @@ export default {
                 }
             ],
             details: [],
+            warningModal: false,
+
         }
     },
     methods: {
@@ -120,7 +106,18 @@ export default {
         toggleDetails (index) {
             const position = this.details.indexOf(index)
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
-        }
+        },
+
+        deleteSigns(item) {
+            axios.delete(`api/vienna/${item.id}`)
+                .then(res => {
+                        if (res.data === 'ok')
+                             console.log("sucess")
+                    }).catch(err => {
+                    console.log(err)
+            })
+            this.getViennaSigns();
+        },
      
     },
     mounted() {
