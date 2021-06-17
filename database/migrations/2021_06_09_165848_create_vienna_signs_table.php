@@ -14,7 +14,10 @@ class CreateViennaSignsTable extends Migration
     public function up()
     {
         Schema::create('vienna_signs', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
+            $table->string('name');
+            $table->string('image');
+            $table->string('IDCategory');           
             $table->timestamps();
         });
     }
