@@ -1,7 +1,10 @@
 @import "variables";
 
 // Import styles
-@import "~@coreui/coreui/scss/coreui";
+//@import "~@coreui/coreui/scss/coreui";
+
+// If you are going to use dark layout please comment next line
+@import "~@coreui/coreui-pro/scss/coreui";
 
 // If you want to add something do it here
 @import "custom";

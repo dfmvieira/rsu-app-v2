@@ -19,46 +19,50 @@ class GetSidebarMenu implements MenuInterface{
         $this->mb = new MenuBuilder();
     }
 
-    private function getMenuFromDB($menuName, $role){
+    private function getMenuFromDB($menuName, $role, $locale){
         $this->menu = Menus::join('menu_role', 'menus.id', '=', 'menu_role.menus_id')
+            ->join('menus_lang', 'menus.id', '=', 'menus_lang.menus_id')
             ->join('menulist', 'menulist.id', '=', 'menus.menu_id')
-            ->select('menus.*')
+            ->select('menus.*', 'menus_lang.name as name')
             ->where('menulist.name', '=', $menuName)
             ->where('menu_role.role_name', '=', $role)
+            ->where('menus_lang.lang', '=', $locale)
             ->orderBy('menus.sequence', 'asc')->get();       
     }
 
-    private function getGuestMenu($menuName){
-        $this->getMenuFromDB($menuName, 'guest');
+    private function getGuestMenu($locale, $menuName){
+        $this->getMenuFromDB($menuName, 'guest', $locale);
     }
 
-    private function getUserMenu($menuName){
-        $this->getMenuFromDB($menuName, 'user');
+    private function getUserMenu($locale, $menuName){
+        $this->getMenuFromDB($menuName, 'user', $locale);
     }
 
-    private function getAdminMenu($menuName){
-        $this->getMenuFromDB($menuName, 'admin');
+    private function getAdminMenu($locale, $menuName){
+        $this->getMenuFromDB($menuName, 'admin', $locale);
     }
 
-    public function get($roles, $menuName = 'sidebar menu'){
+    public function get($roles, $locale, $menuName = 'sidebar menu'){
         $roles = explode(',', $roles);
         if(empty($roles)){
-            $this->getGuestMenu($menuName);
+            $this->getGuestMenu($locale, $menuName);
         }elseif(in_array('admin', $roles)){
-            $this->getAdminMenu($menuName);
+            $this->getAdminMenu($locale, $menuName);
         }elseif(in_array('user', $roles)){
-            $this->getUserMenu($menuName);
+            $this->getUserMenu($locale, $menuName);
         }else{
-            $this->getGuestMenu($menuName);
+            $this->getGuestMenu($locale, $menuName);
         }
         $rfd = new RenderFromDatabaseData;
         return $rfd->render($this->menu);
     }
 
-    public function getAll( $menuId = 1 ){
-        $this->menu = Menus::select('menus.*')
+    public function getAll($locale, $menuId = 1 ){
+        $this->menu = Menus::join('menus_lang', 'menus.id', '=', 'menus_lang.menus_id')
+            ->select('menus.*', 'menus_lang.name as name')
             ->where('menus.menu_id', '=', $menuId)
-            ->orderBy('menus.sequence', 'asc')->get();  
+            ->where('menus_lang.lang', '=', $locale)
+            ->orderBy('menus.sequence', 'asc')->get();   
         $rfd = new RenderFromDatabaseData;
         return $rfd->render($this->menu);
     }

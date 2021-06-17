@@ -1,25 +1,26 @@
 <template>
   <CRow>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="primary" header="9.823" text="Members online">
+      <CWidgetDropdown color="gradient-primary" header="9.823" :text="$i18n.translate('dashboard.members_online')">
         <template #default>
           <CDropdown
+            class="float-right"
             color="transparent p-0"
             placement="bottom-end"
           >
             <template #toggler-content>
               <CIcon name="cil-settings"/>
             </template>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.another_action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.something_else_here') }}</CDropdownItem>
+            <CDropdownItem disabled>{{ $t('dashboard.disabled_action') }}</CDropdownItem>
           </CDropdown>
         </template>
         <template #footer>
           <CChartLineSimple
             pointed
-            class="mt-3 mx-3"
+            class="px-3"
             style="height:70px"
             :data-points="[65, 59, 84, 84, 51, 55, 40]"
             point-hover-background-color="primary"
@@ -30,9 +31,10 @@
       </CWidgetDropdown>
     </CCol>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="info" header="9.823" text="Members online">
+      <CWidgetDropdown color="gradient-info" header="9.823" :text="$i18n.translate('dashboard.members_online')">
         <template #default>
           <CDropdown
+            class="float-right"
             color="transparent p-0"
             placement="bottom-end"
             :caret="false"
@@ -40,16 +42,16 @@
             <template #toggler-content>
               <CIcon name="cil-location-pin"/>
             </template>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.another_action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.something_else_here') }}</CDropdownItem>
+            <CDropdownItem disabled>{{ $t('dashboard.disabled_action') }}</CDropdownItem>
           </CDropdown>
         </template>
         <template #footer>
           <CChartLineSimple
             pointed
-            class="mt-3 mx-3"
+            class="px-3"
             style="height:70px"
             :data-points="[1, 18, 9, 17, 34, 22, 11]"
             point-hover-background-color="info"
@@ -62,27 +64,27 @@
     </CCol>
     <CCol sm="6" lg="3">
       <CWidgetDropdown
-        color="warning"
+        color="gradient-warning"
         header="9.823"
-        text="Members online"
+        :text="$i18n.translate('dashboard.members_online')"
       >
         <template #default>
           <CDropdown
+            class="float-right"
             color="transparent p-0"
             placement="bottom-end"
           >
             <template #toggler-content>
               <CIcon name="cil-settings"/>
             </template>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.another_action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.something_else_here') }}</CDropdownItem>
+            <CDropdownItem disabled>{{ $t('dashboard.disabled_action') }}</CDropdownItem>
           </CDropdown>
         </template>
         <template #footer>
           <CChartLineSimple
-            class="mt-3"
             style="height:70px"
             background-color="rgba(255,255,255,.2)"
             :data-points="[78, 81, 80, 45, 34, 12, 40]"
@@ -96,27 +98,27 @@
     </CCol>
     <CCol sm="6" lg="3">
       <CWidgetDropdown
-        color="danger"
+        color="gradient-danger"
         header="9.823"
-        text="Members online"
+        :text="$i18n.translate('dashboard.members_online')"
       >
         <template #default>
           <CDropdown
+            class="float-right"
             color="transparent p-0"
             placement="bottom-end"
           >
             <template #toggler-content>
              <CIcon name="cil-settings"/>
             </template>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.another_action') }}</CDropdownItem>
+            <CDropdownItem>{{ $t('dashboard.something_else_here') }}</CDropdownItem>
+            <CDropdownItem disabled>{{ $t('dashboard.disabled_action') }}</CDropdownItem>
           </CDropdown>
         </template>
         <template #footer>
           <CChartBarSimple
-            class="mt-3 mx-3"
             style="height:70px"
             background-color="rgb(250, 152, 152)"
             label="Members"

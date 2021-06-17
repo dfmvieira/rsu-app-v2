@@ -1,17 +1,12 @@
 // Here you can add other styles
 
-/*
-.card-header > .c-icon:first-child {
-  margin-right: 0.1rem;
-  margin-top: 0.1rem;
-  vertical-align: top;
-  width: 1.2rem;
-  height: 1.2rem;
-  font-size: 1.2rem;
-}
-*/
 
-.card-header:not(.content-center) > .c-icon:first-child {
+.select-lang-menu{
+  max-width:128px;
+  cursor:pointer;
+}
+
+.card-header > .c-icon:first-child {
   margin-right: 0.1rem;
   margin-top: 0.1rem;
   vertical-align: top;
@@ -28,3 +23,4 @@
   max-width:500px;
   max-height:500px;
 }
+

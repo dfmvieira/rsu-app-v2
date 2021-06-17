@@ -70,14 +70,14 @@ import axios from 'axios'
 export default {
   name: 'TheHeaderDropdownAccnt',
   data () {
-    return { 
+    return {
       itemsCount: 42,
     }
   },
   methods:{
     logout(){
       let self = this;
-      axios.post(this.$apiAdress + '/api/logout?token=' + localStorage.getItem("api_token"),{})
+      axios.post( this.$apiAdress + '/api/logout?token=' + localStorage.getItem("api_token"),{})
       .then(function (response) {
         localStorage.setItem('roles', '');
         self.$router.push({ path: '/login' });
@@ -88,6 +88,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   .c-icon {
     margin-right: 0.3rem;
