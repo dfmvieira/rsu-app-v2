@@ -118,6 +118,22 @@ function configRoutes () {
           component: Dashboard
         },
         {
+          path: 'ivisignmap',
+          meta: {label: 'Ivi Sign Map'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: Map,
+              meta: {
+                requiresAdmin: false
+              }
+            }
+          ]
+        },
+        {
           path: 'vienna',
           meta: { label: 'vienna'},
           component: {
