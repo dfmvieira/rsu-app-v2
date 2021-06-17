@@ -25,7 +25,7 @@ use App\Http\Middleware\Authenticate;
 Route::group(['middleware' => 'api'], function ($router) {
     Route::get('langlist', 'LocaleController@getLangList');
     Route::get('menu', 'MenuController@index');
-    Route::get('vienna', 'ViennaSignController@index')->name('vienna.index'); 
+    /* Route::get('vienna', 'ViennaSignController@index')->name('vienna.index'); */ 
 
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
@@ -37,9 +37,10 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('resource/{table}/resource', 'ResourceController');
 
     Route::prefix('vienna')->group(function () {
-        /* Route::get('/', 'ViennaSignController@index')->name('vienna.index'); */
+        Route::get('/', 'ViennaSignController@index')->name('vienna.index');
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
+        Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {

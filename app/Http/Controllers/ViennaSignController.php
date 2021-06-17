@@ -112,7 +112,22 @@ class ViennaSignController extends Controller
      */
     public function destroy(ViennaSign $viennaSign)
     {
-        //
+        /* try 
+        {
+            vienna_signs::whereIn('id', $request->id)->delete(); // $request->id MUST be an array
+            return response()->json('users deleted');
+        }
+    
+        catch (Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        } */
+    }
+
+    public function delete($id)
+    {
+        DB::table('vienna_signs')->where('id','=', $id)->delete();
+    
+        return response()->json("ok");
     }
 
     /**
