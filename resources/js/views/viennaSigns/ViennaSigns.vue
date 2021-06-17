@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         getViennaSigns() {
-            axios.get('api/vienna').then(response => {
+            axios.get('api/vienna/').then(response => {
                 return response.data
             })
         },

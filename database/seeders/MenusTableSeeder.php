@@ -179,9 +179,9 @@ class MenusTableSeeder extends Seeder
         $id = $this->insertLink('guest', 'Register', '/register', 'cil-account-logout');
 
         
-        $this->beginDropdown('user,admin', 'Map', '/map', 'cil-map');
-            $this->insertLink('user,admin', 'View', '/map');
-            $this->insertLink('user,admin', 'Add', '/map/add');
+        $this->beginDropdown('user,admin', 'Ivi Sign Map', '/ivisignmap', 'cil-map');
+            $this->insertLink('user,admin', 'View', '/ivisignmap');
+            $this->insertLink('user,admin', 'Add', '/ivisignmap/add');
         $this->endDropdown();
 
         $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
