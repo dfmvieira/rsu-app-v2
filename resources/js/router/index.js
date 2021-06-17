@@ -7,8 +7,8 @@ const TheContainer = () => import('../containers/TheContainer.vue')
 // Views
 const Dashboard = () => import('../views/Dashboard.vue')
 
-const Colors = () => import('../views/theme/Colors.vue')
-const Typography = () => import('../views/theme/Typography.vue')
+/* const Colors = () => import('../views/theme/Colors.vue')
+const Typography = () => import('../views/theme/Typography.vue') */
 
 const Charts = () => import('../views/charts/Charts.vue')
 const Widgets = () => import('../views/widgets/Widgets.vue')
@@ -32,11 +32,11 @@ const User = () => import('../views/users/User.vue')
 const EditUser = () => import('../views/users/EditUser.vue')
 
 //Notes
-const Notes = () => import('../views/notes/Notes.vue')
+/* const Notes = () => import('../views/notes/Notes.vue')
 const Note = () => import('../views/notes/Note.vue')
 const EditNote = () => import('../views/notes/EditNote.vue')
 const CreateNote = () => import('../views/notes/CreateNote.vue')
-
+ */
 //Roles
 const Roles = () => import('../views/roles/Roles.vue')
 const Role = () => import('../views/roles/Role.vue')
@@ -44,11 +44,11 @@ const EditRole = () => import('../views/roles/EditRole.vue')
 const CreateRole = () => import('../views/roles/CreateRole.vue')
 
 //Bread
-const Breads = () => import('../views/bread/Breads.vue')
+/* const Breads = () => import('../views/bread/Breads.vue')
 const Bread = () => import('../views/bread/Bread.vue')
 const EditBread = () => import('../views/bread/EditBread.vue')
 const CreateBread = () => import('../views/bread/CreateBread.vue')
-const DeleteBread = () => import('../views/bread/DeleteBread.vue')
+const DeleteBread = () => import('../views/bread/DeleteBread.vue') */
 
 ///Menu
 const Menus       = () => import('../views/menu/MenuIndex.vue')
@@ -307,7 +307,7 @@ function configRoutes () {
             },
           ]
         },
-        {
+        /* {
           path: 'bread',
           meta: { label: 'Bread'},
           component: {
@@ -358,7 +358,7 @@ function configRoutes () {
               }
             },
           ]
-        },
+        }, 
         
         {
           path: 'resource',
@@ -396,7 +396,7 @@ function configRoutes () {
               component: DeleteResource
             },
           ]
-        }
+        }*/
       ]
     },
     {

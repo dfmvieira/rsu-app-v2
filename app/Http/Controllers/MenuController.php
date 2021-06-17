@@ -35,7 +35,6 @@ class MenuController extends Controller
             $menuName = 'sidebar menu';
         } 
         $menus = new GetSidebarMenu();
-        dump($menus);
         return response()->json( $menus->get( $roles, App::getLocale(), $menuName ) );
     }
 
