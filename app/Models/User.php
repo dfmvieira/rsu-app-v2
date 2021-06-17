@@ -67,10 +67,10 @@ class User extends Authenticatable implements JWTSubject
     protected $dates = [
         'deleted_at'
     ];
-    
-    protected $guard_name = 'api';
 
     protected $attributes = [ 
         'menuroles' => 'user',
     ];
+
+    protected $guard_name = 'api';
 }

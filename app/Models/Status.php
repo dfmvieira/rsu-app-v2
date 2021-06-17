@@ -16,6 +16,6 @@ class Status extends Model
      */
     public function notes()
     {
-        return $this->hasMany('App\Models\Notes');
+        return $this->hasMany('App\Notes');
     }
 }

@@ -28,6 +28,8 @@ mix.js('resources/js/app.js', 'public/js')
     .vue({ version: 2 })
     .sourceMaps();
 
+mix.copy('resources/js/vue-i18n-locales.generated.js', 'public/js'); 
+
 //mix.js('resources/js/app.js', 'public/js').vue({ version: 2 });
 
 // mix.copy('../coreui/public', 'public');

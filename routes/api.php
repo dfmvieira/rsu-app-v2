@@ -23,6 +23,7 @@ use App\Http\Middleware\Authenticate;
 }); */
 
 Route::group(['middleware' => 'api'], function ($router) {
+    Route::get('langlist', 'LocaleController@getLangList');
     Route::get('menu', 'MenuController@index');
     Route::get('vienna', 'ViennaSignController@index')->name('vienna.index'); 
 
@@ -42,7 +43,6 @@ Route::group(['middleware' => 'api'], function ($router) {
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {
-
         Route::resource('mail',        'MailController');
         Route::get('prepareSend/{id}', 'MailController@prepareSend')->name('prepareSend');
         Route::post('mailSend/{id}',   'MailController@send')->name('mailSend');
@@ -50,6 +50,9 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)
 
         Route::resource('users', 'UsersController')->except( ['create', 'store'] );
+        Route::get('menu/edit', 'MenuEditController@index');
+        Route::get('menu/edit/selected', 'MenuEditController@menuSelected');
+        Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
 
         
 
@@ -97,5 +100,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/roles/move/move-up',      'RolesController@moveUp')->name('roles.up');
         Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');
     });
+
+    Route::post('lazyTable', 'LazyTableController@index');
 });
 

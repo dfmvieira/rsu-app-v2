@@ -25,50 +25,6 @@ class MediaController extends Controller
         return $this->foldersAndFiles->getFoldersAndFiles($id);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-    public function index(Request $request){
-        if($request->has('id')){
-            $thisFolder = Folder::where('id', '=', $request->input('id'))->first();
-            if($thisFolder->folder_id == null){
-                $result = response()->json(array(
-                    'medias' => $thisFolder->getMedia(),
-                    'mediaFolders' =>  Folder::where('folder_id', '=', $thisFolder->id)->get(),
-                    'thisFolder' => $thisFolder->id,
-                    'parentFolder' => 'disable'
-                ));
-            }else{
-                $result = response()->json(array(
-                    'medias' => $thisFolder->getMedia(),
-                    'mediaFolders' =>  Folder::where('folder_id', '=', $request->input('id'))->get(),
-                    'thisFolder' => $request->input('id'),
-                    'parentFolder' => $thisFolder['folder_id']
-                ));
-            }
-        }else{
-            $rootFolder = Folder::whereNull('folder_id')->first();
-            $result = response()->json(array(
-                'medias' => $rootFolder->getMedia(),
-                'mediaFolders' =>  Folder::where('folder_id', '=', $rootFolder->id)->get(),
-                'thisFolder' => $rootFolder->id,
-                'parentFolder' => 'disable'
-            ));
-        }
-        return $result;
-    }
-*/
     public function folderAdd(Request $request){
         $validatedData = $request->validate([
             'thisFolder' => 'required|numeric'

@@ -9,5 +9,5 @@ use App\MenuBuilder;
 
 interface MenuInterface
 {
-    public function get(string $roles);
+    public function get(string $roles, string $locale);
 }
