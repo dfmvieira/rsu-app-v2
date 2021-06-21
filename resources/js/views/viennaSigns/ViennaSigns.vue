@@ -99,7 +99,6 @@ export default {
                 console.log(response.data)
                 this.signs=response.data
                 console.log(this.signs)
-                
             })
         },
         
@@ -116,7 +115,10 @@ export default {
                     }).catch(err => {
                     console.log(err)
             })
+            
             this.getViennaSigns();
+           
+            
         },
      
     },
