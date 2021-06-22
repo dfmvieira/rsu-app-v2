@@ -62,12 +62,30 @@ class ViennaSignController extends Controller
             
 
         ]);
+        
+        $viennaSign = new viennaSign();
 
-        $sign = new sign();
-        $sign->fill($request->all());
-        $sign->save();
+        if($request->file()) {
+            $file_name = $request->file->getClientOriginalName();
+            $file_path = $request->file('file')->storeAs('public', $file_name, 'public');
 
-        return response()->json($sign, 201);
+            $viennaSign->id = $request->viennaSign.id;
+            $viennaSign->name = $request->viennaSign.name;
+            $viennaSign->name = $request->viennaSign.IDCategory;
+            $viennaSign->image = '/storage/' . $file_path;
+            $viennaSign->save();
+        }
+            /* $name = $request->name;
+        $file = $request->file('filename');
+        $name = '/img/' . $name . '.' . $file->extension();
+        $file->storePubliclyAs('public', $name);
+        $data['filename'] = $name;
+
+        
+        $viennaSign->fill($request->all());
+        $viennaSign->save(); */
+
+        return response()->json($viennaSign, 201);
     }
 
     /**
@@ -137,7 +155,7 @@ class ViennaSignController extends Controller
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
-        ->select('vienna_sign_categories.id', 'vienna_sign_categories.name')
+        ->select('vienna_sign_categories.id', 'vienna_sign_categories.category')
         ->get();
 
         return response()->json($categories);
