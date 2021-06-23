@@ -17,7 +17,7 @@ class ViennaSignSeeder extends Seeder
         DB::table('vienna_signs')->insert([
             'id' => 'A16a',
             'name' => 'Passagem de Peões',
-            'image' => 'img/ViennaSigns/A16a.jpg',
+            'image' => 'img/ViennaSigns/A16a.png',
             'IDCategory' => 1,
         ]);
         DB::table('vienna_signs')->insert([

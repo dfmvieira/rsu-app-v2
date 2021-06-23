@@ -95,16 +95,10 @@ export default {
     },
     methods: {
         getViennaSigns() {
-<<<<<<< HEAD
-            axios.get('api/vienna/').then(response => {
-                return response.data
-=======
             axios.get('api/vienna').then(response => {
                 console.log(response.data)
                 this.signs=response.data
                 console.log(this.signs)
-                
->>>>>>> ViennaSigns
             })
         },
         
