@@ -98,7 +98,6 @@ export default {
             axios.get('api/vienna').then(response => {
                 console.log(response.data)
                 this.signs=response.data
-                console.log(this.signs)
             })
         },
         
@@ -125,8 +124,6 @@ export default {
     mounted() {
         
         this.getViennaSigns();
-        console.log("ola");
-        /* console.log(this.signs); */
     }
 }
 </script>

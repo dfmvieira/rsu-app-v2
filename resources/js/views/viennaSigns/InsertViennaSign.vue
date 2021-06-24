@@ -1,133 +1,67 @@
 <template>
-  <CCard>
+  <CCard style="width: 70%;">
     <CCardHeader>
       <CIcon name="cil-notes"/> Insert Vienna Sign
-      <!-- <a class="badge badge-danger" href="https://coreui.io/pro/vue/">CoreUI Pro</a> -->
-      <!-- <div class="card-header-actions">
-        <a 
-          class="card-header-action" 
-          href="https://github.com/vuelidate/vuelidate" 
-          target="_blank" 
-          rel="noreferrer noopener"
-        >
-          <small class="text-muted">docs</small>
-        </a>
-      </div> -->
     </CCardHeader>
     <CCardBody>
-     <!--  <CLink 
-        href="https://github.com/vuelidate/vuelidate" 
-        target="_blank" 
-        rel="noreferrer noopener"
-      >
-        Vuelidate
-      </CLink> 
-      provides <cite>Simple, lightweight model-based validation for Vue.js. </cite>
-      In this view Vuelidate features are integrated with CoreUI Vue form components.
-      <hr> -->
-      <!-- <CRow> -->
-        <!-- <CCol lg="6"> -->
-          <!-- <h6>Simple Form</h6> -->
-          <CForm>
-            <CInput
-              label="Vienna ID"
-              horizontal
-              :lazy="false"
-              :value.sync="viennaSign.id"
-              
-              placeholder="Vienna ID"
-              invalidFeedback="This is a required field and must be at least 1 characters"
-            />
+      <CForm>
+        <CInput
+          label="Vienna ID"
+          horizontal
+          :lazy="false"
+          :value.sync="viennaSign.id"
+          
+          placeholder="Vienna ID"
+          invalidFeedback="This is a required field and must be at least 1 characters"
+        />
 
-            <CInput
-              label="Name"
-              horizontal
-              :lazy="false"
-              :value.sync="viennaSign.name"
-              
-              placeholder="Name"
-              invalidFeedback="This is a required field and must be at least 1 character"
-            />
+        <CInput
+          label="Name"
+          horizontal
+          :lazy="false"
+          :value.sync="viennaSign.name"
+          
+          placeholder="Name"
+          invalidFeedback="This is a required field and must be at least 1 character"
+        />
 
-             <CSelect
-                label="Select category"
-                horizontal
-                :value.sync="viennaSign.IDCategory"
-                :options="options"
-                placeholder="Please select category"
-                
-              />
+        <CSelect
+          label="Select category"
+          horizontal
+          :value.sync="viennaSign.IDCategory"
+          :options="options"
+          placeholder="Please select category"
+        />
 
-          <!--   <CInputFile
-                label="Insert image"
-                horizontal
-                placeholder="Please upload a image"
-                custom
-                :value.sync="viennaSign.image"
-              /> -->
-              <!-- <CInputFile
-                label="File input"
-                horizontal
-                :value.sync="viennaSign.image"
-              /> -->
+        <!-- <CInputFile
+          label="Insert image"
+          placeholder="Please upload a image"
+          horizontal
+          v-on:change="onImageChange"
+        /> -->
 
-             <!--  <div class="form-group">
-                <label for="exampleFormControlFile1">Example file input</label>
-                <input type="file" class="form-control-file" id="exampleFormControlFile1">
-              </div> -->
-         
-              <!-- <label for="customFile">Avatar</label>
-              
-                <div class="custom-file">
-                
-                  <input type="file" class="custom-file-input" id="customFile" 
-                      ref="file" @change="handleFileObject()">
-                  <label class="custom-file-label text-left" for="customFile">{{ filename }}</label>
-                </div>
 
-              <form @submit="formSubmit" enctype="multipart/form-data">
-                  <input type="file" class="form-control" v-on:change="onChange">
-                  <button class="btn btn-primary btn-block">Upload</button>
-              </form>
-             -->
-              <input type="file" class="form-control" v-on:change="onChange">
+        <CRow>
+          <CCol sm="3">
+          </CCol>
+          <CCol sm="9">
+            <input type="file" v-on:change="onImageChange">
+          </CCol>
+        </CRow>
 
-<!-- :disabled="!isValid || submitted" -->
-
-            
-            <CButton 
-              color="primary" 
-              
-              @click="submit"
-            >
-              Submit
-            </CButton>
-            <CButton 
-              class="ml-1"  
-              color="success" 
-              :disabled="isValid"
-              @click="validate"
-            >
-              Validate
-            </CButton>
-            <CButton 
-              class="ml-1"
-              color="danger"
-              :disabled="!isDirty"
-              @click="reset"
-            >
-              Reset
-            </CButton>
-          </CForm>
-          <br/>
-       <!--  </CCol> -->
-
-        <!-- <CCol lg="6">
-          <CCard :class="`bg-${submitted ? 'info' : 'secondary' }`">
-            <pre>{{formString}}</pre>
-          </CCard>
-        </CCol> -->
-     <!--  </CRow> -->
+        <CRow>
+          <CButton color="primary" @click="submit">Submit</CButton>
+          
+          <CButton 
+            class="ml-1"
+            color="danger"
+            :disabled="!isDirty"
+            @click="reset"
+          >
+            Reset
+          </CButton>
+        </CRow>
+      </CForm>
     </CCardBody>
   </CCard>
 </template>
@@ -148,11 +82,13 @@ export default {
       submitted: false,
       options: [],
       filename: '',
-      file: '',
       viennaSign: {
         id: '',
         name: '',
-        image: '',
+        image: {
+          name: '',
+          base64: '',
+        },
         IDCategory: null,
       },
     }
@@ -217,13 +153,20 @@ export default {
         image: "",
       }
     },
-    /* handleFileObject() {
-      this.viennaSign.image = this.$refs.file.files[0]
-      this.filename = this.viennaSign.name
-    }, */
-    onChange(e) {
-      this.file = e.target.files[0];
+
+    onImageChange(e) {
+      let image = e.target.files[0];
+      this.viennaSign.image.name = image.name;
+      this.createImage(image);
     },
+    createImage(file) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.viennaSign.image.base64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    },
+
     getCategories() {
       axios.get('/api/vienna/signscategories').then(response => {
         response.data.forEach(item => {
@@ -236,35 +179,36 @@ export default {
         })
       })
     },
-    submit() {
 
-          axios.post('api/vienna/insertsign', this.viennaSign)
-              .then(response => {
-                  this.showSuccess = true;
-                  this.successMessage = 'Sign Created';
-                  console.log("trabalha");
-                  this.submitted = true;
-                  this.getEmptyForm();
-                  
-              })
-              .catch(error => {
-                  console.log(error)
-                  if (error.response.data.errors.id) {
-                      this.successMessage = error.response.data.errors.id[0];
-                      this.showError = true;
-                  } else if (error.response.data.errors.name) {
-                      this.successMessage = error.response.data.errors.name[0];
-                      this.showError = true;
-                  } else if (error.response.data.errors.image) {
-                      this.successMessage = error.response.data.errors.image[0];
-                      this.showError = true;
-                  }
-              })
+    submit() {
+      console.log(this.viennaSign)
+      axios.post('api/vienna/insertsign', this.viennaSign)
+        .then(response => {
+            console.log(response);
+            this.showSuccess = true;
+            this.successMessage = 'Sign Created';
+            this.submitted = true;
+            this.getEmptyForm();
+            
+        })
+        .catch(error => {
+            console.log(error)
+            if (error.response.data.errors.id) {
+                this.successMessage = error.response.data.errors.id[0];
+                this.showError = true;
+            } else if (error.response.data.errors.name) {
+                this.successMessage = error.response.data.errors.name[0];
+                this.showError = true;
+            } else if (error.response.data.errors.image) {
+                this.successMessage = error.response.data.errors.image[0];
+                this.showError = true;
+            }
+        })
       },
   },
+
   mounted() {
     this.getCategories();
-    
   },
 }
 </script>

@@ -36,6 +36,12 @@ class ViennaSignController extends Controller
         ->select('vienna_signs.id', 'vienna_signs.name', 'vienna_sign_categories.category', 'vienna_signs.image')
         ->get();
 
+        //$signs['image'] = Storage::disk('public')->get('img/ViennaSigns/' . $signs['name']);
+        foreach($signs as $sign) {
+            dump($sign->image);
+            $sign->image = Storage::disk('public')->get($sign->image);
+        }
+
         return response()->json($signs);
         
     }
@@ -58,32 +64,25 @@ class ViennaSignController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            
+        /* $request->validate([
+        ]); */
 
-        ]);
-        
-        $viennaSign = new viennaSign();
+        if($request->image['base64']) {
 
-        if($request->file()) {
-            $file_name = $request->file->getClientOriginalName();
-            $file_path = $request->file('file')->storeAs('public', $file_name, 'public');
+            $image = $request->image;
 
-            $viennaSign->id = $request->viennaSign.id;
-            $viennaSign->name = $request->viennaSign.name;
-            $viennaSign->name = $request->viennaSign.IDCategory;
-            $viennaSign->image = '/storage/' . $file_path;
-            $viennaSign->save();
+            $base64_string = explode(',', $image['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            if (!Storage::disk('public')->exists('img/ViennaSigns/' . $image['name'])) {
+                Storage::disk('public')->put('img/ViennaSigns/' . $image['name'], $imageBin);
+            }
         }
-            /* $name = $request->name;
-        $file = $request->file('filename');
-        $name = '/img/' . $name . '.' . $file->extension();
-        $file->storePubliclyAs('public', $name);
-        $data['filename'] = $name;
 
-        
+        $viennaSign = new ViennaSign();
         $viennaSign->fill($request->all());
-        $viennaSign->save(); */
+        $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : null;
+        $viennaSign->save();
 
         return response()->json($viennaSign, 201);
     }
