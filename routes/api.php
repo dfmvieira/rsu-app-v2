@@ -41,6 +41,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
+        Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {

@@ -130,6 +130,13 @@ class ViennaSignController extends Controller
         return response()->json("ok");
     }
 
+    public function deleteCategories($id)
+    {
+        DB::table('vienna_sign_categories')->where('id','=', $id)->delete();
+    
+        return response()->json("ok");
+    }
+
     /**
      * Display a listing of the signs categories.
      *
@@ -137,7 +144,7 @@ class ViennaSignController extends Controller
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
-        ->select('vienna_sign_categories.id', 'vienna_sign_categories.name')
+        ->select('vienna_sign_categories.id', 'vienna_sign_categories.category')
         ->get();
 
         return response()->json($categories);
