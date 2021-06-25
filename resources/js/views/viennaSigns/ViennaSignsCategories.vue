@@ -18,6 +18,7 @@
             pagination
             >
 
+            
             <template #show_details="{item, index}">
                 <td class="py-2">
                 <CButton
@@ -27,6 +28,7 @@
                     >
                     Delete
                 </CButton>
+
                 <CModal
                     title="Delete sign?!"
                     color="danger"
@@ -38,7 +40,7 @@
                     <span class="font-weight-bold">Are you sure you want to delete this category?</span>
                     <template #footer>
                         <CButton @click="warningModal = false" color="primary-color">Cancel</CButton>
-                        <CButton @click=" deleteCategories(item); warningModal = false;" color="danger">Delete</CButton>
+                        <CButton @click=" deleteCategories(index); warningModal = false;" color="danger">Delete</CButton>
                     </template>
                 </CModal>
                 </td>
@@ -87,14 +89,15 @@ export default {
             })
         },
         deleteCategories(item) {
-            console.log(item.id)
-            axios.delete(`api/vienna/categories/${item.id}`)
+            console.log(item)
+
+            /* axios.delete(`api/vienna/categories/${item.id}`)
                 .then(res => {
                         if (res.data === 'ok')
                              console.log("sucess")
                     }).catch(err => {
                     console.log(err)
-            })
+            }) */
             this.getViennaCategories();
         },
     },
