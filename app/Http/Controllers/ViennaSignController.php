@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ViennaSign;
+use App\Models\ViennaSignCategory;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -130,6 +131,13 @@ class ViennaSignController extends Controller
         return response()->json("ok");
     }
 
+    public function deleteCategories($id)
+    {
+        DB::table('vienna_sign_categories')->where('id','=', $id)->delete();
+    
+        return response()->json("ok");
+    }
+
     /**
      * Display a listing of the signs categories.
      *
@@ -137,9 +145,40 @@ class ViennaSignController extends Controller
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
-        ->select('vienna_sign_categories.id', 'vienna_sign_categories.name')
+        ->select('vienna_sign_categories.id', 'vienna_sign_categories.category')
         ->get();
 
         return response()->json($categories);
+    }
+
+    public function storeCategories(Request $request)
+    {
+        $request->validate([
+            
+
+        ]);
+
+        $category = new ViennaSignCategory();
+        $category->fill($request->all());
+        $category->save();
+
+        return response()->json($category, 201);
+    }
+
+    public function updateCategorie(Request $request, $id)
+    {
+       
+        $category = ViennaSignCategory::findOrFail($id);
+
+        $category->update($request->all());
+        return response()->json([
+            'message'=>'Category Updated Successfully!!',
+        ]); 
+       
+        /* $category->fill($request->post())->save();
+        return response()->json([
+            'message'=>'Category Updated Successfully!!',
+            'category'=>$category
+        ]); */
     }
 }

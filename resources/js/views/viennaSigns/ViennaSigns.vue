@@ -82,7 +82,7 @@ export default {
                 {key: 'category', label: 'Category'},  
                 { 
                     key: 'show_details', 
-                    label: '', 
+                    label: 'Options', 
                     _style: 'width:1%', 
                     sorter: false, 
                     filter: false

@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             EmailSeeder::class,
             ViennaSignCategorySeeder::class,
             ViennaSignSeeder::class,
+            IviSignMapSeeder::class,
         ]);
     }
 }
