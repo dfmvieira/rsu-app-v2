@@ -40,8 +40,10 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/', 'ViennaSignController@index')->name('vienna.index');
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
+        Route::post('/insertcategory', 'ViennaSignController@storeCategories')->name('vienna.storecategory');
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
         Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
+        Route::put('/categories/{id}', 'ViennaSignController@updateCategorie')->name('vienna.updatecategories');
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {
