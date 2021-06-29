@@ -37,6 +37,12 @@ class ViennaSignController extends Controller
         ->select('vienna_signs.id', 'vienna_signs.name', 'vienna_sign_categories.category', 'vienna_signs.image')
         ->get();
 
+        //$signs['image'] = Storage::disk('public')->get('img/ViennaSigns/' . $signs['name']);
+        foreach($signs as $sign) {
+            dump($sign->image);
+            $sign->image = Storage::disk('public')->get($sign->image);
+        }
+
         return response()->json($signs);
         
     }
@@ -59,16 +65,27 @@ class ViennaSignController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            
+        /* $request->validate([
+        ]); */
 
-        ]);
+        if($request->image['base64']) {
 
-        $sign = new sign();
-        $sign->fill($request->all());
-        $sign->save();
+            $image = $request->image;
 
-        return response()->json($sign, 201);
+            $base64_string = explode(',', $image['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            if (!Storage::disk('public')->exists('img/ViennaSigns/' . $image['name'])) {
+                Storage::disk('public')->put('img/ViennaSigns/' . $image['name'], $imageBin);
+            }
+        }
+
+        $viennaSign = new ViennaSign();
+        $viennaSign->fill($request->all());
+        $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : null;
+        $viennaSign->save();
+
+        return response()->json($viennaSign, 201);
     }
 
     /**
