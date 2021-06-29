@@ -55,7 +55,7 @@
           <CButton 
             class="ml-1"
             color="danger"
-            :disabled="!isDirty"
+            
             @click="reset"
           >
             Reset
@@ -140,18 +140,28 @@ export default {
     },
 
     reset () {
-      this.form = this.getEmptyForm()
+      this.viennaSign = this.getEmptyForm()
       this.submitted = false
       this.$v.$reset()
     },
     
     getEmptyForm () {
       return {
-        ViennaID: "",
-        name: "",
-        select: "",
-        image: "",
+
+          id: '',
+          name: '',
+          image: {
+            name: '',
+            base64: '',
+          },
+          IDCategory: null,
+        
       }
+    },
+
+    async load() {
+        this.viennaSignCategory = await this.getEmptyForm();
+        await this.$nextTick() // waits for the next event tick before completeing function.
     },
 
     onImageChange(e) {
@@ -184,11 +194,12 @@ export default {
       console.log(this.viennaSign)
       axios.post('api/vienna/insertsign', this.viennaSign)
         .then(response => {
+            this.viennaSign = this.getEmptyForm();
             console.log(response);
             this.showSuccess = true;
             this.successMessage = 'Sign Created';
             this.submitted = true;
-            this.getEmptyForm();
+            
             
         })
         .catch(error => {

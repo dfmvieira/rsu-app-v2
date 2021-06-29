@@ -46,6 +46,13 @@
                         >
                             Delete
                         </CButton>
+                        <CButton
+                            @click="editModal = true"
+                            size="sm" 
+                            color="primary"
+                            >
+                            Edit
+                        </CButton>
                         <CModal
                             title="Delete sign?!"
                             color="danger"
@@ -56,8 +63,45 @@
                             are related to this sign.<br><br>
                             <span class="font-weight-bold">Are you sure you want to delete this sign?</span>
                             <template #footer>
-                                <CButton @click="warningModal = false" color="danger">Discard</CButton>
-                                <CButton @click=" deleteSigns(item); warningModal = false;" color="success">Accept</CButton>
+                                <CButton @click="warningModal = false; toggleDetails(index); loadViennaSigns()" color="primary-color">Cancel</CButton>
+                                <CButton @click=" deleteSigns(item); warningModal = false; toggleDetails(index); loadViennaSigns()" color="danger">Delete</CButton>
+                            </template>
+                        </CModal>
+                        <CModal
+                            title="Edit category"
+                            color="primary"
+                            :show.sync="editModal"
+                            :centered = true
+                        >
+                            <CForm @submit.prevent="update">
+                                <CInput
+                                    label="ID"
+                                    horizontal
+                                    :lazy="false"
+                                    :value.sync="viennaSign.id"
+                                    placeholder="ID"
+                                    invalidFeedback="This is a required field and must be at least 1 character"
+                                />
+                                <CInput
+                                    label="Name"
+                                    horizontal
+                                    :lazy="false"
+                                    :value.sync="viennaSign.name"
+                                    placeholder="Name"
+                                    invalidFeedback="This is a required field and must be at least 1 character"
+                                />
+                                <CSelect
+                                    label="Select category"
+                                    horizontal
+                                    :value.sync="viennaSign.IDCategory"
+                                    :options="options"
+                                    placeholder="Please select category"
+                                    />
+                            </CForm>
+                                   
+                            <template #footer>
+                                <CButton @click="editModal = false; toggleDetails(index); loadViennaSigns() " color="primary-color">Cancel</CButton>
+                                <CButton @click=" update(item); editModal = false; toggleDetails(index); loadViennaSigns()" color="success">Edit</CButton>
                             </template>
                         </CModal>
                         </CMedia>
@@ -90,6 +134,14 @@ export default {
             ],
             details: [],
             warningModal: false,
+            editModal: false,
+            viennaSign: {
+                id: '',
+                name: '',
+                IDCategory: '',
+                _method:"patch"
+            },
+            options: [],
 
         }
     },
@@ -109,20 +161,58 @@ export default {
         deleteSigns(item) {
             axios.delete(`api/vienna/${item.id}`)
                 .then(res => {
-                        if (res.data === 'ok')
-                             console.log("sucess")
-                    }).catch(err => {
-                    console.log(err)
+                    if (res.data === 'ok')
+                        this.loadViennaSigns();
+                        console.log("sucess")
+                }).catch(err => {
+                console.log(err)
+            })         
+            
+        },
+        update(item){
+            
+           axios.put(`api/vienna/${item.id}`, this.viennaSign)
+               .then(response=>{
+                console.log("sucess")
+              
+                this.loadViennaSigns()
+
+                    
+               })
+               .catch(()=>{
+                  console.log("Error.....")
+               })
+        },
+        getEmptyForm () {
+            return {
+                viennaSign: {
+                id: '',
+                name: '',
+                IDCategory: '',
+                }
+            }
+        },
+        async loadViennaSigns() {
+            this.signs = await this.getViennaSigns();
+            this.viennaSign = await this.getEmptyForm();
+            await this.$nextTick() // waits for the next event tick before completeing function.
+        },
+        getCategories() {
+            axios.get('/api/vienna/signscategories').then(response => {
+                response.data.forEach(item => {
+                let i = {
+                    value: item.id,
+                    label: item.category
+                }
+                this.options.push(i)
+                
+                })
             })
-            
-            this.getViennaSigns();
-           
-            
         },
      
     },
     mounted() {
-        
+        this.getCategories();
         this.getViennaSigns();
     }
 }

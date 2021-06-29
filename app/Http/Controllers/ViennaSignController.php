@@ -38,10 +38,10 @@ class ViennaSignController extends Controller
         ->get();
 
         //$signs['image'] = Storage::disk('public')->get('img/ViennaSigns/' . $signs['name']);
-        foreach($signs as $sign) {
+        /* foreach($signs as $sign) {
             dump($sign->image);
             $sign->image = Storage::disk('public')->get($sign->image);
-        }
+        } */
 
         return response()->json($signs);
         
@@ -80,6 +80,21 @@ class ViennaSignController extends Controller
             }
         }
 
+        if ($request->hasFile('image')) {
+            $image      = $request->file('image');
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+            $img = Image::make($image->getRealPath());
+            /* $img->resize(120, 120, function ($constraint) {
+                $constraint->aspectRatio();                 
+            }); */
+
+            $img->stream(); // <-- Key point
+
+            //dd();
+            Storage::disk('local')->put('img/ViennaSigns/'.$request->image['name'], $img, 'public');
+        }
+
         $viennaSign = new ViennaSign();
         $viennaSign->fill($request->all());
         $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : null;
@@ -105,9 +120,14 @@ class ViennaSignController extends Controller
      * @param  \App\Models\ViennaSign  $viennaSign
      * @return \Illuminate\Http\Response
      */
-    public function edit(ViennaSign $viennaSign)
+    public function edit(Request $request, $id)
     {
-        //
+        $sign = ViennaSign::findOrFail($id);
+
+        $sign->update($request->all());
+        return response()->json([
+            'message'=>'Sign Updated Successfully!!',
+        ]); 
     }
 
     /**
@@ -117,7 +137,7 @@ class ViennaSignController extends Controller
      * @param  \App\Models\ViennaSign  $viennaSign
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ViennaSign $viennaSign)
+    public function update(Request $request, $id)
     {
         //
     }

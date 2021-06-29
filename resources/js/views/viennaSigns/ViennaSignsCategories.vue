@@ -60,8 +60,8 @@
                             are related to this category.<br><br>
                             <span class="font-weight-bold">Are you sure you want to delete this category?</span>
                             <template #footer>
-                                <CButton @click="warningModal = false; toggleDetails(index)" color="primary-color">Cancel</CButton>
-                                <CButton @click=" deleteCategories(item); warningModal = false; toggleDetails(index)" color="danger">Delete</CButton>
+                                <CButton @click="warningModal = false; toggleDetails(index); loadViennaCategories()" color="primary-color">Cancel</CButton>
+                                <CButton @click=" deleteCategories(item); warningModal = false; toggleDetails(index); loadViennaCategories()" color="danger">Delete</CButton>
                             </template>
                         </CModal>
                         <CModal
@@ -93,8 +93,8 @@
                             </CForm>
                                    
                             <template #footer>
-                                <CButton @click="editModal = false; toggleDetails(index) " color="primary-color">Cancel</CButton>
-                                <CButton @click=" update(item); editModal = false; toggleDetails(index)" color="success">Edit</CButton>
+                                <CButton @click="editModal = false; toggleDetails(index); loadViennaCategories() " color="primary-color">Cancel</CButton>
+                                <CButton @click=" update(item); editModal = false; toggleDetails(index); loadViennaCategories()" color="success">Edit</CButton>
                             </template>
                         </CModal>
                 <!-- </td> -->
@@ -164,15 +164,14 @@ export default {
             
         },
         getEmptyForm () {
-        return {
-            viennaSignCategory: {
-                category: ''
-            },
-        }
+            return {
+                viennaSignCategory: {
+                    category: ''
+                },
+            }
         },
         update(item){
-            console.log(this.viennaSignCategory)
-            console.log(item.id)
+            
            axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory)
                .then(response=>{
                 console.log("sucess")

@@ -44,6 +44,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
         Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
         Route::put('/categories/{id}', 'ViennaSignController@updateCategorie')->name('vienna.updatecategories');
+        Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {

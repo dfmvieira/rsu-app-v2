@@ -21,7 +21,7 @@
           <CButton 
             class="ml-1"
             color="danger"
-            :disabled="!isDirty"
+
             @click="reset"
           >
             Reset
@@ -88,7 +88,7 @@ export default {
     },
 
     reset () {
-      this.form = this.getEmptyForm()
+      this.viennaSignCategory = this.getEmptyForm()
       this.submitted = false
       this.$v.$reset()
     },
