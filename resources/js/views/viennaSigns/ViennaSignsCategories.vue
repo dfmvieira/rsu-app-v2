@@ -87,7 +87,7 @@
                                     :lazy="false"
                                     :value.sync="viennaSignCategory.category"
                                     
-                                    placeholder="Categorie"
+                                    placeholder="Category"
                                     invalidFeedback="This is a required field and must be at least 1 character"
                                 />
                             </CForm>
