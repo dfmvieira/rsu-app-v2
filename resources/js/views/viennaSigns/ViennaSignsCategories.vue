@@ -18,6 +18,7 @@
             pagination
             >
 
+            
             <template #show_details="{item, index}">
                 <td class="py-2">
                 <CButton
@@ -157,8 +158,9 @@ export default {
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
         },
         deleteCategories(item) {
-            console.log(item.id)
-            axios.delete(`api/vienna/categories/${item.id}`)
+            console.log(item)
+
+            /* axios.delete(`api/vienna/categories/${item.id}`)
                 .then(res => {
                         if (res.data === 'ok')
                              console.log("sucess")
