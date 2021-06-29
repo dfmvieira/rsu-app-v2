@@ -60,8 +60,8 @@
                             are related to this category.<br><br>
                             <span class="font-weight-bold">Are you sure you want to delete this category?</span>
                             <template #footer>
-                                <CButton @click="warningModal = false" color="primary-color">Cancel</CButton>
-                                <CButton @click=" deleteCategories(item); warningModal = false;" color="danger">Delete</CButton>
+                                <CButton @click="warningModal = false; toggleDetails(index)" color="primary-color">Cancel</CButton>
+                                <CButton @click=" deleteCategories(item); warningModal = false; toggleDetails(index)" color="danger">Delete</CButton>
                             </template>
                         </CModal>
                         <CModal
@@ -87,14 +87,14 @@
                                     :lazy="false"
                                     :value.sync="viennaSignCategory.category"
                                     
-                                    placeholder="categorie"
+                                    placeholder="Categorie"
                                     invalidFeedback="This is a required field and must be at least 1 character"
                                 />
                             </CForm>
                                    
                             <template #footer>
-                                <CButton @click="editModal = false" color="primary-color">Cancel</CButton>
-                                <CButton @click=" update(item); editModal = false;" color="success">Edit</CButton>
+                                <CButton @click="editModal = false; toggleDetails(index) " color="primary-color">Cancel</CButton>
+                                <CButton @click=" update(item); editModal = false; toggleDetails(index)" color="success">Edit</CButton>
                             </template>
                         </CModal>
                 <!-- </td> -->
@@ -134,15 +134,7 @@ export default {
 
         }
     },
-    /* props: {
-        items: Array,
-        fields: {
-            type: Array,
-            default () {
-                ['Name', 'Image', 'Category'] 
-            }
-        }
-    }, */
+   
     methods: {
         getViennaCategories() {
             axios.get('api/vienna/signscategories').then(response => {
@@ -151,6 +143,7 @@ export default {
         },
         async loadViennaCategories() {
             this.categories = await this.getViennaCategories();
+            this.viennaSignCategory = await this.getEmptyForm();
             await this.$nextTick() // waits for the next event tick before completeing function.
         },
         toggleDetails (index) {
@@ -160,7 +153,7 @@ export default {
         deleteCategories(item) {
             console.log(item)
 
-            /* axios.delete(`api/vienna/categories/${item.id}`)
+            axios.delete(`api/vienna/categories/${item.id}`)
                 .then(res => {
                         if (res.data === 'ok')
                              console.log("sucess")
@@ -170,12 +163,20 @@ export default {
             })
             
         },
+        getEmptyForm () {
+        return {
+            viennaSignCategory: {
+                category: ''
+            },
+        }
+        },
         update(item){
             console.log(this.viennaSignCategory)
             console.log(item.id)
            axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory)
                .then(response=>{
                 console.log("sucess")
+              
                 this.loadViennaCategories()
 
                     
@@ -184,7 +185,7 @@ export default {
                   console.log("Error.....")
                })
         },
-        /* update(item){
+         /* update(item){
             console.log(this.viennaSignCategory)
             console.log(item.id)
             axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory).then(response=>{

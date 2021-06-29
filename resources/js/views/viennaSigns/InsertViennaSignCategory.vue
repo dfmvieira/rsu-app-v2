@@ -98,6 +98,10 @@ export default {
         category: ""
       }
     },
+    async load() {
+        this.viennaSignCategory = await this.getEmptyForm();
+        await this.$nextTick() // waits for the next event tick before completeing function.
+    },
 
    /*  onImageChange(e) {
       let image = e.target.files[0];
@@ -133,7 +137,7 @@ export default {
             this.showSuccess = true;
             this.successMessage = 'Category Created';
             this.submitted = true;
-            this.getEmptyForm();
+            this.load();
             
         })
         .catch(error => {
