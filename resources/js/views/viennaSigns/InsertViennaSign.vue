@@ -1,154 +1,108 @@
 <template>
-  <CCard>
+  <CCard style="width: 70%;">
     <CCardHeader>
-      <CIcon name="cil-notes"/> Form Validation
-      <a class="badge badge-danger" href="https://coreui.io/pro/vue/">CoreUI Pro</a>
-      <div class="card-header-actions">
-        <a 
-          class="card-header-action" 
-          href="https://github.com/vuelidate/vuelidate" 
-          target="_blank" 
-          rel="noreferrer noopener"
-        >
-          <small class="text-muted">docs</small>
-        </a>
-      </div>
+      <CIcon name="cil-notes"/> Insert Vienna Sign
     </CCardHeader>
     <CCardBody>
-      <CLink 
-        href="https://github.com/vuelidate/vuelidate" 
-        target="_blank" 
-        rel="noreferrer noopener"
-      >
-        <!-- Vuelidate -->
-      </CLink> 
-      provides <cite>Simple, lightweight model-based validation for Vue.js. </cite>
-      In this view Vuelidate features are integrated with CoreUI Vue form components.
-      <hr>
-      <CRow>
-        <CCol lg="6">
-          <!--<h6>Simple Form</h6>-->
-          <CForm>
-            <CInput
-              label="First Name"
-              :lazy="false"
-              :value.sync="$v.form.firstName.$model"
-              :isValid="checkIfValid('firstName')"
-              placeholder="First Name"
-              autocomplete="given-name"
-              invalidFeedback="This is a required field and must be at least 2 characters"
-            />
-
-            <CInput
-              label="Last Name"
-              :lazy="false"
-              :value.sync="$v.form.lastName.$model"
-              :isValid="checkIfValid('lastName')"
-              placeholder="Last Name"
-              autocomplete="family-name"
-              invalidFeedback="This is a required field and must be at least 1 character"
-            />
-
-            <CInput
-              label="User Name"
-              :lazy="false"
-              :value.sync="$v.form.userName.$model"
-              :isValid="checkIfValid('userName')"
-              placeholder="User Name"
-              autocomplete="username"
-              invalidFeedback="This is a required field and must be at least 5 character"
-            />
-
-            <CInput
-              label="Email"
-              type="email"
-              :lazy="false"
-              :value.sync="$v.form.email.$model"
-              :isValid="checkIfValid('email')"
-              placeholder="Email"
-              autocomplete="email"
-              invalidFeedback="This is a required field and must be valid e-mail address"
-            />
-
-            <CRow>
-              <CCol md="6">
-                <CInput
-                  :isValid="checkIfValid('password')"
-                  :value.sync="$v.form.password.$model"
-                  label="Password"
-                  type="password"
-                  placeholder="Password"
-                  autocomplete="new-password"
-                  invalidFeedback="Required password containing at least: number, uppercase and lowercase letter, 8 characters"
-                />
-              </CCol>
-              <CCol md="6">
-                <CInput
-                  :isValid="checkIfValid('password')"
-                  :value.sync="$v.form.confirmPassword.$model"
-                  label="Confirm Password"
-                  type="password"
-                  placeholder="Password"
-                  autocomplete="new-password"
-                  invalidFeedback="Passwords must match"
-                />
-              </CCol>
-            </CRow>
-            <CInputCheckbox
-              :isValid="checkIfValid('accept')"
-              :checked.sync="$v.form.accept.$model"
-              label="I accept the terms of use"
-              invalidFeedback="You must accept before submitting"
-              custom
-              class="mb-4"
-            />
-            <CButton 
-              color="primary" 
-              :disabled="!isValid || submitted"
-              @click="submit"
+      <CAlert
+              :show.sync="dismissCountDown"
+              color="primary"
+              fade
             >
-              Submit
-            </CButton>
-            <CButton 
-              class="ml-1"  
-              color="success" 
-              :disabled="isValid"
-              @click="validate"
-            >
-              Validate
-            </CButton>
-            <CButton 
-              class="ml-1"
-              color="danger"
-              :disabled="!isDirty"
-              @click="reset"
-            >
-              Reset
-            </CButton>
-          </CForm>
-          <br/>
-        </CCol>
+              ({{dismissCountDown}}) {{ message }}
+            </CAlert>
+      <CForm>
+        <CInput
+          label="Vienna ID"
+          horizontal
+          :lazy="false"
+          :value.sync="viennaSign.id"
+          
+          placeholder="Vienna ID"
+          invalidFeedback="This is a required field and must be at least 1 characters"
+        />
 
-        <CCol lg="6">
-          <CCard :class="`bg-${submitted ? 'info' : 'secondary' }`">
-            <pre>{{formString}}</pre>
-          </CCard>
-        </CCol>
-      </CRow>
+        <CInput
+          label="Name"
+          horizontal
+          :lazy="false"
+          :value.sync="viennaSign.name"
+          
+          placeholder="Name"
+          invalidFeedback="This is a required field and must be at least 1 character"
+        />
+
+        <CSelect
+          label="Select category"
+          horizontal
+          :value.sync="viennaSign.IDCategory"
+          :options="options"
+          placeholder="Please select category"
+        />
+
+        <!-- <CInputFile
+          label="Insert image"
+          placeholder="Please upload a image"
+          horizontal
+          v-on:change="onImageChange"
+        /> -->
+
+
+        <CRow>
+          <CCol sm="3">
+          </CCol>
+          <CCol sm="9">
+            <input type="file" v-on:change="onImageChange">
+          </CCol>
+        </CRow>
+
+        <CRow>
+          <CButton color="primary" @click="submit">Submit</CButton>
+          
+          <CButton 
+            class="ml-1"
+            color="danger"
+            
+            @click="reset"
+          >
+            Reset
+          </CButton>
+        </CRow>
+      </CForm>
     </CCardBody>
   </CCard>
 </template>
 
 <script>
-/* import { validationMixin } from "vuelidate"
-import { required, minLength, email, sameAs, helpers } from "vuelidate/lib/validators" */
+import axios from 'axios'
+import { validationMixin } from "vuelidate"
+import { required, minLength} from "vuelidate/lib/validators"
+
 
 export default {
   name: 'InsertViennaSign',
+   
   data() {
     return {
       form: this.getEmptyForm(),
-      submitted: false
+      horizontal: { label:'col-3', input:'col-9' },
+      submitted: false,
+      options: [],
+      filename: '',
+      viennaSign: {
+        id: '',
+        name: '',
+        image: {
+          name: '',
+          base64: '',
+        },
+        IDCategory: null,
+      },
+      showMessage: false,
+      message: '',
+      dismissSecs: 7,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
     }
   },
   computed: {
@@ -159,34 +113,19 @@ export default {
   mixins: [validationMixin],
   validations: {
     form: {
-      firstName: {
-        required,
-        minLength: minLength(3)
-      },
-      lastName: {
+      id: {
         required,
         minLength: minLength(2)
       },
-      userName: {
+      name: {
         required,
-        minLength: minLength(5)
+        minLength: minLength(2)
       },
-      email: {
-        required,
-        email
+      IDCategory: {
+        /* required */
       },
-      password: {
-        required,
-        minLength: minLength(8),
-        strongPass: helpers.regex('strongPass', /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
-      },
-      confirmPassword: {
-        required,
-        sameAsPassword: sameAs("password")
-      },
-      accept: {
-        required,
-        mustAccept: val => val
+      image: {
+        /* required */
       }
     }
   },
@@ -199,33 +138,109 @@ export default {
       return !(field.$invalid || field.$model === '')
     },
 
-    submit () {
+    /* submit () {
       if (this.isValid) {
         this.submitted = true
       }
-    },
+    }, */
 
     validate () {
+      console.log(this.viennaSign)
+      /* console.log(exampleFormControlFile1.value) */
+      /* this.viennaSign.image=this.exampleFormControlFile1.value; */
       this.$v.$touch()
     },
 
     reset () {
-      this.form = this.getEmptyForm()
+      this.viennaSign = this.getEmptyForm()
       this.submitted = false
       this.$v.$reset()
     },
     
     getEmptyForm () {
       return {
-        firstName: "",
-        lastName: "",
-        userName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        accept: false
+
+          id: '',
+          name: '',
+          image: {
+            name: '',
+            base64: '',
+          },
+          IDCategory: null,
+        
       }
-    }
-  }
+    },
+
+    async load() {
+        this.viennaSignCategory = await this.getEmptyForm();
+        await this.$nextTick() // waits for the next event tick before completeing function.
+    },
+
+    onImageChange(e) {
+      let image = e.target.files[0];
+      this.viennaSign.image.name = image.name;
+      this.createImage(image);
+    },
+    createImage(file) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.viennaSign.image.base64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    },
+
+    getCategories() {
+      axios.get('/api/vienna/signscategories').then(response => {
+        response.data.forEach(item => {
+          let i = {
+              value: item.id,
+              label: item.category
+          }
+          this.options.push(i)
+          
+        })
+      })
+    },
+
+    submit() {
+      console.log(this.viennaSign)
+      let self = this;
+      axios.post('api/vienna/insertsign', this.viennaSign)
+        .then(response => {
+           self.message = 'Successfully created sign.';
+            self.showAlert();
+            this.viennaSign = this.getEmptyForm();
+            console.log(response);
+            /* this.showSuccess = true;
+            this.successMessage = 'Sign Created'; */
+            this.submitted = true;
+            
+            
+        })
+        .catch(error => {
+            console.log(error)
+            if (error.response.data.errors.id) {
+                this.successMessage = error.response.data.errors.id[0];
+                this.showError = true;
+            } else if (error.response.data.errors.name) {
+                this.successMessage = error.response.data.errors.name[0];
+                this.showError = true;
+            } else if (error.response.data.errors.image) {
+                this.successMessage = error.response.data.errors.image[0];
+                this.showError = true;
+            }
+        })
+      },
+      countDownChanged (dismissCountDown) {
+          this.dismissCountDown = dismissCountDown
+      },
+      showAlert () {
+          this.dismissCountDown = this.dismissSecs
+      },
+  },
+
+  mounted() {
+    this.getCategories();
+  },
 }
 </script>

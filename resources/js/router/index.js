@@ -19,6 +19,7 @@ const InsertSign = () => import('../views/map/InsertSign.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
+const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
 
 // Views - Pages
@@ -155,8 +156,16 @@ function configRoutes () {
               }
             },
             {
+              name: 'signscategories',
               path: '/signscategories',
               component: ViennaSignsCategories,
+              meta: {
+                requiresAdmin: false
+              }
+            },
+            {
+              path: '/signscategories/add',
+              component: InsertViennaSignCategory,
               meta: {
                 requiresAdmin: false
               }

@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViennaSignCategory extends Model
 {
-    use HasFactory;
+    /* use HasFactory; */
 
-    protected $table = 'vienna_sign_categories';
+    /* protected $table = 'vienna_sign_categories'; */
+
+    protected $fillable = [
+        'category'
+    ];
 }
