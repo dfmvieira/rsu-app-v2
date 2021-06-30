@@ -33,6 +33,7 @@
           placeholder="Please select category"
         />
 
+        //TODO CInputFile
         <!-- <CInputFile
           label="Insert image"
           placeholder="Please upload a image"
