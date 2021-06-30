@@ -4,6 +4,13 @@
       <CIcon name="cil-notes"/> Insert Vienna Sign Category
     </CCardHeader>
     <CCardBody>
+      <CAlert
+        :show.sync="dismissCountDown"
+        color="primary"
+        fade
+      >
+        ({{dismissCountDown}}) {{ message }}
+      </CAlert>
       <CForm>
         <CInput
           label="Category"
@@ -49,6 +56,11 @@ export default {
       viennaSignCategory: {
         category: ''
       },
+      showMessage: false,
+      message: '',
+      dismissSecs: 7,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
     }
   },
   computed: {
@@ -131,11 +143,14 @@ export default {
 
     submit() {
       console.log(this.viennaSignCategory)
+      let self = this;
       axios.post('api/vienna/insertcategory', this.viennaSignCategory)
         .then(response => {
             console.log(response);
-            this.showSuccess = true;
-            this.successMessage = 'Category Created';
+            self.message = 'Successfully created category.';
+            self.showAlert();
+            /* this.showSuccess = true;
+            this.successMessage = 'Category Created'; */
             this.submitted = true;
             this.load();
             
@@ -153,7 +168,13 @@ export default {
                 this.showError = true;
             }
         })
-      },
+    },
+    countDownChanged (dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+    },
+    showAlert () {
+        this.dismissCountDown = this.dismissSecs
+    },
   },
 
   mounted() {

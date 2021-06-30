@@ -6,6 +6,13 @@
             </slot>
         </CCardHeader>
         <CCardBody>
+            <CAlert
+              :show.sync="dismissCountDown"
+              color="primary"
+              fade
+            >
+              ({{dismissCountDown}}) {{ message }}
+            </CAlert>
             <CDataTable
             :items="categories"
             :fields="fields"
@@ -131,6 +138,11 @@ export default {
                 category: '',
                 _method:"patch"
             },
+            showMessage: false,
+            message: '',
+            dismissSecs: 7,
+            dismissCountDown: 0,
+            showDismissibleAlert: false,
 
         }
     },
@@ -152,12 +164,14 @@ export default {
         },
         deleteCategories(item) {
             console.log(item)
-
+            let self = this;
             axios.delete(`api/vienna/categories/${item.id}`)
                 .then(res => {
                         if (res.data === 'ok')
-                             console.log("sucess")
-                             this.loadViennaCategories()
+                            console.log("sucess")
+                            self.message = 'Successfully deleted category.';
+                            self.showAlert();
+                            this.loadViennaCategories()
                     }).catch(err => {
                     console.log(err)
             })
@@ -171,11 +185,12 @@ export default {
             }
         },
         update(item){
-            
-           axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory)
+            let self = this;
+            axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory)
                .then(response=>{
                 console.log("sucess")
-              
+                self.message = 'Successfully updated category.';
+                self.showAlert();
                 this.loadViennaCategories()
 
                     
@@ -183,6 +198,12 @@ export default {
                .catch(()=>{
                   console.log("Error.....")
                })
+        },
+        countDownChanged (dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+        },
+        showAlert () {
+            this.dismissCountDown = this.dismissSecs
         },
          /* update(item){
             console.log(this.viennaSignCategory)

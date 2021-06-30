@@ -6,6 +6,13 @@
             </slot>
         </CCardHeader>
         <CCardBody>
+            <CAlert
+              :show.sync="dismissCountDown"
+              color="primary"
+              fade
+            >
+              ({{dismissCountDown}}) {{ message }}
+            </CAlert>
             <CDataTable
             :items="signs"
             :fields="fields"
@@ -17,6 +24,7 @@
             sorter
             pagination
             >
+            
             <template #show_details="{item, index}">
                 <td class="py-2">
                 <CButton
@@ -142,6 +150,11 @@ export default {
                 _method:"patch"
             },
             options: [],
+            showMessage: false,
+            message: '',
+            dismissSecs: 7,
+            dismissCountDown: 0,
+            showDismissibleAlert: false,
 
         }
     },
@@ -159,22 +172,26 @@ export default {
         },
 
         deleteSigns(item) {
+            let self = this;
             axios.delete(`api/vienna/${item.id}`)
                 .then(res => {
                     if (res.data === 'ok')
-                        this.loadViennaSigns();
+                        self.message = 'Successfully deleted sign.';
+                        self.showAlert();
                         console.log("sucess")
+                        /* this.loadViennaSigns(); */
                 }).catch(err => {
                 console.log(err)
             })         
             
         },
         update(item){
-            
+            let self = this;
            axios.put(`api/vienna/${item.id}`, this.viennaSign)
                .then(response=>{
                 console.log("sucess")
-              
+                self.message = 'Successfully updated sign.';
+                self.showAlert();
                 this.loadViennaSigns()
 
                     
@@ -208,6 +225,12 @@ export default {
                 
                 })
             })
+        },
+        countDownChanged (dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+        },
+        showAlert () {
+            this.dismissCountDown = this.dismissSecs
         },
      
     },

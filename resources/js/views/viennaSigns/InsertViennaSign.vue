@@ -4,6 +4,13 @@
       <CIcon name="cil-notes"/> Insert Vienna Sign
     </CCardHeader>
     <CCardBody>
+      <CAlert
+              :show.sync="dismissCountDown"
+              color="primary"
+              fade
+            >
+              ({{dismissCountDown}}) {{ message }}
+            </CAlert>
       <CForm>
         <CInput
           label="Vienna ID"
@@ -91,6 +98,11 @@ export default {
         },
         IDCategory: null,
       },
+      showMessage: false,
+      message: '',
+      dismissSecs: 7,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
     }
   },
   computed: {
@@ -192,12 +204,15 @@ export default {
 
     submit() {
       console.log(this.viennaSign)
+      let self = this;
       axios.post('api/vienna/insertsign', this.viennaSign)
         .then(response => {
+           self.message = 'Successfully created sign.';
+            self.showAlert();
             this.viennaSign = this.getEmptyForm();
             console.log(response);
-            this.showSuccess = true;
-            this.successMessage = 'Sign Created';
+            /* this.showSuccess = true;
+            this.successMessage = 'Sign Created'; */
             this.submitted = true;
             
             
@@ -215,6 +230,12 @@ export default {
                 this.showError = true;
             }
         })
+      },
+      countDownChanged (dismissCountDown) {
+          this.dismissCountDown = dismissCountDown
+      },
+      showAlert () {
+          this.dismissCountDown = this.dismissSecs
       },
   },
 
