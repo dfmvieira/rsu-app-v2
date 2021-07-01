@@ -36,8 +36,8 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::resource('resource/{table}/resource', 'ResourceController');
 
-    Route::prefix('vienna')->group(function () {
-        /* Route::get('/', 'ViennaSignController@index')->name('vienna.index'); */
+    Route::prefix('viennasigns')->group(function () {
+        Route::get('/', 'ViennaSignController@index')->name('vienna.index');
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
     });

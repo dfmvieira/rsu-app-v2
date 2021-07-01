@@ -41,6 +41,7 @@
         "vue-quill-editor": "^3.0.6",
         "vue-router": "^3.5.1",
         "vue-select": "^3.11.2",
+        "vue-select-image": "^1.9.0",
         "vue-simple-calendar": "^6.0.1",
         "vue-text-mask": "^6.1.2",
         "vue2-google-maps": "^0.10.7",
