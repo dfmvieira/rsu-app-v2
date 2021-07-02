@@ -33,7 +33,7 @@ class RolesController extends Controller
         ->select('roles.*', 'role_hierarchy.hierarchy')
         ->orderBy('hierarchy', 'asc')
         ->get();
-        dump($roles);
+        /* dump($roles); */
         return response()->json( $roles );
     }
 

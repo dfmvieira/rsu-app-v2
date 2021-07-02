@@ -46,6 +46,11 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::put('/categories/{id}', 'ViennaSignController@updateCategorie')->name('vienna.updatecategories');
         Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
     });
+
+    Route::prefix('entity')->group(function () {
+        Route::get('/', 'EntityController@index')->name('entity.index');
+        Route::put('/{id}', 'EntityController@edit')->name('entity.update');
+    });
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');

@@ -21,6 +21,7 @@ const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCate
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
+const Entity = () => import('../views/entity/Entity.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -177,6 +178,22 @@ function configRoutes () {
                 requiresAdmin: false
               }
             }
+          ]
+        },
+        {
+          path: 'entity',
+          meta: { label: 'Entity'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: Entity,
+              meta: {
+                requiresAdmin: false
+              }
+            },
           ]
         },
         {
