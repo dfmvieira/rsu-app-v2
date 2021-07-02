@@ -202,13 +202,13 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
         $this->endDropdown();
 
-        $this->beginDropdown('user,admin', 'Settings2', '#', 'cil-settings');
+        $this->beginDropdown('admin', 'Settings2', '#', 'cil-settings');
             $this->insertLink('user,admin', 'Entity', '/entity');
             $this->insertLink('admin', 'Users', '/users');
             $this->insertLink('admin', 'Roles', '/roles');
         $this->endDropdown();
 
-        $id = $this->beginDropdown('admin', 'Settings', '/', 'cil-puzzle');
+        $id = $this->beginDropdown('admin', 'Settings', '#', 'cil-settings');
             $id = $this->insertLink('admin', 'Media',    '/media');
             $id = $this->insertLink('admin', 'Users',    '/users');
             $id = $this->insertLink('admin', 'Menu',    '/menu');

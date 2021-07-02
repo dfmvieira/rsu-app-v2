@@ -176,7 +176,7 @@ export default {
     },
     methods: {
         getViennaSigns() {
-            axios.get('api/viennasigns/').then(response => {
+            axios.get('api/vienna/').then(response => {
                 console.log(response.data)
                 response.data.forEach((item) => {
                     this.viennaSigns.push({
