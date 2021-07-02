@@ -131,6 +131,13 @@ function configRoutes () {
               meta: {
                 requiresAdmin: false
               }
+            },
+            {
+              path: '/ivisignmap/add',
+              component: InsertSign,
+              meta: {
+                requiresAdmin: true
+              }
             }
           ]
         },

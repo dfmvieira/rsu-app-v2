@@ -22,9 +22,9 @@ class CreateIviSignsMapTable extends Migration
             $table->double('longitude', 15, 13);
             $table->boolean('status');
             $table->string('comment');
-            $table->foreignId('locationID');
+            /* $table->foreignId('locationID');
             $table->foreignId('envelopeIVI');
-            $table->foreignId('IVIMID');
+            $table->foreignId('IVIMID'); */
             $table->timestamps();
         });
     }
