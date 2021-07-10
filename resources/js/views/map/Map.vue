@@ -9,7 +9,7 @@
                 :center="center"
                 :zoom="14"
                 :tilt="0"
-                :options="{ disableDefaultUI: true, fullscreenControl: true, mapTypeControl: true, rotateControl: true }"
+                :options="{ disableDefaultUI: true, fullscreenControl: true, mapTypeControl: true, rotateControl: true, }"
                 map-type-id="satellite"
                 style="height: 650px"
             >
