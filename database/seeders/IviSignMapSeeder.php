@@ -49,7 +49,7 @@ class IviSignMapSeeder extends Seeder
             'longitude' => '-8.821511',
             'status' => 1,
             'comment' => 'testestestesteste',
-            /* 'locationID' => 1,
+           /*  'locationID' => 1,
             'envelopeIVI' => 1,
             'IVIMID' => 1 */
         ]);

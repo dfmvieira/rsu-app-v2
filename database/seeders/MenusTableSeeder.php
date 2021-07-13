@@ -184,13 +184,6 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Add', '/ivisignmap/add');
         $this->endDropdown();
 
-        $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
-            $this->insertLink('user,admin', 'View', '/vienna');
-            $this->insertLink('user,admin', 'Add', '/vienna/add');
-            $this->insertLink('user,admin', 'Signs Categories', '/signsCategories');
-            $this->insertLink('user,admin', 'Add Sign Category', '/signsCategories/add');
-        $this->endDropdown();
-
         $this->beginDropdown('user,admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
             $this->insertLink('user,admin', 'View Ivi Messages', '/ivimessages');
             $this->insertLink('user,admin', 'Create Ivi Message', '/ivimessages/create');
@@ -202,13 +195,19 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
         $this->endDropdown();
 
-        $this->beginDropdown('admin', 'Settings2', '#', 'cil-settings');
-            $this->insertLink('user,admin', 'Entity', '/entity');
+        $this->beginDropdown('user,admin', 'Master Data', '#', 'cil-settings');
+            $this->insertLink('user,admin', 'Entity', '/entities');
             $this->insertLink('admin', 'Users', '/users');
             $this->insertLink('admin', 'Roles', '/roles');
+            $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
+                $this->insertLink('user,admin', 'View', '/vienna');
+                $this->insertLink('user,admin', 'Add', '/vienna/add');
+                $this->insertLink('user,admin', 'Signs Categories', '/signsCategories');
+                $this->insertLink('user,admin', 'Add Sign Category', '/signsCategories/add');
+            $this->endDropdown();
         $this->endDropdown();
 
-        $id = $this->beginDropdown('admin', 'Settings', '#', 'cil-settings');
+        $id = $this->beginDropdown('admin', 'Settings', '#', 'cil-puzzle');
             $id = $this->insertLink('admin', 'Media',    '/media');
             $id = $this->insertLink('admin', 'Users',    '/users');
             $id = $this->insertLink('admin', 'Menu',    '/menu');
