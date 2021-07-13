@@ -21,7 +21,9 @@ const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCate
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
-const Entity = () => import('../views/entity/Entity.vue')
+const Entity = () => import('../views/entities/Entity.vue')
+const Entities = () => import('../views/entities/Entities.vue')
+const InsertEntity = () => import('../views/entities/InsertEntity.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -181,17 +183,31 @@ function configRoutes () {
           ]
         },
         {
-          path: 'entity',
-          meta: { label: 'Entity'},
+          path: 'entities',
+          meta: { label: 'Entities'},
           component: {
             render (c) {return c('router-view')}
           },
           children: [
             {
               path: '',
+              component: Entities,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+            {
+              path: '/entities/view',
               component: Entity,
               meta: {
                 requiresAdmin: false
+              }
+            },
+            {
+              path: '/entities/add',
+              component: InsertEntity,
+              meta: {
+                requiresAdmin: true
               }
             },
           ]
