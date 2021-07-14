@@ -190,14 +190,14 @@ function configRoutes () {
           },
           children: [
             {
-              path: '/entities/view',
+              path: '',
               component: Entities,
               meta: {
                 requiresAdmin: true
               }
             },
             {
-              path: '/entity',
+              path: '/entities/view',
               component: Entity,
               meta: {
                 requiresAdmin: false

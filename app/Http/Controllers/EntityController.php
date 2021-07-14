@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
 
 class EntityController extends Controller
 {
@@ -39,7 +41,16 @@ class EntityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            
+
+        ]);
+
+        $entity = new Entity();
+        $entity->fill($request->all());
+        $entity->save();
+
+        return response()->json($entity, 201);
     }
 
     /**
