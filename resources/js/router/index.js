@@ -21,9 +21,9 @@ const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCate
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
-const Entity = () => import('../views/entities/Entity.vue')
-const Entities = () => import('../views/entities/Entities.vue')
-const InsertEntity = () => import('../views/entities/InsertEntity.vue')
+const Entity = () => import('../views/entity/Entity.vue')
+const Entities = () => import('../views/entity/Entities.vue')
+const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')

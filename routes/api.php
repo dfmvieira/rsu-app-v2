@@ -50,6 +50,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::prefix('entity')->group(function () {
         Route::get('/', 'EntityController@index')->name('entity.index');
         Route::put('/{id}', 'EntityController@edit')->name('entity.update');
+        Route::post('/insert', 'EntityController@store')->name('entity.store');
     });
     
     Route::group(['middleware' => 'admin'], function ($router) {
