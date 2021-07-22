@@ -36,21 +36,29 @@ class UsersAndNotesSeeder extends Seeder
             'role_id' => $adminRole->id,
             'hierarchy' => 1,
         ]);
-        $userRole = Role::where('name' , '=' , 'user' )->first();
-        if(empty($userRole)){
-            $userRole = Role::create(['name' => 'user']);
+        $plannerRole = Role::where('name' , '=' , 'planner' )->first();
+        if(empty($plannerRole)){
+            $plannerRole = Role::create(['name' => 'planner']);
         }
         RoleHierarchy::create([
-            'role_id' => $userRole->id,
+            'role_id' => $plannerRole->id,
             'hierarchy' => 2,
         ]);
-        $guestRole = Role::where('name' , '=' , 'guest' )->first();
-        if(empty($guestRole)){
-            $guestRole = Role::create(['name' => 'guest']);
+        $factoryRole = Role::where('name' , '=' , 'factory' )->first();
+        if(empty($factoryRole)){
+            $factoryRole = Role::create(['name' => 'factory']);
         }
         RoleHierarchy::create([
-            'role_id' => $guestRole->id,
+            'role_id' => $factoryRole->id,
             'hierarchy' => 3,
+        ]);
+        $maintenanceTeamRole = Role::where('name' , '=' , 'maintenanceTeam' )->first();
+        if(empty($maintenanceTeamRole)){
+            $maintenanceTeamRole = Role::create(['name' => 'maintenanceTeam']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $maintenanceTeamRole->id,
+            'hierarchy' => 4,
         ]);
 
         $faker = Faker::create();
@@ -82,11 +90,11 @@ class UsersAndNotesSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'menuroles' => 'user,admin',
+            'menuroles' => 'planner,admin',
             'status' => 'Active'
         ]);
         $user->assignRole('admin');
-        $user->assignRole('user');
+        $user->assignRole('planner');
         for($i = 0; $i<$numberOfUsers; $i++){
             $user = User::create([
                 'name' => $faker->name(),
@@ -94,11 +102,12 @@ class UsersAndNotesSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
-                'menuroles' => 'user',
+                'menuroles' => 'planner',
                 'status' => $userStatus[ random_int(0,count($userStatus) - 1) ]
             ]);
-            $user->assignRole('user');
+            $user->assignRole('planner');
             array_push($usersIds, $user->id);
+            
         }
         /*  insert notes  */
         DB::beginTransaction();

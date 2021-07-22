@@ -161,6 +161,7 @@ export default {
       axios.get(  this.$apiAdress + '/api/roles?token=' + localStorage.getItem("api_token") )
       .then(function (response) {
         self.items = response.data;
+              console.log(response.data)
       }).catch(function (error) {
         console.log(error);
         self.$router.push({ path: '/login' });
