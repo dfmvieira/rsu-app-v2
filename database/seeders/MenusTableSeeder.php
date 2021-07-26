@@ -205,7 +205,7 @@ class MenusTableSeeder extends Seeder
             $this->beginDropdown('admin', 'Users', '#', 'cil-people');
                 $this->insertLink('admin', 'View All', '/users');
                 $this->insertLink('user', 'View User', '/users/view');
-                $this->insertLink('admin', 'Add User', 'users/add');
+                $this->insertLink('admin', 'Insert User', '/user/add');
             $this->endDropdown();
             $this->beginDropdown('admin', 'Roles', '#', 'cil-https');
                 $this->insertLink('admin', 'View All', '/roles');

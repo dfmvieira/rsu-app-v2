@@ -35,6 +35,7 @@ const Register = () => import('../views/pages/Register.vue')
 const Users = () => import('../views/users/Users.vue')
 const User = () => import('../views/users/User.vue')
 const EditUser = () => import('../views/users/EditUser.vue')
+const InsertUser = () => import('../views/users/InsertUser.vue')
 
 //Notes
 /* const Notes = () => import('../views/notes/Notes.vue')
@@ -339,6 +340,25 @@ function configRoutes () {
                 requiresAdmin: true
               }
             },
+          ]
+        },
+        {
+          path: 'user/add',
+          meta: {label: 'Insert User'},
+          name: 'Insert User',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              meta: { label: 'Insert User'},
+              name: 'InsertUser',
+              component: InsertUser,
+              meta:{
+                requiresAdmin: true
+              }
+            }
           ]
         },
         {
