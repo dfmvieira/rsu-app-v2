@@ -35,7 +35,8 @@ class IviSignMapController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $iviSign = new IviSign()
     }
 
     /**
