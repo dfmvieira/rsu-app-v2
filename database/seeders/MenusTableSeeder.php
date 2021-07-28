@@ -191,19 +191,31 @@ class MenusTableSeeder extends Seeder
         
         $this->insertLink('user,admin', 'Published Signs', '/publishedsigns', 'cil-newspaper');
 
-        $this->beginDropdown('user,admin', 'Deploy Groups', '/deploygroups', 'cil-group');
+        $this->beginDropdown('user,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
             $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
         $this->endDropdown();
 
         $this->beginDropdown('user,admin', 'Master Data', '#', 'cil-settings');
-            $this->insertLink('user,admin', 'Entity', '/entities');
-            $this->insertLink('admin', 'Users', '/users');
-            $this->insertLink('admin', 'Roles', '/roles');
-            $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
+        $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
                 $this->insertLink('user,admin', 'View', '/vienna');
                 $this->insertLink('user,admin', 'Add', '/vienna/add');
                 $this->insertLink('user,admin', 'Signs Categories', '/signsCategories');
                 $this->insertLink('user,admin', 'Add Sign Category', '/signsCategories/add');
+            $this->endDropdown();
+            $this->beginDropdown('admin', 'Users', '#', 'cil-people');
+                $this->insertLink('admin', 'View All', '/users');
+                $this->insertLink('user', 'View User', '/users/view');
+                $this->insertLink('admin', 'Insert User', '/user/add');
+            $this->endDropdown();
+            $this->beginDropdown('admin', 'Roles', '#', 'cil-https');
+                $this->insertLink('admin', 'View All', '/roles');
+                $this->insertLink('user', 'View Role', '/roles/view');
+                $this->insertLink('admin', 'Add Role', '/roles/add');
+            $this->endDropdown();
+            $this->beginDropdown('admin', 'Entities', '#', 'cil-building');
+                $this->insertLink('admin', 'View All', '/entities');
+                $this->insertLink('admin,user', 'View Entity', '/entities/view');
+                $this->insertLink('admin', 'Add Entity', 'entities/add');
             $this->endDropdown();
         $this->endDropdown();
 

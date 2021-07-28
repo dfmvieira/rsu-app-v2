@@ -173,7 +173,7 @@ export default {
     },
 
     async load() {
-        this.viennaSignCategory = await this.getEmptyForm();
+        this.viennaSign = await this.getEmptyForm();
         await this.$nextTick() // waits for the next event tick before completeing function.
     },
 

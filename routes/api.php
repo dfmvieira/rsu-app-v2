@@ -50,7 +50,17 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::prefix('entity')->group(function () {
         Route::get('/', 'EntityController@index')->name('entity.index');
         Route::put('/{id}', 'EntityController@edit')->name('entity.update');
+        Route::post('/insert', 'EntityController@store')->name('entity.store');
     });
+
+
+
+    Route::prefix('ivisign')->group(function () {
+        Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
+        Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
+    });
+
+    
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');
@@ -65,7 +75,10 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
 
         
-
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'UsersController@index')->name('user.index');
+            Route::post('/create', 'UsersController@create')->name('user.create');
+        });
 
         Route::prefix('menu/menu')->group(function () { 
             Route::get('/',         'MenuEditController@index')->name('menu.menu.index');
