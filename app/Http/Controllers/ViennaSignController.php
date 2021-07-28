@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ViennaSign;
+use App\Models\ViennaSignCategory;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,12 @@ class ViennaSignController extends Controller
         ->select('vienna_signs.id', 'vienna_signs.name', 'vienna_sign_categories.category', 'vienna_signs.image')
         ->get();
 
+        //$signs['image'] = Storage::disk('public')->get('img/ViennaSigns/' . $signs['name']);
+        /* foreach($signs as $sign) {
+            dump($sign->image);
+            $sign->image = Storage::disk('public')->get($sign->image);
+        } */
+
         return response()->json($signs);
         
     }
@@ -58,16 +65,42 @@ class ViennaSignController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            
+        /* $request->validate([
+        ]); */
 
-        ]);
+        if($request->image['base64']) {
 
-        $sign = new sign();
-        $sign->fill($request->all());
-        $sign->save();
+            $image = $request->image;
 
-        return response()->json($sign, 201);
+            $base64_string = explode(',', $image['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            if (!Storage::disk('public')->exists('img/ViennaSigns/' . $image['name'])) {
+                Storage::disk('public')->put('img/ViennaSigns/' . $image['name'], $imageBin);
+            }
+        }
+
+        if ($request->hasFile('image')) {
+            $image      = $request->file('image');
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+            $img = Image::make($image->getRealPath());
+            /* $img->resize(120, 120, function ($constraint) {
+                $constraint->aspectRatio();                 
+            }); */
+
+            $img->stream(); // <-- Key point
+
+            //dd();
+            Storage::disk('local')->put('img/ViennaSigns/'.$request->image['name'], $img, 'public');
+        }
+
+        $viennaSign = new ViennaSign();
+        $viennaSign->fill($request->all());
+        $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : null;
+        $viennaSign->save();
+
+        return response()->json($viennaSign, 201);
     }
 
     /**
@@ -87,9 +120,14 @@ class ViennaSignController extends Controller
      * @param  \App\Models\ViennaSign  $viennaSign
      * @return \Illuminate\Http\Response
      */
-    public function edit(ViennaSign $viennaSign)
+    public function edit(Request $request, $id)
     {
-        //
+        $sign = ViennaSign::findOrFail($id);
+
+        $sign->update($request->all());
+        return response()->json([
+            'message'=>'Sign Updated Successfully!!',
+        ]); 
     }
 
     /**
@@ -99,7 +137,7 @@ class ViennaSignController extends Controller
      * @param  \App\Models\ViennaSign  $viennaSign
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ViennaSign $viennaSign)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -112,7 +150,29 @@ class ViennaSignController extends Controller
      */
     public function destroy(ViennaSign $viennaSign)
     {
-        //
+        /* try 
+        {
+            vienna_signs::whereIn('id', $request->id)->delete(); // $request->id MUST be an array
+            return response()->json('users deleted');
+        }
+    
+        catch (Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        } */
+    }
+
+    public function delete($id)
+    {
+        DB::table('vienna_signs')->where('id','=', $id)->delete();
+    
+        return response()->json("ok");
+    }
+
+    public function deleteCategories($id)
+    {
+        DB::table('vienna_sign_categories')->where('id','=', $id)->delete();
+    
+        return response()->json("ok");
     }
 
     /**
@@ -122,9 +182,40 @@ class ViennaSignController extends Controller
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
-        ->select('vienna_sign_categories.id', 'vienna_sign_categories.name')
+        ->select('vienna_sign_categories.id', 'vienna_sign_categories.category')
         ->get();
 
         return response()->json($categories);
+    }
+
+    public function storeCategories(Request $request)
+    {
+        $request->validate([
+            
+
+        ]);
+
+        $category = new ViennaSignCategory();
+        $category->fill($request->all());
+        $category->save();
+
+        return response()->json($category, 201);
+    }
+
+    public function updateCategorie(Request $request, $id)
+    {
+       
+        $category = ViennaSignCategory::findOrFail($id);
+
+        $category->update($request->all());
+        return response()->json([
+            'message'=>'Category Updated Successfully!!',
+        ]); 
+       
+        /* $category->fill($request->post())->save();
+        return response()->json([
+            'message'=>'Category Updated Successfully!!',
+            'category'=>$category
+        ]); */
     }
 }

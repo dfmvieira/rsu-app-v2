@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ViennaSignCategorySeeder::class,
             ViennaSignSeeder::class,
             IviSignMapSeeder::class,
+            EntitySeeder::class,
         ]);
     }
 }

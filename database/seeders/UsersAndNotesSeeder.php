@@ -83,6 +83,7 @@ class UsersAndNotesSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'menuroles' => 'user,admin',
+            'IDEntity' => 1,
             'status' => 'Active'
         ]);
         $user->assignRole('admin');
@@ -95,6 +96,7 @@ class UsersAndNotesSeeder extends Seeder
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
                 'menuroles' => 'user',
+                'IDEntity' => 2,
                 'status' => $userStatus[ random_int(0,count($userStatus) - 1) ]
             ]);
             $user->assignRole('user');

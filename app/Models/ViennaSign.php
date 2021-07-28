@@ -8,5 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ViennaSign extends Model
 {
     /* use HasFactory; */
-    protected $table = 'vienna_signs';
+    /* protected $table = 'vienna_signs'; */
+    protected $fillable = [
+        'id', 
+        'name',
+        'image',
+        'IDCategory',
+    ];
 }

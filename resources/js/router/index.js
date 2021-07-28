@@ -19,7 +19,11 @@ const InsertSign = () => import('../views/map/InsertSign.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
+const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
+const Entity = () => import('../views/entity/Entity.vue')
+const Entities = () => import('../views/entity/Entities.vue')
+const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -31,6 +35,7 @@ const Register = () => import('../views/pages/Register.vue')
 const Users = () => import('../views/users/Users.vue')
 const User = () => import('../views/users/User.vue')
 const EditUser = () => import('../views/users/EditUser.vue')
+const InsertUser = () => import('../views/users/InsertUser.vue')
 
 //Notes
 /* const Notes = () => import('../views/notes/Notes.vue')
@@ -162,12 +167,50 @@ function configRoutes () {
               }
             },
             {
+              name: 'signscategories',
               path: '/signscategories',
               component: ViennaSignsCategories,
               meta: {
                 requiresAdmin: false
               }
+            },
+            {
+              path: '/signscategories/add',
+              component: InsertViennaSignCategory,
+              meta: {
+                requiresAdmin: false
+              }
             }
+          ]
+        },
+        {
+          path: 'entities',
+          meta: { label: 'Entities'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: Entities,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+            {
+              path: '/entities/view',
+              component: Entity,
+              meta: {
+                requiresAdmin: false
+              }
+            },
+            {
+              path: '/entities/add',
+              component: InsertEntity,
+              meta: {
+                requiresAdmin: true
+              }
+            },
           ]
         },
         {
@@ -297,6 +340,25 @@ function configRoutes () {
                 requiresAdmin: true
               }
             },
+          ]
+        },
+        {
+          path: 'user/add',
+          meta: {label: 'Insert User'},
+          name: 'Insert User',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              meta: { label: 'Insert User'},
+              name: 'InsertUser',
+              component: InsertUser,
+              meta:{
+                requiresAdmin: true
+              }
+            }
           ]
         },
         {

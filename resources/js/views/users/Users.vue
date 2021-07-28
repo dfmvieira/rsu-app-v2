@@ -22,12 +22,41 @@
             :items-per-page="5"
             pagination
           >
+          <template #show_details="{item, index}">
+              <td class="py-2">
+              <CButton
+                  color="primary"
+                  variant="outline"
+                  square
+                  size="sm"
+                  @click="toggleDetails(index)"
+              >
+                  {{details.includes(index) ? 'Hide' : 'Show'}}
+              </CButton>
+              </td>
+          </template>
+          <template #details="{item, index}">
+            <CCollapse :show="details.includes(index)">
+                <CCardBody>
+                  User id:  {{item.id}} <br><br>
+                  Name:  {{item.name}} <br><br>
+                  User roles:  {{item.roles}} <br><br>
+                  User status:  {{item.status}} <br><br>
+                  Registered:  {{item.registered}} <br><br>
+
+                  <CButton color="primary" @click="editUser( item.id )">Edit</CButton>
+
+                  <CButton v-if="you!=item.id" color="danger" @click="deleteUser( item.id )">Delete</CButton>
+
+                </CCardBody>
+            </CCollapse>
+          </template>       
           <template #status="{item}">
             <td>
               <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
             </td>
           </template>
-          <template #show="{item}">
+         <!--  <template #show="{item}">
             <td>
               <CButton color="primary" @click="showUser( item.id )">Show</CButton>
             </td>
@@ -41,7 +70,7 @@
             <td>
               <CButton v-if="you!=item.id" color="danger" @click="deleteUser( item.id )">Delete</CButton>
             </td>
-          </template>
+          </template> -->
         </CDataTable>
         </CCardBody>
       </CCard>
@@ -58,7 +87,24 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'name', 'registered', 'roles', 'status', 'show', 'edit', 'delete'],
+      fields: [
+        'id', 
+        'name', 
+        'registered', 
+        'roles', 
+        'status', 
+        /* 'show', 
+        'edit', 
+        'delete', */
+        { 
+            key: 'show_details', 
+            label: 'Options', 
+            _style: 'width:1%', 
+            sorter: false, 
+            filter: false
+        }
+      ],
+      details: [],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
@@ -82,6 +128,10 @@ export default {
         : status === 'Inactive' ? 'secondary'
           : status === 'Pending' ? 'warning'
             : status === 'Banned' ? 'danger' : 'primary'
+    },
+    toggleDetails (index) {
+        const position = this.details.indexOf(index)
+        position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
     },
     userLink (id) {
       return `users/${id.toString()}`
@@ -128,10 +178,12 @@ export default {
         console.log(error);
         self.$router.push({ path: '/login' });
       });
-    }
+    },
+    
   },
   mounted: function(){
     this.getUsers();
+    
   }
 }
 </script>

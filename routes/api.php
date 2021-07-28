@@ -25,7 +25,7 @@ use App\Http\Middleware\Authenticate;
 Route::group(['middleware' => 'api'], function ($router) {
     Route::get('langlist', 'LocaleController@getLangList');
     Route::get('menu', 'MenuController@index');
-    Route::get('vienna', 'ViennaSignController@index')->name('vienna.index'); 
+    /* Route::get('vienna', 'ViennaSignController@index')->name('vienna.index'); */ 
 
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
@@ -36,11 +36,23 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::resource('resource/{table}/resource', 'ResourceController');
 
-    Route::prefix('viennasigns')->group(function () {
+    Route::prefix('vienna')->group(function () {
         Route::get('/', 'ViennaSignController@index')->name('vienna.index');
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
+        Route::post('/insertcategory', 'ViennaSignController@storeCategories')->name('vienna.storecategory');
+        Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
+        Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
+        Route::put('/categories/{id}', 'ViennaSignController@updateCategorie')->name('vienna.updatecategories');
+        Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
     });
+
+    Route::prefix('entity')->group(function () {
+        Route::get('/', 'EntityController@index')->name('entity.index');
+        Route::put('/{id}', 'EntityController@edit')->name('entity.update');
+        Route::post('/insert', 'EntityController@store')->name('entity.store');
+    });
+
 
 
     Route::prefix('ivisign')->group(function () {
@@ -48,6 +60,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
     });
 
+    
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');
@@ -61,6 +74,11 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('menu/edit/selected', 'MenuEditController@menuSelected');
         Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
 
+        
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'UsersController@index')->name('user.index');
+            Route::post('/create', 'UsersController@create')->name('user.create');
+        });
 
         Route::prefix('menu/menu')->group(function () { 
             Route::get('/',         'MenuEditController@index')->name('menu.menu.index');
