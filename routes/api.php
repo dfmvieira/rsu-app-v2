@@ -41,6 +41,13 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
     });
+
+
+    Route::prefix('ivisign')->group(function () {
+        Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
+        Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
+    });
+
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');
@@ -53,8 +60,6 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('menu/edit', 'MenuEditController@index');
         Route::get('menu/edit/selected', 'MenuEditController@menuSelected');
         Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
-
-        
 
 
         Route::prefix('menu/menu')->group(function () { 

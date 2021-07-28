@@ -3,6 +3,7 @@
         <CCardBody style="padding: 0; z-index:0">
             <GmapMap
                 class="map"
+                ref="mapRef"
                 :center="center"
                 :zoom="14"
                 :tilt="0"
@@ -25,6 +26,24 @@
             </GmapMap>
         </CCardBody>
 
+        <!-- <b-popover
+            :show.sync="showform"
+            placement="top">
+            <insert-sign></insert-sign>
+        </b-popover> -->
+
+        <CModal 
+        :show.sync="showform"
+        :closeOnBackdrop=false>
+            <insert-sign ref="insertSignRef"></insert-sign>
+
+            <template #footer>
+                <CButton @click="cancelCreateSign();" color="danger">Discard</CButton>
+                <CButton @click="insertIviSign();" color="success">Accept</CButton>
+            </template>
+        </CModal>
+        
+
         <div ref="draggableContainer" id="toolbox">
             <div class="toolboxHeader" @mousedown="dragMouseDown">
                 Toolbox
@@ -32,6 +51,7 @@
             <div class="toolboxBody">
                 <div class="toolboxItem">
                     <button class="toolboxButton"
+                    v-on:click="addSign"
                     v-c-tooltip="'Add a new sign'">
                         <CIcon 
                             name="cil-plus"
@@ -98,6 +118,8 @@ import Vue from 'vue'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import axios from 'axios'
 
+import InsertSign from './InsertSign.vue'
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyC0XdUsH5A6srnoLVH2q9WA1lhiHcVSF3w'
@@ -113,6 +135,9 @@ Vue.use(BootstrapVueIcons)
 
 export default {
     name: 'Map',
+    components: {
+        "insert-sign": InsertSign
+    },
     data () {
         return {
             center:{lat: 39.7541724, lng: -8.8759984},
@@ -137,7 +162,9 @@ export default {
                     movementX: 0,
                     movementY: 0
                 }
-            }
+            },
+
+            showform: false
             
         }
     },
@@ -163,6 +190,26 @@ export default {
         closeDragElement () {
             document.onmouseup = null
             document.onmousemove = null
+        },
+
+        addSign() {
+            console.log("teste")
+
+            
+            this.$refs.mapRef.$mapPromise.then((map) => {
+                
+                map.addListener("click", (mapsMouseEvent) => {
+                    this.showform = true
+                    console.log(mapsMouseEvent.latLng)
+
+                    this.$refs.insertSignRef.IviSignMap.coordinates.latitude = mapsMouseEvent.Tb.x
+                    this.$refs.insertSignRef.IviSignMap.coordinates.longitude = mapsMouseEvent.Tb.y
+                });
+            });
+        },
+
+        insertIviSign() {
+            this.$refs.insertSignRef.insertSign();
         }
     }
 }
