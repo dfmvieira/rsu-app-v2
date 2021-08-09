@@ -17,14 +17,14 @@
     <CMenu/>
 
     <CHeaderNav>
-      <CHeaderNavItem class="px-3">
+      <!-- <CHeaderNavItem class="px-3">
         <CSelect
           class="mt-3"
           :options="langs"
           :value="locale"
           @update:value="selectLocale"
         />
-      </CHeaderNavItem>
+      </CHeaderNavItem> -->
       <CHeaderNavItem class="px-3">
         <button 
           @click="() => $store.commit('toggle', 'darkMode')" 
@@ -34,11 +34,11 @@
           <CIcon v-else name="cil-moon"/>
         </button>
       </CHeaderNavItem>
-      <TheHeaderDropdownNotif/>
+      <!-- <TheHeaderDropdownNotif/>
       <TheHeaderDropdownTasks/>
-      <TheHeaderDropdownMssgs/>
+      <TheHeaderDropdownMssgs/> -->
       <TheHeaderDropdownAccnt/>
-      <CHeaderNavItem class="px-3">
+      <!-- <CHeaderNavItem class="px-3">
         <button
           in-header
           class="c-header-nav-btn"
@@ -46,12 +46,12 @@
         >
           <CIcon size="lg" name="cil-applications-settings" class="mr-2"/>
         </button>
-      </CHeaderNavItem>
+      </CHeaderNavItem> -->
     </CHeaderNav>
  
-    <CSubheader class="px-3">
+    <!-- <CSubheader class="px-3">
       <CBreadcrumbRouter class="border-0 mb-0"/>
-    </CSubheader>
+    </CSubheader> -->
   </CHeader>
 </template>
 
