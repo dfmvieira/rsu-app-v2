@@ -12,5 +12,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-
-public/img/Entities/32458550_1844177035602566_7212389299994492928_n.jpgZone.Identifier
+/public/js
+public/js/app.js

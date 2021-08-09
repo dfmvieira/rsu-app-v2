@@ -29,6 +29,7 @@ class AuthController extends Controller
             'name'      => 'required',
             'email'     => 'required|email|unique:users',
             'password'  => 'required|min:4|confirmed',
+            'entity'    => 'required'
         ]);        
         if ($validate->fails()){
             return response()->json([
@@ -52,12 +53,12 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['email', 'password', 'entity']);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+ 
         return $this->respondWithToken($token, $request->email);
     }
 

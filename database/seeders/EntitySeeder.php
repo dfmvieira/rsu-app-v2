@@ -15,7 +15,14 @@ class EntitySeeder extends Seeder
     public function run()
     {
         DB::table('entities')->insert([
-            'name' => 'Youphones',
+            'name' => 'Admin',
+            'logo' => '',
+            'address' => 'admin',
+            'phone' => 123456789,
+        ]);
+
+        DB::table('entities')->insert([
+            'name' => 'Teste',
             'logo' => 'img/Entities/youphones.jpg',
             'address' => 'Rua Principal, 1',
             'phone' => 262789054,

@@ -1,7 +1,7 @@
 <template>
   <CCard style="width: 70%;">
     <CCardHeader>
-      <CIcon name="cil-notes"/> Insert Vienna Sign
+      <CIcon name="cil-notes"/> Insert Entity
     </CCardHeader>
     <CCardBody>
       <CAlert
@@ -12,33 +12,48 @@
               ({{dismissCountDown}}) {{ message }}
             </CAlert>
       <CForm>
-        <CInput
-          label="Vienna ID"
-          horizontal
-          :lazy="false"
-          :value.sync="viennaSign.id"
-          
-          placeholder="Vienna ID"
-          invalidFeedback="This is a required field and must be at least 1 characters"
-        />
-
+        
         <CInput
           label="Name"
           horizontal
           :lazy="false"
-          :value.sync="viennaSign.name"
+          :value.sync="entity.name"
           
           placeholder="Name"
           invalidFeedback="This is a required field and must be at least 1 character"
         />
 
-        <CSelect
-          label="Select category"
+        <CInput
+          label="Address"
           horizontal
-          :value.sync="viennaSign.IDCategory"
-          :options="options"
-          placeholder="Please select category"
+          :lazy="false"
+          :value.sync="entity.address"
+          
+          placeholder="Address"
+          invalidFeedback="This is a required field and must be at least 1 characters"
         />
+
+        <CInput
+          label="Phone"
+          horizontal
+          :lazy="false"
+          :value.sync="entity.phone"
+          
+          placeholder="Phone"
+          invalidFeedback="This is a required field and must be at least 1 characters"
+        />
+
+        <CInput
+          label="Logo"
+          horizontal
+          :lazy="false"
+          :value.sync="entity.logo"
+          
+          placeholder="Logo"
+          invalidFeedback="This is a required field and must be at least 1 characters"
+        />
+
+        
 
         //TODO CInputFile
         <!-- <CInputFile
@@ -90,14 +105,11 @@ export default {
       submitted: false,
       options: [],
       filename: '',
-      viennaSign: {
-        id: '',
+      entity: {
         name: '',
-        image: {
-          name: '',
-          base64: '',
-        },
-        IDCategory: null,
+        logo: '',
+        address: '',
+        phone: '',
       },
       showMessage: false,
       message: '',
@@ -146,51 +158,47 @@ export default {
     }, */
 
     validate () {
-      console.log(this.viennaSign)
+      console.log(this.entity)
       /* console.log(exampleFormControlFile1.value) */
       /* this.viennaSign.image=this.exampleFormControlFile1.value; */
       this.$v.$touch()
     },
 
     reset () {
-      this.viennaSign = this.getEmptyForm()
+      this.entity = this.getEmptyForm()
       this.submitted = false
       this.$v.$reset()
     },
     
     getEmptyForm () {
       return {
-
-          id: '',
-          name: '',
-          image: {
-            name: '',
-            base64: '',
-          },
-          IDCategory: null,
+        name: '',
+        logo: '',
+        address: '',
+        phone: '',
         
       }
     },
 
     async load() {
-        this.viennaSign = await this.getEmptyForm();
+        this.entity = await this.getEmptyForm();
         await this.$nextTick() // waits for the next event tick before completeing function.
     },
 
     onImageChange(e) {
-      let image = e.target.files[0];
-      this.viennaSign.image.name = image.name;
+      let logo = e.target.files[0];
+      this.entity.logo.name = image.name;
       this.createImage(image);
     },
     createImage(file) {
         let reader = new FileReader();
         reader.onload = (e) => {
-          this.viennaSign.image.base64 = e.target.result;
+          this.entity.logo.base64 = e.target.result;
         };
         reader.readAsDataURL(file);
     },
 
-    getCategories() {
+   /*  getCategories() {
       axios.get('/api/vienna/signscategories').then(response => {
         response.data.forEach(item => {
           let i = {
@@ -201,16 +209,16 @@ export default {
           
         })
       })
-    },
+    }, */
 
     submit() {
-      console.log(this.viennaSign)
+      console.log(this.entity)
       let self = this;
-      axios.post('api/vienna/insertsign', this.viennaSign)
+      axios.post('api/entity/insert', this.entity)
         .then(response => {
-           self.message = 'Successfully created sign.';
+           self.message = 'Successfully created Entity.';
             self.showAlert();
-            this.viennaSign = this.getEmptyForm();
+            this.entity = this.getEmptyForm();
             console.log(response);
             /* this.showSuccess = true;
             this.successMessage = 'Sign Created'; */
@@ -220,7 +228,7 @@ export default {
         })
         .catch(error => {
             console.log(error)
-            if (error.response.data.errors.id) {
+            /* if (error.response.data.errors.id) {
                 this.successMessage = error.response.data.errors.id[0];
                 this.showError = true;
             } else if (error.response.data.errors.name) {
@@ -229,7 +237,7 @@ export default {
             } else if (error.response.data.errors.image) {
                 this.successMessage = error.response.data.errors.image[0];
                 this.showError = true;
-            }
+            } */
         })
       },
       countDownChanged (dismissCountDown) {
@@ -241,7 +249,7 @@ export default {
   },
 
   mounted() {
-    this.getCategories();
+    
   },
 }
 </script>
