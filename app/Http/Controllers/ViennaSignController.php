@@ -106,12 +106,14 @@ class ViennaSignController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ViennaSign  $viennaSign
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ViennaSign $viennaSign)
+    public function show($id)
     {
-        //
+        $viennaSign = ViennaSign::findOrFail($id);
+
+        return response()->json($viennaSign, 201);
     }
 
     /**
@@ -202,7 +204,7 @@ class ViennaSignController extends Controller
         return response()->json($category, 201);
     }
 
-    public function updateCategorie(Request $request, $id)
+    public function updateCategory(Request $request, $id)
     {
        
         $category = ViennaSignCategory::findOrFail($id);

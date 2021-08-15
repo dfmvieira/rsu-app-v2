@@ -24,7 +24,7 @@
                 Click here to choose a vienna sign
             </CButton>
             
-            <div v-if="IviSignMap.viennaSignID" style="border: 1px solid; border-color: #d8dbe0; border-radius: 0.25rem; padding: 10px; margin:0px 0px 15px 15px" v-on:click="viennaSignsModal = true">
+            <div v-if="IviSignMap.viennaSignId" style="border: 1px solid; border-color: #d8dbe0; border-radius: 0.25rem; padding: 10px; margin:0px 0px 15px 15px" v-on:click="viennaSignsModal = true">
                 <img v-bind:src="finalSelectedViennaSign.img" style="width:100px; margin-left: auto; margin-right: auto; display: block">
                 <label style="display: inline-block">{{ finalSelectedViennaSign.id }} - {{ finalSelectedViennaSign.name }}</label>
             </div>
@@ -95,10 +95,10 @@ export default {
             name: 'Insert Sign',
             IviSignMap: {
                 name: '',
-                viennaSignID: null,
+                viennaSignId: null,
                 coordinates: {
-                    latitude: null,
-                    longitude: null
+                    lat: null,
+                    lng: null
                 },
                 comment: '',
                 status: null,
@@ -134,13 +134,15 @@ export default {
         },
 
         insertSign() {
-            console.log('here');
-            axios.post('api/ivisign/insertivisign', this.IviSignMap).then(response => {
-                console.log(response);
+            axios.post('api/ivisign/insertivisign?token=' + localStorage.getItem("api_token"), this.IviSignMap)
+            .then(response => {
+
+                
             });
         },
 
         onSelectedViennaSign(item) {
+            console.log(item)
             this.selectedViennaSign = item
         },
 
@@ -148,8 +150,21 @@ export default {
             this.viennaSignsModal = false
         },
 
+
+        getViennaSignImage() {
+            var viennaSignId = this.IviSignMap.viennaSignId
+
+            axio.get('api/vienna/' + viennaSignId + '?token=' + localStorage.getItem("api_token"))
+            .then(response => {
+                onSelectViennaSign(response.data)
+                updateViennaSign()
+            }).catch({
+
+            });
+        },
+
         updateViennaSign() {
-            this.IviSignMap.viennaSignID = this.selectedViennaSign.id
+            this.IviSignMap.viennaSignId = this.selectedViennaSign.id
 
             this.finalSelectedViennaSign.id = this.selectedViennaSign.id
             this.finalSelectedViennaSign.img = this.selectedViennaSign.src
@@ -164,4 +179,4 @@ export default {
     },
 
 }
-</script>>
+</script>

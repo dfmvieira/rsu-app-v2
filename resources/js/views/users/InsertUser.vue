@@ -58,9 +58,9 @@ export default {
       });
     }
 
-    submit() {
+    /* submit() {
       axios.post(this.$$apiAdress + '/api/user/create') 
-    }
+    } */
 
   },
   mounted() {

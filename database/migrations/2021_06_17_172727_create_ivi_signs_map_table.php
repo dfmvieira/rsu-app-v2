@@ -15,13 +15,16 @@ class CreateIviSignsMapTable extends Migration
     {
         Schema::create('ivi_signs_map', function (Blueprint $table) {
             $table->increments('id');
+            $table->foreignId('entityId');
             $table->string('name');
             $table->string('GUID');
-            $table->foreignId('viennaID');
-            $table->double('latitude', 15, 13);
-            $table->double('longitude', 15, 13);
-            $table->boolean('status');
+            $table->string('viennaSignId');
+            $table->double('latitude', 16, 13);
+            $table->double('longitude', 16, 13);
             $table->string('comment');
+            $table->boolean('locked');
+            $table->boolean('status');
+
             /* $table->foreignId('locationID');
             $table->foreignId('envelopeIVI');
             $table->foreignId('IVIMID'); */
@@ -36,6 +39,6 @@ class CreateIviSignsMapTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ivi_sign_maps');
+        Schema::dropIfExists('ivi_signs_map');
     }
 }
