@@ -13,16 +13,14 @@
             <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
                 <CLink :href="infoLink" target="_blank">{{infoContent}}</CLink>
             </GmapInfoWindow>
-            <!-- <GmapMarker
+            <GmapMarker
                 :key="index"
-                v-for="(m, index) in markers"
-                :position="m.position"
-                :label="m.label"
-                :title="m.title"
+                v-for="(m, index) in iviMapSigns"
+                :position="m.coordinates"
                 :clickable="true"
                 :draggable="m.draggable"
                 @click="toggleInfoWindow(m, index)"
-            /> -->
+            />
             </GmapMap>
         </CCardBody>
 
@@ -164,7 +162,9 @@ export default {
                 }
             },
 
-            showform: false
+            showform: false,
+
+            iviMapSigns: null,
             
         }
     },
@@ -192,26 +192,42 @@ export default {
             document.onmousemove = null
         },
 
-        addSign() {
-            console.log("teste")
-
-            
+        addSign() {            
             this.$refs.mapRef.$mapPromise.then((map) => {
                 
                 map.addListener("click", (mapsMouseEvent) => {
                     this.showform = true
-                    console.log(mapsMouseEvent.latLng)
 
-                    this.$refs.insertSignRef.IviSignMap.coordinates.latitude = mapsMouseEvent.Tb.x
-                    this.$refs.insertSignRef.IviSignMap.coordinates.longitude = mapsMouseEvent.Tb.y
+                    var coordinates = mapsMouseEvent.latLng.toJSON();
+
+                    this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates['lat']
+                    this.$refs.insertSignRef.IviSignMap.coordinates.llng = coordinates['lng']
                 });
             });
         },
 
         insertIviSign() {
             this.$refs.insertSignRef.insertSign();
+        },
+
+        getIviMapSigns() {
+            axios.get('api/ivisign?token=' + localStorage.getItem('api_token'))
+            .then(response => {
+                this.iviMapSigns = response.data
+            }).catch(error => {
+
+            });
+        },
+
+        toggleInfoWindow(m, index) {
+            this.showform = true
+            this.$refs.insertSignRef.IviSignMap = this.iviMapSigns[index]
+            this.$refs.getViennaSignImage()
         }
-    }
+    },
+    mounted() {
+        this.getIviMapSigns();
+    },
 }
 </script>
 

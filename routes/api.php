@@ -39,11 +39,12 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::prefix('vienna')->group(function () {
         Route::get('/', 'ViennaSignController@index')->name('vienna.index');
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories');
+        Route::get('/{id}', 'ViennaSignController@show')->name('vienna.show');
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store');
         Route::post('/insertcategory', 'ViennaSignController@storeCategories')->name('vienna.storecategory');
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
         Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
-        Route::put('/categories/{id}', 'ViennaSignController@updateCategorie')->name('vienna.updatecategories');
+        Route::put('/categories/{id}', 'ViennaSignController@updateCategory')->name('vienna.updatecategories');
         Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
     });
 
@@ -58,6 +59,8 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::prefix('ivisign')->group(function () {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
+        Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
+        Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
     });
 
     Route::prefix('signpublication')->group(function () {
@@ -130,4 +133,3 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::post('lazyTable', 'LazyTableController@index');
 });
-

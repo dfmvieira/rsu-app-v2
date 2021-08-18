@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 use App\Services\RolesService;
 use App;
 
-class MenuElementController extends Controller
+class MenuEditController extends Controller
 {
     /**
      * Create a new controller instance.
