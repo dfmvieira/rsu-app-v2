@@ -60,6 +60,10 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
     });
 
+    Route::prefix('signpublication')->group(function () {
+        Route::get('/', 'EntityController@index')->name('entity.index');
+    });
+
     
     
     Route::group(['middleware' => 'admin'], function ($router) {

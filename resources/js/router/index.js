@@ -25,6 +25,8 @@ const Entity = () => import('../views/entity/Entity.vue')
 const Entities = () => import('../views/entity/Entities.vue')
 const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 
+const Signpublication = () => import('../views/signPublication/Signpublication.vue')
+
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
 const Page500 = () => import('../views/pages/Page500.vue')
@@ -207,6 +209,22 @@ function configRoutes () {
             {
               path: '/entities/add',
               component: InsertEntity,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+          ]
+        },
+        {
+          path: 'signpublication',
+          meta: { label: 'SignPublication'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: Signpublication,
               meta: {
                 requiresAdmin: true
               }

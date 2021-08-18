@@ -189,7 +189,9 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('user,admin', 'Create Ivi Message', '/ivimessages/create');
         $this->endDropdown();
         
-        $this->insertLink('user,admin', 'Published Signs', '/publishedsigns', 'cil-newspaper');
+        $this->beginDropdown('user,admin', 'Sign Publication', '/signpublication', 'cil-newspaper');
+            $this->insertLink('user,admin', 'View', '/signpublication');
+        $this->endDropdown();
 
         $this->beginDropdown('user,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
             $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
