@@ -40,7 +40,6 @@
           placeholder="Please select category"
         />
 
-        <!-- TODO CInputFile -->
         <CInputFile
           label="Insert image"
           placeholder="Please upload a image"
@@ -93,6 +92,7 @@ export default {
       viennaSign: {
         id: '',
         name: '',
+        //image: '',
         image: {
           name: '',
           base64: '',
@@ -172,11 +172,11 @@ export default {
       }
     },
 
-    onImageChange(event) {
-      //let image = e.target.files[0];
-      console.log(event)
-      /* this.viennaSign.image.name = image.name;
-      this.createImage(image); */
+    onImageChange(file, event) {
+      console.log(file[0])
+      let image = file[0];
+      this.viennaSign.image.name = image.name;
+      this.createImage(image);
     },
     createImage(file) {
         let reader = new FileReader();
@@ -205,14 +205,14 @@ export default {
     },
 
     submit() {
-      console.log(this.viennaSign)
-      let self = this;
       axios.post('api/vienna/insertsign', this.viennaSign)
         .then(response => {
-           self.message = 'Successfully created sign.';
-            self.showAlert();
+            this.message = 'Successfully created sign.';
+            this.showAlert();
+
             this.viennaSign = this.getEmptyForm();
-            console.log(response);
+
+            //console.log(response);
             /* this.showSuccess = true;
             this.successMessage = 'Sign Created'; */
             this.submitted = true;
