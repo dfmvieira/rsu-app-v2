@@ -61,12 +61,20 @@ class ViennaSignController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         /* $request->validate([
         ]); */
+
+        /* $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        } */
+
 
         if($request->image['base64']) {
 
@@ -78,21 +86,6 @@ class ViennaSignController extends Controller
             if (!Storage::disk('public')->exists('img/ViennaSigns/' . $image['name'])) {
                 Storage::disk('public')->put('img/ViennaSigns/' . $image['name'], $imageBin);
             }
-        }
-
-        if ($request->hasFile('image')) {
-            $image      = $request->file('image');
-            $fileName   = time() . '.' . $image->getClientOriginalExtension();
-
-            $img = Image::make($image->getRealPath());
-            /* $img->resize(120, 120, function ($constraint) {
-                $constraint->aspectRatio();                 
-            }); */
-
-            $img->stream(); // <-- Key point
-
-            //dd();
-            Storage::disk('local')->put('img/ViennaSigns/'.$request->image['name'], $img, 'public');
         }
 
         $viennaSign = new ViennaSign();
