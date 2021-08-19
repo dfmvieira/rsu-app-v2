@@ -2,7 +2,7 @@
     <CCard>
         <CCardHeader>
             <slot name='header'>
-                Entities
+                Sign Publication
             </slot>
         </CCardHeader>
         <CCardBody>
@@ -14,7 +14,7 @@
               ({{dismissCountDown}}) {{ message }}
             </CAlert>
             <CDataTable
-            :items="entities"
+            :items="ivis"
             :fields="fields"
             column-filter
             table-filter
@@ -24,7 +24,7 @@
             sorter
             pagination
             >
-            <template #show_details="{item, index}">
+            <!-- <template #show_details="{item, index}">
                 <td class="py-2">
                 <CButton
                     color="primary"
@@ -36,7 +36,7 @@
                     {{details.includes(index) ? 'Hide' : 'Show'}}
                 </CButton>
                 </td>
-            </template>
+            </template> -->
             <template #details="{item, index}">
                 <CCollapse :show="details.includes(index)">
                     <CForm>
@@ -95,30 +95,40 @@ export default {
     name: 'ViennaSigns',
     data () {
         return {
-            entities: [],
+            ivis: [],
             fields: [
-                {key: 'id', label: 'ID'},
+                /* {key: 'id', label: 'ID'},
                 {key: 'name', label: 'Name'},  
-                {key: 'address', label: 'Address'},
-                {key: 'phone', label: 'Phone'},
-                { 
+                {key: 'GUID', label: 'Address'},
+                {key: 'viennaID', label: 'Phone'},
+                {key: 'status', label: 'Status'},
+                {key: 'comment', label: 'Comment'},      
+                
+                {key: byString(ivi,'coordinates.lat'), label: 'Latitude'},
+                {key: 'coordinates.lng', label: 'Longitude'}, */
+               
+                /* { 
                     key: 'show_details', 
                     label: 'Options', 
                     _style: 'width:1%', 
                     sorter: false, 
                     filter: false
-                }
+                } */
     
             ],
             details: [],
             editModal: false,
-            entity: {
+            ivi: {
                 id: '',
                 name: '',
-                logo: '',
-                address: '',
-                phone: '',
-                _method:"patch"
+                GUID: '',
+                viennaID: '',
+                status: '',
+                coordinates:{
+                    lat: '',
+                    lng: ''
+                },
+                /* _method:"patch" */
             },
             showMessage: false,
             message: '',
@@ -129,12 +139,12 @@ export default {
         }
     },
     methods: {
-        getEntities() {
-            axios.get('api/entity').then(response => {
+        getIVIS() {
+            axios.get('api/ivisign'+ '?token=' + localStorage.getItem("api_token")).then(response => {
                 console.log(response.data)
-                this.entities=response.data
-                this.entity=this.entities[0]
-                console.log(this.entities)
+                this.ivis=response.data
+                this.ivi=this.ivis[0]
+                console.log(this.ivis)
             })
         },
         
@@ -170,10 +180,49 @@ export default {
         showAlert () {
             this.dismissCountDown = this.dismissSecs
         },
+        
+        
+
+        tablefiels () {
+            var fields= [
+                {key: 'id', label: 'ID'},
+                {key: 'name', label: 'Name'},  
+                {key: 'GUID', label: 'Address'},
+                {key: 'viennaID', label: 'Phone'},
+                {key: 'status', label: 'Status'},
+                {key: 'comment', label: 'Comment'},      
+                
+                {key: this.byString(this.ivis.coordinates,'lat'), label: 'Latitude'},
+                
+               
+              
+            ]
+            console.log(fields);
+            this.fields=fields;
+
+        },
+
+        byString(o, s) {
+            s = s.replace(/[(\w+)]/g, '.$1'); // convert indexes to properties
+            s = s.replace(/^./, '');           // strip a leading dot
+            var a = s.split('.');
+            for (var i = 0, n = a.length; i < n; ++i) {
+                var k = a[i];
+                if (k in o) {
+                    o = o[k];
+                } else {
+                    return;
+                }
+            }
+            return o;
+        },
+    
+        
      
     },
     mounted() {
-        this.getEntities();
+        this.getIVIS();
+        this.tablefiels();
         
     }
 }
