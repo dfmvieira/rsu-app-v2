@@ -36,11 +36,6 @@ class IviSignMapController extends Controller
             $signs[$key]->coordinates = new \stdClass();
             $signs[$key]->coordinates->lat = $sign->latitude;
             $signs[$key]->coordinates->lng = $sign->longitude;
-
-
-            // Remove old latitude and longitude from object
-            unset($signs[$key]->latitude);
-            unset($signs[$key]->longitude);
         }
         
 

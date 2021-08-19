@@ -97,24 +97,14 @@ export default {
         return {
             ivis: [],
             fields: [
-                /* {key: 'id', label: 'ID'},
+                {key: 'id', label: 'ID'},
                 {key: 'name', label: 'Name'},  
                 {key: 'GUID', label: 'Address'},
                 {key: 'viennaID', label: 'Phone'},
                 {key: 'status', label: 'Status'},
-                {key: 'comment', label: 'Comment'},      
-                
-                {key: byString(ivi,'coordinates.lat'), label: 'Latitude'},
-                {key: 'coordinates.lng', label: 'Longitude'}, */
-               
-                /* { 
-                    key: 'show_details', 
-                    label: 'Options', 
-                    _style: 'width:1%', 
-                    sorter: false, 
-                    filter: false
-                } */
-    
+                {key: 'comment', label: 'Comment'},
+                {key: 'latitude', label: 'Latitude'},              
+                {key: 'longitude', label: 'Longitude'},              
             ],
             details: [],
             editModal: false,
@@ -180,49 +170,10 @@ export default {
         showAlert () {
             this.dismissCountDown = this.dismissSecs
         },
-        
-        
-
-        tablefiels () {
-            var fields= [
-                {key: 'id', label: 'ID'},
-                {key: 'name', label: 'Name'},  
-                {key: 'GUID', label: 'Address'},
-                {key: 'viennaID', label: 'Phone'},
-                {key: 'status', label: 'Status'},
-                {key: 'comment', label: 'Comment'},      
-                
-                {key: this.byString(this.ivis.coordinates,'lat'), label: 'Latitude'},
-                
-               
-              
-            ]
-            console.log(fields);
-            this.fields=fields;
-
-        },
-
-        byString(o, s) {
-            s = s.replace(/[(\w+)]/g, '.$1'); // convert indexes to properties
-            s = s.replace(/^./, '');           // strip a leading dot
-            var a = s.split('.');
-            for (var i = 0, n = a.length; i < n; ++i) {
-                var k = a[i];
-                if (k in o) {
-                    o = o[k];
-                } else {
-                    return;
-                }
-            }
-            return o;
-        },
     
-        
-     
     },
     mounted() {
         this.getIVIS();
-        this.tablefiels();
         
     }
 }
