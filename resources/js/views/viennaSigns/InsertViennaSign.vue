@@ -40,22 +40,22 @@
           placeholder="Please select category"
         />
 
-        //TODO CInputFile
-        <!-- <CInputFile
+        <!-- TODO CInputFile -->
+        <CInputFile
           label="Insert image"
           placeholder="Please upload a image"
           horizontal
-          v-on:change="onImageChange"
-        /> -->
+          @change="onImageChange"
+        />
 
 
-        <CRow>
+        <!-- <CRow>
           <CCol sm="3">
           </CCol>
           <CCol sm="9">
             <input type="file" v-on:change="onImageChange">
           </CCol>
-        </CRow>
+        </CRow> -->
 
         <CRow>
           <CButton color="primary" @click="submit">Submit</CButton>
@@ -172,15 +172,11 @@ export default {
       }
     },
 
-    async load() {
-        this.viennaSign = await this.getEmptyForm();
-        await this.$nextTick() // waits for the next event tick before completeing function.
-    },
-
-    onImageChange(e) {
-      let image = e.target.files[0];
-      this.viennaSign.image.name = image.name;
-      this.createImage(image);
+    onImageChange(event) {
+      //let image = e.target.files[0];
+      console.log(event)
+      /* this.viennaSign.image.name = image.name;
+      this.createImage(image); */
     },
     createImage(file) {
         let reader = new FileReader();
@@ -188,6 +184,11 @@ export default {
           this.viennaSign.image.base64 = e.target.result;
         };
         reader.readAsDataURL(file);
+    },
+
+    async load() {
+        this.viennaSign = await this.getEmptyForm();
+        await this.$nextTick() // waits for the next event tick before completeing function.
     },
 
     getCategories() {
