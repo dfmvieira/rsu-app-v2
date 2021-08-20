@@ -36,22 +36,64 @@ class UsersAndNotesSeeder extends Seeder
             'role_id' => $adminRole->id,
             'hierarchy' => 1,
         ]);
-        $userRole = Role::where('name' , '=' , 'user' )->first();
-        if(empty($userRole)){
-            $userRole = Role::create(['name' => 'user']);
+        $entityadminRole = Role::where('name' , '=' , 'entityadmin' )->first();
+        if(empty($entityadminRole)){
+            $entityadminRole = Role::create(['name' => 'entityadmin']);
         }
         RoleHierarchy::create([
-            'role_id' => $userRole->id,
+            'role_id' => $entityadminRole->id,
             'hierarchy' => 2,
         ]);
-        $guestRole = Role::where('name' , '=' , 'guest' )->first();
-        if(empty($guestRole)){
-            $guestRole = Role::create(['name' => 'guest']);
+        $plannerRole = Role::where('name' , '=' , 'planner' )->first();
+        if(empty($plannerRole)){
+            $plannerRole = Role::create(['name' => 'planner']);
         }
         RoleHierarchy::create([
-            'role_id' => $guestRole->id,
+            'role_id' => $plannerRole->id,
             'hierarchy' => 3,
         ]);
+        $factoryRole = Role::where('name' , '=' , 'factory' )->first();
+        if(empty($factoryRole)){
+            $factoryRole = Role::create(['name' => 'factory']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $factoryRole->id,
+            'hierarchy' => 4,
+        ]);
+        $maintenanceteamRole = Role::where('name' , '=' , 'maintenanceteam' )->first();
+        if(empty($maintenanceteamRole)){
+            $maintenanceteamRole = Role::create(['name' => 'maintenanceteam']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $maintenanceteamRole->id,
+            'hierarchy' => 5,
+        ]);
+        $monitorRole = Role::where('name' , '=' , 'monitor' )->first();
+        if(empty($monitorRole)){
+            $monitorRole = Role::create(['name' => 'monitor']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $monitorRole->id,
+            'hierarchy' => 6,
+        ]);
+        $deploymanagerRole = Role::where('name' , '=' , 'deploymanager' )->first();
+        if(empty($deploymanagerRole)){
+            $deploymanagerRole = Role::create(['name' => 'deploymanager']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $deploymanagerRole->id,
+            'hierarchy' => 7,
+        ]);
+        $technicianRole = Role::where('name' , '=' , 'technician' )->first();
+        if(empty($technicianRole)){
+            $technicianRole = Role::create(['name' => 'technician']);
+        }
+        RoleHierarchy::create([
+            'role_id' => $technicianRole->id,
+            'hierarchy' => 8,
+        ]);
+
+
 
         $faker = Faker::create();
         /*  insert status  */
@@ -82,28 +124,114 @@ class UsersAndNotesSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'menuroles' => 'user,admin',
+            'menuroles' => 'planner,admin',
             'IDEntity' => 1,
             'status' => 'Active'
         ]);
         $user->assignRole('admin');
-        $user->assignRole('user');
-        for($i = 0; $i<$numberOfUsers; $i++){
+        $user->assignRole('planner');
+
+        $user = User::create([
+            'name' => 'entityadmin',
+            'email' => 'entityadmin@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'entityadmin',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('entityadmin');
+        
+        $user = User::create([
+            'name' => 'planner',
+            'email' => 'planner@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'planner',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('planner');
+
+        $user = User::create([
+            'name' => 'factory',
+            'email' => 'factory@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'factory',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('factory');
+        
+        $user = User::create([
+            'name' => 'maintenanceTeam',
+            'email' => 'maintenanceteam@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'maintenanceTeam',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('maintenanceTeam');
+
+        $user = User::create([
+            'name' => 'monitor',
+            'email' => 'monitor@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'monitor',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('monitor');
+
+        $user = User::create([
+            'name' => 'deploymanager',
+            'email' => 'deploymanager@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'deploymanager',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('deploymanager');
+
+        $user = User::create([
+            'name' => 'technician',
+            'email' => 'technician@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'technician',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('technician');
+
+
+        /* for($i = 0; $i<$numberOfUsers; $i++){
             $user = User::create([
                 'name' => $faker->name(),
                 'email' => $faker->unique()->safeEmail(),
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
-                'menuroles' => 'user',
+                'menuroles' => 'planer',
                 'IDEntity' => 2,
                 'status' => $userStatus[ random_int(0,count($userStatus) - 1) ]
             ]);
-            $user->assignRole('user');
+            $user->assignRole('planner');
             array_push($usersIds, $user->id);
-        }
+        } */
         /*  insert notes  */
-        DB::beginTransaction();
+        /* DB::beginTransaction();
         for($i = 0; $i<$numberOfNotes; $i++){
             $noteType = $faker->word();
             if(random_int(0,1)){
@@ -117,7 +245,7 @@ class UsersAndNotesSeeder extends Seeder
                 'applies_to_date' => $faker->date(),
                 'users_id'      => $usersIds[random_int(0,$numberOfUsers-1)]
             ]);
-        }
+        } */
         DB::commit();
     }
 }

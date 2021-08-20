@@ -25,6 +25,7 @@ class IviSignMapSeeder extends Seeder
             'locked' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
+            'published' => 0,
             /* 'locationID' => 1,
             'envelopeIVI' => 1,
             'IVIMID' => 1 */
@@ -40,6 +41,7 @@ class IviSignMapSeeder extends Seeder
             'locked' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
+            'published' => 1,
             /* 'locationID' => 1,
             'envelopeIVI' => 1,
             'IVIMID' => 1 */
@@ -55,6 +57,7 @@ class IviSignMapSeeder extends Seeder
             'locked' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
+            'published' => 1,
            /*  'locationID' => 1,
             'envelopeIVI' => 1,
             'IVIMID' => 1 */

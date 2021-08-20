@@ -24,6 +24,7 @@ class CreateIviSignsMapTable extends Migration
             $table->string('comment');
             $table->boolean('locked');
             $table->boolean('status');
+            $table->boolean('published');
 
             /* $table->foreignId('locationID');
             $table->foreignId('envelopeIVI');

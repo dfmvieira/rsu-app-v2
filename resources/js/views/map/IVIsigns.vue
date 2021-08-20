@@ -2,7 +2,7 @@
     <CCard>
         <CCardHeader>
             <slot name='header'>
-                Publish Sign
+                Signs Table
             </slot>
         </CCardHeader>
         <CCardBody>
@@ -24,26 +24,66 @@
             sorter
             pagination
             >
-            <template #published="{item, index}">
+            <!-- <template #show_details="{item, index}">
                 <td class="py-2">
-                <input type="checkbox" id="checkbox" v-model="item.published" @change="update(item.id)">
+                <CButton
+                    color="primary"
+                    variant="outline"
+                    square
+                    size="sm"
+                    @click="toggleDetails(index)"
+                >
+                    {{details.includes(index) ? 'Hide' : 'Show'}}
+                </CButton>
                 </td>
-            </template>
-            <template #details="{item, index}">
+            </template> -->
+            <!-- <template #details="{item, index}">
                 <CCollapse :show="details.includes(index)">
                     <CForm>
-                        Published: 
-                        <input type="checkbox" id="checkbox" v-model="item.published">
-                        <CButton
-                            @click="update(item.id)"
-                            size="sm" 
-                            color="primary"
-                            >
-                            Guardar
-                        </CButton>
+                        <CRow>
+                            <CCol lg="4" >
+                                <CMedia :aside-image-props="{src:item.logo, height: 200 ,width: 200}"> </CMedia>
+                            </CCol>
+                            <CCol md="8" >
+                            <CInput
+                                    label="Name"
+                                    horizontal
+                                    :lazy="false"
+                                    :value.sync="item.name"
+                                    
+                                    
+                                    invalidFeedback="This is a required field and must be at least 1 character"
+                                />
+                                <CInput
+                                    label="Address"
+                                    horizontal
+                                    :lazy="false"
+                                    :value.sync="item.address"
+                            
+                                
+                                    invalidFeedback="This is a required field and must be at least 1 character"
+                                />
+                                <CInput
+                                    label="Phone"
+                                    horizontal
+                                    :lazy="false"
+                                    :value.sync="item.phone"
+                                
+                                
+                                    invalidFeedback="This is a required field and must be at least 1 character"
+                                /> 
+                                <CButton
+                                    @click="update()"
+                                    size="sm" 
+                                    color="primary"
+                                    >
+                                    Guardar
+                                </CButton>
+                            </CCol> 
+                        </CRow>
                     </CForm>
                 </CCollapse>
-            </template>
+            </template> -->
             </CDataTable>
         </CCardBody>
     </CCard>
@@ -67,21 +107,21 @@ export default {
                 {key: 'comment', label: 'Comment'},
                 {key: 'latitude', label: 'Latitude'},              
                 {key: 'longitude', label: 'Longitude'}, 
-                {key: 'published', label: 'Published'},  
-                /* { 
-                    key: 'show_details', 
-                    label: 'Options', 
-                    _style: 'width:1%', 
-                    sorter: false, 
-                    filter: false
-                }    */        
+                {key: 'published', label: 'Published'},             
             ],
             details: [],
             editModal: false,
             ivi: {
                 id: '',
-                published: '',
-                _method:"patch"
+                name: '',
+                GUID: '',
+                viennaID: '',
+                status: '',
+                coordinates:{
+                    lat: '',
+                    lng: ''
+                },
+                /* _method:"patch" */
             },
             showMessage: false,
             message: '',
@@ -101,28 +141,26 @@ export default {
             })
         },
         
-        toggleDetails (index) {
+        /* toggleDetails (index) {
             const position = this.details.indexOf(index)
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
-        },
+        }, */
             
-        update(id){
-            console.log(this.ivi)
-         /*    let self = this; */
-           axios.put(`api/ivisign/${id.toString()}`, this.ivi)
+        /* update(entity){
+            let self = this;
+           axios.put(`api/entity/1`, this.entity)
                .then(response=>{
                 console.log("sucess")
-                
-                self.message = 'Sign successfully published.';
+                self.message = 'Successfully updated Entity.';
                 self.showAlert();
-               /*  this.loadViennaSigns() */
+               
 
                     
                })
                .catch(()=>{
                   console.log("Error.....")
                })
-        },
+        }, */
  /*        async loadViennaSigns() {
             this.signs = await this.getEntities();
             this.viennaSign = await this.getEmptyForm();

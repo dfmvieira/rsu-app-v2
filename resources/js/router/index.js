@@ -21,11 +21,14 @@ const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCate
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
 
+const IVIsigns = () => import('../views/map/IVIsigns.vue')
+
 const Entity = () => import('../views/entity/Entity.vue')
 const Entities = () => import('../views/entity/Entities.vue')
 const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 
 const Signpublication = () => import('../views/signPublication/Signpublication.vue')
+const PublishedSigns = () => import('../views/signPublication/PublishedSigns.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -144,6 +147,13 @@ function configRoutes () {
               meta: {
                 requiresAdmin: true
               }
+            },
+            {
+              path: '/ivisignmap/signstable',
+              component: IVIsigns,
+              meta: {
+                requiresAdmin: true
+              }
             }
           ]
         },
@@ -213,6 +223,7 @@ function configRoutes () {
                 requiresAdmin: true
               }
             },
+            
           ]
         },
         {
@@ -224,6 +235,13 @@ function configRoutes () {
           children: [
             {
               path: '',
+              component: PublishedSigns,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+            {
+              path: '/signpublication/add',
               component: Signpublication,
               meta: {
                 requiresAdmin: true
