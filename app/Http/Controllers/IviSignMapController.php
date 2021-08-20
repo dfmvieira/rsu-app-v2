@@ -43,6 +43,38 @@ class IviSignMapController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getpublishedsigns()
+    {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if ($user->hasRole('admin')) {
+            $signs = DB::table('ivi_signs_map')->where('published', '=', 1)->get();
+        } else {
+            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 1)->get();
+        }
+
+        foreach($signs as $key => $sign) {
+
+            // Put latitude and longitude in new object inside signs for markers in map
+            $signs[$key]->coordinates = new \stdClass();
+            $signs[$key]->coordinates->lat = $sign->latitude;
+            $signs[$key]->coordinates->lng = $sign->longitude;
+        }
+        
+
+        return response()->json($signs, 200);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -101,9 +133,23 @@ class IviSignMapController extends Controller
      * @param  \App\Models\IviSignMap  $iviSignMap
      * @return \Illuminate\Http\Response
      */
-    public function edit(IviSignMap $iviSignMap)
+    public function edit(Request $request, $id)
     {
         //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\IviSignMap  $iviSignMap
+     * @return \Illuminate\Http\Response
+     */
+    public function publishedUpdate (Request $request, $id)
+    {
+        $affected = DB::table('ivi_signs_map')
+              ->where('id', $id)
+              ->update(['published' => $request->published]);
+
     }
 
     /**

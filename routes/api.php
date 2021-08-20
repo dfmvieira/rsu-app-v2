@@ -58,9 +58,11 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::prefix('ivisign')->group(function () {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
+        Route::get('/published', 'IviSignMapController@getpublishedsigns')->name('ivisign.published');
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
+        Route::put('/{id}', 'IviSignMapController@publishedUpdate')->name('ivisign.publishedUpdate');
     });
 
     Route::prefix('signpublication')->group(function () {

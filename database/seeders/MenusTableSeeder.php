@@ -153,9 +153,9 @@ class MenusTableSeeder extends Seeder
         if(empty($this->adminRole)){
             $this->adminRole = Role::create(['name' => 'admin']);
         }
-        $this->userRole = Role::where('name' , '=' , 'user' )->first();
-        if(empty($this->userRole)){
-            $this->userRole = Role::create(['name' => 'user']);
+        $this->plannerRole = Role::where('name' , '=' , 'planner' )->first();
+        if(empty($this->plannerRole)){
+            $this->plannerRole = Role::create(['name' => 'planner']);
         }
         /* Create Translation languages */
         DB::table('menu_lang_lists')->insert([
@@ -174,49 +174,51 @@ class MenusTableSeeder extends Seeder
         ]);
         $this->menuId = DB::getPdo()->lastInsertId();  //set menuId
         
-        $id = $this->insertLink('guest,user,admin', 'Dashboard', '/', 'cil-speedometer');
-        $id = $this->insertLink('guest', 'Login', '/login', 'cil-account-logout');
-        $id = $this->insertLink('guest', 'Register', '/register', 'cil-account-logout');
+        $id = $this->insertLink('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Dashboard', '/', 'cil-speedometer');
+        $id = $this->insertLink('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Login', '/login', 'cil-account-logout');
+        $id = $this->insertLink('admin', 'Register', '/register', 'cil-account-logout');
 
         
-        $this->beginDropdown('user,admin', 'Ivi Sign Map', '/ivisignmap', 'cil-map');
-            $this->insertLink('user,admin', 'View', '/ivisignmap');
-            $this->insertLink('user,admin', 'Add', '/ivisignmap/add');
+        $this->beginDropdown('planner, admin, monitor, deploymanager, technician', 'Ivi Sign Map', '/ivisignmap', 'cil-map');
+            $this->insertLink('planner, admin, monitor, deploymanager, technician', 'View', '/ivisignmap');
+            $this->insertLink('planner, admin, deploymanager', 'Add', '/ivisignmap/add');
+            $this->insertLink('planner, admin, monitor, deploymanager, technician', 'Signs Table', '/ivisignmap/signstable');
         $this->endDropdown();
 
-        $this->beginDropdown('user,admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
-            $this->insertLink('user,admin', 'View Ivi Messages', '/ivimessages');
-            $this->insertLink('user,admin', 'Create Ivi Message', '/ivimessages/create');
+        $this->beginDropdown('admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
+            $this->insertLink('admin', 'View Ivi Messages', '/ivimessages');
+            $this->insertLink('admin', 'Create Ivi Message', '/ivimessages/create');
         $this->endDropdown();
         
-        $this->beginDropdown('user,admin', 'Sign Publication', '/signpublication', 'cil-newspaper');
-            $this->insertLink('user,admin', 'View', '/signpublication');
+        $this->beginDropdown('deploymanager,admin, technician', 'Sign Publication', '/signpublication', 'cil-newspaper');
+            $this->insertLink('deploymanager,admin,technician', 'Published Signs', '/signpublication');
+            $this->insertLink('deploymanager,admin', 'Publish Sign', '/signpublication/add');
         $this->endDropdown();
 
-        $this->beginDropdown('user,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
-            $this->insertLink('user,admin', 'Deploy Groups', '/deploygroyps');
+        $this->beginDropdown('deploymanager,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
+            $this->insertLink('deploymanager,admin', 'Deploy Groups', '/deploygroyps');
         $this->endDropdown();
 
-        $this->beginDropdown('user,admin', 'Master Data', '#', 'cil-settings');
-        $this->beginDropdown('user,admin', 'Vienna Signs', '/vienna', 'cil-circle');
-                $this->insertLink('user,admin', 'View', '/vienna');
-                $this->insertLink('user,admin', 'Add', '/vienna/add');
-                $this->insertLink('user,admin', 'Signs Categories', '/signsCategories');
-                $this->insertLink('user,admin', 'Add Sign Category', '/signsCategories/add');
+        $this->beginDropdown('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Master Data', '#', 'cil-settings');
+        $this->beginDropdown('deploymanager,admin', 'Vienna Signs', '/vienna', 'cil-circle');
+                $this->insertLink('deploymanager,admin', 'View', '/vienna');
+                $this->insertLink('deploymanager,admin', 'Add', '/vienna/add');
+                $this->insertLink('deploymanager,admin', 'Signs Categories', '/signsCategories');
+                $this->insertLink('deploymanager,admin', 'Add Sign Category', '/signsCategories/add');
             $this->endDropdown();
-            $this->beginDropdown('admin', 'Users', '#', 'cil-people');
-                $this->insertLink('admin', 'View All', '/users');
-                $this->insertLink('user', 'View User', '/users/view');
-                $this->insertLink('admin', 'Insert User', '/user/add');
+            $this->beginDropdown('admin,entityadmin', 'Users', '#', 'cil-people');
+                $this->insertLink('admin,entityadmin', 'View All', '/users');
+                $this->insertLink('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'View User', '/users/view');
+                $this->insertLink('admin,entityadmin', 'Insert User', '/user/add');
             $this->endDropdown();
             $this->beginDropdown('admin', 'Roles', '#', 'cil-https');
                 $this->insertLink('admin', 'View All', '/roles');
-                $this->insertLink('user', 'View Role', '/roles/view');
+                $this->insertLink('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'View Role', '/roles/view');
                 $this->insertLink('admin', 'Add Role', '/roles/add');
             $this->endDropdown();
-            $this->beginDropdown('admin', 'Entities', '#', 'cil-building');
+            $this->beginDropdown('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Entities', '#', 'cil-building');
                 $this->insertLink('admin', 'View All', '/entities');
-                $this->insertLink('admin,user', 'View Entity', '/entities/view');
+                $this->insertLink('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'View Entity', '/entities/view');
                 $this->insertLink('admin', 'Add Entity', 'entities/add');
             $this->endDropdown();
         $this->endDropdown();

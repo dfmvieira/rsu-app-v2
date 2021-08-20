@@ -2,7 +2,7 @@
     <CCard>
         <CCardHeader>
             <slot name='header'>
-                Publish Sign
+                Published Signs
             </slot>
         </CCardHeader>
         <CCardBody>
@@ -24,12 +24,12 @@
             sorter
             pagination
             >
-            <template #published="{item, index}">
+           <!--  <template #published="{item, index}">
                 <td class="py-2">
                 <input type="checkbox" id="checkbox" v-model="item.published" @change="update(item.id)">
                 </td>
-            </template>
-            <template #details="{item, index}">
+            </template> -->
+            <!-- <template #details="{item, index}">
                 <CCollapse :show="details.includes(index)">
                     <CForm>
                         Published: 
@@ -43,7 +43,7 @@
                         </CButton>
                     </CForm>
                 </CCollapse>
-            </template>
+            </template> -->
             </CDataTable>
         </CCardBody>
     </CCard>
@@ -67,7 +67,7 @@ export default {
                 {key: 'comment', label: 'Comment'},
                 {key: 'latitude', label: 'Latitude'},              
                 {key: 'longitude', label: 'Longitude'}, 
-                {key: 'published', label: 'Published'},  
+                
                 /* { 
                     key: 'show_details', 
                     label: 'Options', 
@@ -93,7 +93,7 @@ export default {
     },
     methods: {
         getIVIS() {
-            axios.get('api/ivisign'+ '?token=' + localStorage.getItem("api_token")).then(response => {
+            axios.get('api/ivisign/published'+ '?token=' + localStorage.getItem("api_token")).then(response => {
                 console.log(response.data)
                 this.ivis=response.data
                 this.ivi=this.ivis[0]
@@ -101,28 +101,28 @@ export default {
             })
         },
         
-        toggleDetails (index) {
+      /*   toggleDetails (index) {
             const position = this.details.indexOf(index)
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
-        },
+        }, */
             
-        update(id){
+      /*   update(id){
             console.log(this.ivi)
-         /*    let self = this; */
+        
            axios.put(`api/ivisign/${id.toString()}`, this.ivi)
                .then(response=>{
                 console.log("sucess")
                 
                 self.message = 'Sign successfully published.';
                 self.showAlert();
-               /*  this.loadViennaSigns() */
+               
 
                     
                })
                .catch(()=>{
                   console.log("Error.....")
                })
-        },
+        }, */
  /*        async loadViennaSigns() {
             this.signs = await this.getEntities();
             this.viennaSign = await this.getEmptyForm();
