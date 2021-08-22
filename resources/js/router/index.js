@@ -30,6 +30,8 @@ const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 const Signpublication = () => import('../views/signPublication/Signpublication.vue')
 const PublishedSigns = () => import('../views/signPublication/PublishedSigns.vue')
 
+const NewDeploy = () => import('../views/deployGroups/newDeploy.vue')
+
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
 const Page500 = () => import('../views/pages/Page500.vue')
@@ -243,6 +245,22 @@ function configRoutes () {
             {
               path: '/signpublication/add',
               component: Signpublication,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+          ]
+        },
+        {
+          path: 'deploygroups',
+          meta: { label: 'deploygroups'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: NewDeploy,
               meta: {
                 requiresAdmin: true
               }

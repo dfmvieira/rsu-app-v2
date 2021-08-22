@@ -16,7 +16,10 @@ class CreateDeployGroupsTable extends Migration
         Schema::create('deploy_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status');
+            $table->string('notes');
+            $table->boolean('status');
+            $table->foreignId('ID_sign_group');
+            $table->foreignId('ID_user_group');
             $table->timestamps();
         });
     }

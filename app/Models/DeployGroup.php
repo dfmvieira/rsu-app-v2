@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeployGroup extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'notes',
+        'status',
+        'ID_sign_group',
+        'ID_user_group',
+
+    ];
 }

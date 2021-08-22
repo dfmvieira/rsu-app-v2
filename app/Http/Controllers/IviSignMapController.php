@@ -1,34 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@dfmvieira 
-dfmvieira
-/
-rsu-app-v2
-Private
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-rsu-app-v2/app/Http/Controllers/IviSignMapController.php /
-@dfmvieira
-dfmvieira Ivi Sign Map Methods, Controllers, Api
-Latest commit fddcf29 4 days ago
- History
- 1 contributor
-195 lines (160 sloc)  5.32 KB
-  
 <?php
 
 namespace App\Http\Controllers;
@@ -91,6 +60,38 @@ class IviSignMapController extends Controller
             $signs = DB::table('ivi_signs_map')->where('published', '=', 1)->get();
         } else {
             $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 1)->get();
+        }
+
+        foreach($signs as $key => $sign) {
+
+            // Put latitude and longitude in new object inside signs for markers in map
+            $signs[$key]->coordinates = new \stdClass();
+            $signs[$key]->coordinates->lat = $sign->latitude;
+            $signs[$key]->coordinates->lng = $sign->longitude;
+        }
+        
+
+        return response()->json($signs, 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getunpublishedsigns()
+    {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if ($user->hasRole('admin')) {
+            $signs = DB::table('ivi_signs_map')->where('published', '=', 0)->get();
+        } else {
+            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 0)->get();
         }
 
         foreach($signs as $key => $sign) {
@@ -265,16 +266,3 @@ class IviSignMapController extends Controller
         return response()->json($signs, 200);
     }
 }
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete

@@ -35,7 +35,14 @@ class DeployGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
+        $deploygroup = new DeployGroup();
+        $deploygroup->fill($request->all());
+        $deploygroup->save();
+
+        return response()->json($deploygroup, 201);
+
+        
     }
 
     /**

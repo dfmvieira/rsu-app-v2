@@ -54,11 +54,16 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('/insert', 'EntityController@store')->name('entity.store');
     });
 
+    Route::prefix('deploy')->group(function () {
+        Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store');
+    });
+
 
 
     Route::prefix('ivisign')->group(function () {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
         Route::get('/published', 'IviSignMapController@getpublishedsigns')->name('ivisign.published');
+        Route::get('/unpublished', 'IviSignMapController@getunpublishedsigns')->name('ivisign.unpublished');
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
@@ -86,6 +91,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         
         Route::prefix('user')->group(function () {
             Route::get('/', 'UsersController@index')->name('user.index');
+            Route::get('/all', 'UsersController@usersbyentity')->name('user.usersbyentity');
             Route::post('/create', 'UsersController@create')->name('user.create');
         });
 
