@@ -13,7 +13,7 @@ class IviSignMapController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -61,7 +61,7 @@ class IviSignMapController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -77,14 +77,16 @@ class IviSignMapController extends Controller
         $iviSign->entityId = $user->IDEntity;
         $iviSign->name = $request->name;
         $iviSign->guid = (string) Str::uuid();
-        $iviSign->viennaSignId = $request->viennaSignID;
-        $iviSign->latitude = $request->coordinates['latitude'];
-        $iviSign->longitude = $request->coordinates['longitude'];
+        $iviSign->viennaSignId = $request->viennaSignId;
+        $iviSign->latitude = $request->coordinates['lat'];
+        $iviSign->longitude = $request->coordinates['lng'];
         $iviSign->comment = $request->comment;
         $iviSign->locked = 1;
         $iviSign->status = isset($request->status['value']) ? $request->status['value'] : 1;
         
         $iviSign->save();
+
+        $iviSign['message'] = 'Sign has been added with success';
 
         return response()->json($iviSign, 201);
     }
@@ -126,12 +128,19 @@ class IviSignMapController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\IviSignMap  $iviSignMap
-     * @return \Illuminate\Http\Response
+     * @param  Int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(IviSignMap $iviSignMap)
+    public function destroy($id)
     {
-        //
+        $user = auth()->user();
+        if (!isset($user)) {
+            return response()->json(['message' => 'You have no permissions to delete a sign'], 403);
+        }
+
+        DB::table('ivi_signs_map')->where('id', '=', $id)->delete();
+
+        return response()->json(['message' => 'Sign has been deleted with success'], 200);
     }
 
     public function getSignById($id) {
@@ -147,8 +156,6 @@ class IviSignMapController extends Controller
                                     ->where('id', '=', $id)
                                     ->get();
         }
-
-        dump($sign);
 
         if (empty($sign)) {
             $responseCode = 204; // No Content
@@ -191,5 +198,25 @@ class IviSignMapController extends Controller
 
 
         return response()->json($signs, 200);
+    }
+
+
+    /**
+     * Update status of locked state.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateLockStatus(Request $request) {
+
+        DB::table('ivi_signs_map')->where('id', $request->id)->update(['locked' => $request->locked]);
+
+        $response = [];
+        if ($request->locked == 1) {
+            $response['message'] = 'Sign has been locked';
+        } else {
+            $response['message'] = 'Sign has been unlocked';
+        }
+        return response()->json($response, 200);
     }
 }

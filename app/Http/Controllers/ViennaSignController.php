@@ -27,7 +27,7 @@ class ViennaSignController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -61,7 +61,7 @@ class ViennaSignController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -107,11 +107,11 @@ class ViennaSignController extends Controller
      * Display the specified resource.
      *
      * @param  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        $viennaSign = ViennaSign::findOrFail($id);
+        $viennaSign = DB::table('vienna_signs')->where('id', '=', $id)->get();
 
         return response()->json($viennaSign, 201);
     }
@@ -120,7 +120,7 @@ class ViennaSignController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\ViennaSign  $viennaSign
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit(Request $request, $id)
     {
@@ -180,7 +180,7 @@ class ViennaSignController extends Controller
     /**
      * Display a listing of the signs categories.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')

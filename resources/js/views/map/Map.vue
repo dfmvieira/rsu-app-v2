@@ -11,7 +11,7 @@
                 map-type-id="satellite"
             >
             <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-                <CLink :href="infoLink" target="_blank">{{infoContent}}</CLink>
+                <sign-info ref="signInfoRef"></sign-info>
             </GmapInfoWindow>
             <GmapMarker
                 :key="index"
@@ -19,20 +19,15 @@
                 :position="m.coordinates"
                 :clickable="true"
                 :draggable="m.draggable"
-                @click="toggleInfoWindow(m, index)"
+                @click="infoWindowOrFormDecider(m, index)"
             />
             </GmapMap>
         </CCardBody>
 
-        <!-- <b-popover
-            :show.sync="showform"
-            placement="top">
-            <insert-sign></insert-sign>
-        </b-popover> -->
-
         <CModal 
         :show.sync="showform"
-        :closeOnBackdrop=false>
+        :closeOnBackdrop=false
+        title="Insert a Sign">
             <insert-sign ref="insertSignRef"></insert-sign>
 
             <template #footer>
@@ -107,6 +102,18 @@
                 </div>
             </div>
         </div>
+
+        <CToaster :autohide="3000">
+            <template v-for="toast in fixedToasts">
+                <CToast
+                :key="'toast' + toast"
+                :show="true"
+                header="Info"
+                >
+                    {{ toastMessage }}
+                </CToast>
+            </template>
+        </CToaster>
     </CCard>
 </template>
 
@@ -117,6 +124,7 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import axios from 'axios'
 
 import InsertSign from './InsertSign.vue'
+import SignInfo from './SignInfo.vue'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -134,24 +142,13 @@ Vue.use(BootstrapVueIcons)
 export default {
     name: 'Map',
     components: {
-        "insert-sign": InsertSign
+        "insert-sign": InsertSign,
+        "sign-info": SignInfo
     },
     data () {
         return {
             center:{lat: 39.7541724, lng: -8.8759984},
-            infoContent: '',
-            infoLink: '',
-            infoWindowPos: {
-                lat: 0,
-                lng: 0
-            },
-            infoOptions: {
-                pixelOffset: {
-                    width: 0,
-                    height: -35
-                }
-            },
-            infoWinOpen: false,
+            
             currentMidx: null,
             toolbox: {
                 positions: {
@@ -161,10 +158,38 @@ export default {
                     movementY: 0
                 }
             },
+            iviMapSigns: null,
 
             showform: false,
 
-            iviMapSigns: null,
+            // Toast
+            toastMessage: '',
+            fixedToasts: 0,
+
+            // INFO WINDOW
+            //signInfoModal: false,
+            
+            infoContent: '',
+            infoLink: '',
+            infoWinOpen: false,
+            infoWindowPos: {
+                'lat': 0,
+                'lng': 0
+            },
+            infoOptions: {
+                pixelOffset: {
+                    width: 0,
+                    height: -35
+                }
+            },
+
+
+            tempImage: '',
+            // ADD MODAL
+
+
+            // EDIT MODAL
+            editAddSign: false,
             
         }
     },
@@ -200,14 +225,27 @@ export default {
 
                     var coordinates = mapsMouseEvent.latLng.toJSON();
 
-                    this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates['lat']
-                    this.$refs.insertSignRef.IviSignMap.coordinates.llng = coordinates['lng']
+                    this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates.lat
+                    this.$refs.insertSignRef.IviSignMap.coordinates.lng = coordinates.lng
                 });
             });
         },
 
         insertIviSign() {
             this.$refs.insertSignRef.insertSign();
+        },
+
+        updateAfterInsertSign(sign) {
+            this.insertToast(sign.message)
+
+            // update signs on map
+            this.getIviMapSigns()
+
+            // reset insert sign form
+            this.$refs.insertSignRef.resetForm()
+
+            this.showform = false
+
         },
 
         getIviMapSigns() {
@@ -219,11 +257,65 @@ export default {
             });
         },
 
-        toggleInfoWindow(m, index) {
-            this.showform = true
-            this.$refs.insertSignRef.IviSignMap = this.iviMapSigns[index]
-            this.$refs.getViennaSignImage()
+        infoWindowOrFormDecider(item) {
+            if (false) { // if not edit or select
+
+            }
+
+            this.toggleInfoWindow(item)
+
+        },
+
+        async toggleInfoWindow(item) {
+            
+            // passing sign data to info component
+            await this.getViennaSignImage(item.viennaSignId) //get image data
+
+            this.$refs.signInfoRef.iviSignInfo = item
+            this.$refs.signInfoRef.iviSignInfo.viennaImage = this.tempImage
+
+            this.infoWindowPos = item.coordinates
+            this.infoContent = this.$refs.signInfoRef.$el.outerHTML
+            this.infoWinOpen = true
+
+
+            /* this.$refs.signInfoRef.IviSignInfo = item
+            this.$refs.signInfoRef.IviSignInfo.viennaImage = this.getViennaSignImage(item.viennaSignId) */
+
+            
+            /* this.$refs.insertSignRef.IviSignMap = this.iviMapSigns[index]
+            this.$refs.insertSignRef.getViennaSignImage() */
+        },
+        async getViennaSignImage(viennaId) {
+
+            await axios.get('api/vienna/' + viennaId + '?token=' + localStorage.getItem("api_token"))
+            .then(response => {
+                this.tempImage = {
+                    id: response.data[0].id,
+                    src: response.data[0].image,
+                    alt: response.data[0].name,
+                }
+            }).catch(err => {
+                console.log(err)
+            });
+        },
+
+        insertToast(message) {
+            this.fixedToasts++
+            this.toastMessage = message
+        },
+
+        updateAfterDelete(toastMessage) {
+            this.insertToast(toastMessage)
+            this.infoWinOpen = false
+
+            this.getIviMapSigns()
+        },
+
+        drawPolyLineOnMap() {
+            
         }
+        
     },
     mounted() {
         this.getIviMapSigns();

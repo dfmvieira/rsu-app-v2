@@ -16,6 +16,7 @@ const Widgets = () => import('../views/widgets/Widgets.vue')
 // Views - Components
 const Map = () => import('../views/map/Map.vue')
 const InsertSign = () => import('../views/map/InsertSign.vue')
+const SignInfo = () => import('../views/map/SignInfo.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
@@ -140,7 +141,14 @@ function configRoutes () {
               path: '/ivisignmap/add',
               component: InsertSign,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
+              }
+            },
+            {
+              path: '/ivisignmap/signinfo',
+              component: SignInfo,
+              meta: {
+                requiresAdmin: false
               }
             }
           ]

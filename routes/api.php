@@ -58,9 +58,14 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::prefix('ivisign')->group(function () {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
-        Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
+
+        Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
+
+        Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
+
+        Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });
 
     

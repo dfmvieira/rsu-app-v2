@@ -13,20 +13,24 @@
         </CRow>
         
         <CRow >
-            <CButton
-                color="primary"
-                size=""
-                class="m-2"
-                @click="viennaSignsModal = true"
-                v-if="!IviSignMap.viennaSignID"
-                style="margin:0px 0px 10px 20px"
-            >
-                Click here to choose a vienna sign
-            </CButton>
-            
+            <div v-show="IviSignMap.viennaSignID === null"> 
+                <CButton
+                    color="primary"
+                    size=""
+                    class="m-2"
+                    @click="openAddEditModal"
+                    style="margin:0px 0px 10px 20px; background-color: #424249"
+                >
+                    Click here to choose a vienna sign
+                </CButton>
+            </div>
             <div v-if="IviSignMap.viennaSignId" style="border: 1px solid; border-color: #d8dbe0; border-radius: 0.25rem; padding: 10px; margin:0px 0px 15px 15px" v-on:click="viennaSignsModal = true">
                 <img v-bind:src="finalSelectedViennaSign.img" style="width:100px; margin-left: auto; margin-right: auto; display: block">
                 <label style="display: inline-block">{{ finalSelectedViennaSign.id }} - {{ finalSelectedViennaSign.name }}</label>
+            </div>
+            <div v-else style="border: 1px solid; border-color: #d8dbe0; border-radius: 0.25rem; padding: 10px; margin:0px 0px 15px 15px" v-on:click="viennaSignsModal = true">
+                <!-- <img v-bind:src="finalSelectedViennaSign.img" style="width:100px; margin-left: auto; margin-right: auto; display: block"> -->
+                <label style="display: inline-block">Click here to choose a Vienna Sign</label>
             </div>
         </CRow>
 
@@ -37,12 +41,22 @@
             v-model="IviSignMap.comment"
         />
 
-        <label>Status</label>
-        <v-select 
-            v-model="IviSignMap.status"
-            :options="[{value:1, label: 'Active'}, {value: 0, label: 'Inactive'}]" 
-            placeholder="Select option"
-        />
+        <CRow>
+            <label style="margin: 0px 0px 10px 20px"><b>Coordinates: </b>{{ IviSignMap.coordinates.lat }},{{ IviSignMap.coordinates.lng }}</label>
+        </CRow>
+
+        <CRow>
+            <CCol lg="4">
+                <CButton @click="addDetectionZone" color="light">Detection Zone</CButton>
+            </CCol>
+            <CCol lg="4">
+                <CButton @click="addAwarenessZone" color="light">Awereness Zone</CButton>
+            </CCol>
+            <CCol lg="4">
+                <CButton @click="addRelevanceZone" color="light">Relevance Zone</CButton>
+            </CCol>
+        </CRow>
+
 
         <CModal
             title="Choose a Vienna Sign"
@@ -95,16 +109,13 @@ export default {
             name: 'Insert Sign',
             IviSignMap: {
                 name: '',
-                viennaSignId: null,
-                coordinates: {
-                    lat: null,
-                    lng: null
-                },
                 comment: '',
-                status: null,
+                coordinates: {
+                    lat: 0,
+                    lng: 0
+                }
             },
             viennaSigns: [],
-            viennaSignsModal: false,
             selectedViennaSign: [],
             finalSelectedViennaSign: {
                 id: '',
@@ -115,14 +126,15 @@ export default {
             mapModal: false,
             map: {
                 center: {}
-            }
+            },
+
+            viennaSignsModal: false,
         }
         
     },
     methods: {
         getViennaSigns() {
             axios.get('api/vienna/').then(response => {
-                console.log(response.data)
                 response.data.forEach((item) => {
                     this.viennaSigns.push({
                         'id': item.id,
@@ -132,17 +144,36 @@ export default {
                 })
             })
         },
+        
+        resetForm() {
+            this.IviSignMap = {
+                name: '',
+                comment: '',
+                coordinates: {
+                    lat: 0,
+                    lng: 0
+                }
+            },
+
+            this.finalSelectedViennaSign = {
+                id: '',
+                name: '',
+                img: ''
+            },
+
+            this.selectedViennaSign = {}
+        },
 
         insertSign() {
             axios.post('api/ivisign/insertivisign?token=' + localStorage.getItem("api_token"), this.IviSignMap)
             .then(response => {
-
-                
+                this.$parent.$parent.updateAfterInsertSign(response.data)
+            }).catch(err => {
+                console.log(err);
             });
         },
 
         onSelectedViennaSign(item) {
-            console.log(item)
             this.selectedViennaSign = item
         },
 
@@ -150,17 +181,27 @@ export default {
             this.viennaSignsModal = false
         },
 
+        openAddEditModal() {
+            viennaSignsModal = true
+            editAddSign = true
+        },
+
 
         getViennaSignImage() {
             var viennaSignId = this.IviSignMap.viennaSignId
 
-            axio.get('api/vienna/' + viennaSignId + '?token=' + localStorage.getItem("api_token"))
+            axios.get('api/vienna/' + viennaSignId + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
-                onSelectViennaSign(response.data)
-                updateViennaSign()
+                var image = {
+                    'id': response.data[0].id,
+                    'src': response.data[0].image,
+                    'alt': response.data[0].name,
+                }
+                this.onSelectedViennaSign(image)
+                this.updateViennaSign()
             }).catch({
-
-            });
+                
+            });lat
         },
 
         updateViennaSign() {
@@ -171,6 +212,38 @@ export default {
             this.finalSelectedViennaSign.name = this.selectedViennaSign.alt
 
             this.viennaSignsModal = false
+        },
+
+        updateLockStatus() {
+            var atualLockedStatus = this.IviSignMap.locked
+
+            if (atualLockedStatus) {
+                this.IviSignMap.locked = false
+            } else { 
+                this.IviSignMap.locked = true
+            }
+            var data = {
+                id: this.IviSignMap.id,
+                locked: this.IviSignMap.locked
+            }
+
+            axios.put('api/ivisign/updatelockstatus/' + this.IviSignMap.id + '?token=' + localStorage.getItem("api_token"), data)
+            .then(response => {
+                
+            }). catch({
+
+            });
+        },
+
+        addDetectionZone() {
+            this.$parent.$parent.showform = false
+            this.$parent.$parent.drawPolyLineOnMap()
+        },
+        addAwarenessZone() {
+
+        },
+        addRelevanceZone() {
+
         },
     
     },
