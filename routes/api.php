@@ -45,7 +45,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
         Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
         Route::put('/categories/{id}', 'ViennaSignController@updateCategory')->name('vienna.updatecategories');
-        Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
+        Route::put('/{id}', 'ViennaSignController@update')->name('vienna.update');
     });
 
     Route::prefix('entity')->group(function () {
@@ -63,6 +63,7 @@ Route::group(['middleware' => 'api'], function ($router) {
 
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
 
+        Route::put('/{id}', 'IviSignMapController@update')->name('ivisign.update');
         Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
 
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');

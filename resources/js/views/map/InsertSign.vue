@@ -136,7 +136,7 @@ export default {
             relevanceZoneMarkers: [],
             relevanceZonePolyLine: '',
 
-
+            isEditSign: false,
         }
         
     },
@@ -177,6 +177,16 @@ export default {
             axios.post('api/ivisign/insertivisign?token=' + localStorage.getItem("api_token"), this.IviSignMap)
             .then(response => {
                 this.$parent.$parent.updateAfterInsertSign(response.data)
+                this.resetForm()
+            }).catch(err => {
+                console.log(err);
+            });
+        },
+
+        editSign() {
+            axios.put('api/ivisign/insertivisign?token=' + localStorage.getItem("api_token"), this.IviSignMap)
+            .then(response => {
+                this.$parent.$parent.updateAfterInsertSign(response.data)
             }).catch(err => {
                 console.log(err);
             });
@@ -210,7 +220,7 @@ export default {
                 this.updateViennaSign()
             }).catch({
                 
-            });lat
+            });
         },
 
         updateViennaSign() {

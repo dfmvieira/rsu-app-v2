@@ -160,12 +160,66 @@ class IviSignMapController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\IviSignMap  $iviSignMap
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, IviSignMap $iviSignMap)
+    public function update(Request $request, $id)
     {
-        //
+        $sign = IviSignMap::findOrFail($id);
+
+        if (isset($request->detectionZone)) {
+            $detectionZone = new DetectionZone();
+
+            $detectionZone->latitude1 = $request->detectionZone[0]['lat'];
+            $detectionZone->longitude1 = $request->detectionZone[0]['lng'];
+
+            $detectionZone->latitude2 = $request->detectionZone[1]['lat'];
+            $detectionZone->longitude2 = $request->detectionZone[1]['lng'];
+
+            $detectionZone->save();
+        }
+
+        if (isset($request->awarenessZone)) {
+            $awarenessZone = new AwarenessZone();
+            $awarenessZone->latitude1 = $request->awarenessZone[0]['lat'];
+            $awarenessZone->longitude1 = $request->awarenessZone[0]['lng'];
+
+            $awarenessZone->latitude2 = $request->awarenessZone[1]['lat'];
+            $awarenessZone->longitude2 = $request->awarenessZone[1]['lng'];
+
+            $awarenessZone->save();
+        }
+
+        if (isset($request->awarenessZone)) {
+            $relevanceZone = new RelevanceZone();
+            $relevanceZone->latitude1 = $request->relevanceZone[0]['lat'];
+            $relevanceZone->longitude1 = $request->relevanceZone[0]['lng'];
+
+            $relevanceZone->latitude2 = $request->relevanceZone[1]['lat'];
+            $relevanceZone->longitude2 = $request->relevanceZone[1]['lng'];
+
+            $relevanceZone->save();
+        }
+
+        $iviSign = new IviSignMap();
+        $iviSign->entityId = $user->IDEntity;
+        $iviSign->name = $request->name;
+        $iviSign->guid = (string) Str::uuid();
+        $iviSign->viennaSignId = $request->viennaSignId;
+        $iviSign->latitude = $request->coordinates['lat'];
+        $iviSign->longitude = $request->coordinates['lng'];
+        $iviSign->comment = $request->comment;
+        $iviSign->locked = 1;
+        $iviSign->IDDetection = isset($detectionZone->id) ? $detectionZone->id : 0;
+        $iviSign->IDAwareness = isset($awarenessZone->id) ? $awarenessZone->id : 0;
+        $iviSign->IDRelevance = isset($relevanceZone->id) ? $relevanceZone->id : 0;
+        $iviSign->status = isset($request->status['value']) ? $request->status['value'] : 1;
+
+        $sign->update($iviSign);
+
+
+        return response()->json([
+            'message'=>'Sign Updated Successfully!!',
+        ]); 
     }
 
     /**

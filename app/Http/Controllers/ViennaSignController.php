@@ -124,12 +124,7 @@ class ViennaSignController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $sign = ViennaSign::findOrFail($id);
-
-        $sign->update($request->all());
-        return response()->json([
-            'message'=>'Sign Updated Successfully!!',
-        ]); 
+        //
     }
 
     /**
@@ -137,11 +132,16 @@ class ViennaSignController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\ViennaSign  $viennaSign
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $sign = ViennaSign::findOrFail($id);
+
+        $sign->update($request->all());
+        return response()->json([
+            'message'=>'Sign Updated Successfully!!',
+        ]); 
     }
 
     /**

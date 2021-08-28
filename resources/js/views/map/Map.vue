@@ -24,18 +24,23 @@
             </GmapMap>
         </CCardBody>
 
+
+        <!-- ############ INSERT/EDIT SIGN MODAL ############## -->
         <CModal 
         :show.sync="showform"
-        :closeOnBackdrop=false
-        title="Insert a Sign">
+        :closeOnBackdrop=false>
             <insert-sign ref="insertSignRef"></insert-sign>
 
+            <template #header>
+                <h5>{{ formModalTitle }}</h5>
+            </template>
+
             <template #footer>
-                <CButton @click="cancelCreateSign();" color="danger">Discard</CButton>
+                <CButton @click="cancelSignForm();" color="danger">Discard</CButton>
                 <CButton @click="insertIviSign();" color="success">Accept</CButton>
             </template>
         </CModal>
-
+        <!-- ###################################### -->
 
         <!-- ############ DELETE MODAL ############## -->
         <CModal 
@@ -220,11 +225,12 @@ export default {
 
 
             tempImage: '',
-            // ADD MODAL
 
 
-            // EDIT MODAL
+            // ADD/EDIT MODAL
             editAddSign: false,
+            formModalTitle: 'Insert a Sign',
+            newSignMarker: '',
 
             // DELETE
             showConfirmationModal: false,
@@ -267,16 +273,35 @@ export default {
                     this.signToDelete = item
                     this.showConfirmationModal = true
                 }
-            } else if (this.editSign) {
+            } else if (this.editToggle) {
                if (item.locked) {
                     this.insertToast("Can't edit a locked sign. Unlock it first to edit")
                     this.editToggle = false
                 } else {
                     this.editSign(item)
                 }
+            } else if (this.dragToggle) {
+                if (item.locked) {
+                    this.insertToast("Can't edit a locked sign. Unlock it first to edit")
+                    this.dragToggle = false
+                } else {
+                    this.dragElement()
+                }
             } else {
                 this.toggleInfoWindow(item)
             }
+        },
+
+        signFormHandler() {
+            if (!this.$refs.insertSignRef.isEditSign) {
+                this.$refs.insertSignRef.insertSign()
+            } else { 
+                this.$refs.insertSignRef.editSign()
+            }
+        },
+
+        insertIviSign() {
+            this.$refs.insertSignRef.insertSign()
         },
 
         addSign() {   
@@ -284,7 +309,7 @@ export default {
                 var listener = map.addListener("click", (mapsMouseEvent) => {
                     
                     // Add marker in click location
-                    var marker = new google.maps.Marker({
+                    this.newSignMarker = new google.maps.Marker({
                         position: mapsMouseEvent.latLng,
                         map: map,
                         icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png'
@@ -305,7 +330,10 @@ export default {
         },
 
         editSign(sign) {
-            
+            this.$refs.insertSignRef.IviSignMap = sign
+            this.$refs.insertSignRef.getViennaSignImage()
+            this.formModalTitle = "Edit Sign"
+            this.showform = true
         },
 
         deleteSign(sign) {
@@ -324,10 +352,9 @@ export default {
             })
         },
 
-        insertIviSign() {
-            this.$refs.insertSignRef.insertSign();
+        dragElement() {
+            
         },
-
 
         // Updates in map after some action
         updateAfterInsertSign(sign) {
@@ -339,6 +366,7 @@ export default {
             // reset insert sign form
             this.$refs.insertSignRef.resetForm()
 
+            // Close modal
             this.showform = false
 
             if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
@@ -365,6 +393,17 @@ export default {
 
         },
 
+        cancelSignForm() {
+            // close modal
+            this.showform = false
+
+            // reset insert sign form
+            this.$refs.insertSignRef.resetForm()
+
+            this.newSignMarker.setMap(null)
+            this.newSignMarker = ''
+        },
+
         async toggleInfoWindow(item) {
             
             // passing sign data to info component
@@ -376,14 +415,6 @@ export default {
             this.infoWindowPos = item.coordinates
             this.infoContent = this.$refs.signInfoRef.$el.outerHTML
             this.infoWinOpen = true
-
-
-            /* this.$refs.signInfoRef.IviSignInfo = item
-            this.$refs.signInfoRef.IviSignInfo.viennaImage = this.getViennaSignImage(item.viennaSignId) */
-
-            
-            /* this.$refs.insertSignRef.IviSignMap = this.iviMapSigns[index]
-            this.$refs.insertSignRef.getViennaSignImage() */
         },
         async getViennaSignImage(viennaId) {
 
