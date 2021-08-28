@@ -19,7 +19,7 @@
                 :position="m.coordinates"
                 :clickable="true"
                 :draggable="m.draggable"
-                @click="infoWindowOrFormDecider(m, index)"
+                @click="markerHandler(m)"
             />
             </GmapMap>
         </CCardBody>
@@ -35,7 +35,19 @@
                 <CButton @click="insertIviSign();" color="success">Accept</CButton>
             </template>
         </CModal>
-        
+
+
+        <!-- ############ DELETE MODAL ############## -->
+        <CModal 
+        :show.sync="showConfirmationModal"
+        :closeOnBackdrop=false>
+            Are you sure you want to delete this sign? This cannot be undone.
+            <template #footer>
+                <CButton @click="closeModal();" color="danger">Discard</CButton>
+                <CButton @click="deleteSign(signToDelete);" color="success">Accept</CButton>
+            </template>
+        </CModal>
+        <!-- ###################################### -->
 
         <div ref="draggableContainer" id="toolbox">
             <div class="toolboxHeader" @mousedown="dragMouseDown">
@@ -56,6 +68,7 @@
 
                 <div class="toolboxItemRight">
                    <button class="toolboxButton"
+                   v-on:click="toolboxHandler('delete')"
                    v-c-tooltip="'Delete a sign'">
                         <CIcon 
                             name="cil-trash"
@@ -67,6 +80,7 @@
 
                 <div class="toolboxItem">
                     <button class="toolboxButton"
+                    v-on:click="toolboxHandler('edit')"
                     v-c-tooltip="'Edit a sign'">
                         <CIcon 
                             name="cil-pencil"
@@ -109,8 +123,23 @@
                 :key="'toast' + toast"
                 :show="true"
                 header="Info"
+                style="max-height: 90px;"
                 >
                     {{ toastMessage }}
+                </CToast>
+            </template>
+        </CToaster>
+
+        <CToaster position="top-center">
+            <template v-for="toast in stayToasts">
+                <CToast
+                :key="'toast' + toast"
+                :show="showStayToast"
+                header="Info"
+                color="info"
+                style="max-height: 90px;"
+                >
+                    {{ stayToastMessage }}
                 </CToast>
             </template>
         </CToaster>
@@ -145,6 +174,8 @@ export default {
         "insert-sign": InsertSign,
         "sign-info": SignInfo
     },
+    computed: {
+    },
     data () {
         return {
             center:{lat: 39.7541724, lng: -8.8759984},
@@ -162,9 +193,13 @@ export default {
 
             showform: false,
 
-            // Toast
+            // Toasts
             toastMessage: '',
             fixedToasts: 0,
+
+            showStayToast: true,
+            stayToastMessage: '',
+            stayToasts: 0,
 
             // INFO WINDOW
             //signInfoModal: false,
@@ -190,51 +225,111 @@ export default {
 
             // EDIT MODAL
             editAddSign: false,
-            
+
+            // DELETE
+            showConfirmationModal: false,
+            signToDelete: [],
+
+            // TOOLBOX
+            addToggle: false,
+            deleteToggle: false,
+            editToggle: false,
+            selectToggle: false,
+            dragToggle: false,
+
+
         }
     },
     methods: {
-        dragMouseDown: function (event) {
-            event.preventDefault();
-            // get the mouse cursor position at startup:
-            this.toolbox.positions.clientX = event.clientX
-            this.toolbox.positions.clientY = event.clientY
-            document.onmousemove = this.elementDrag
-            document.onmouseup = this.closeDragElement
-        },
-        elementDrag: function (event) {
-            event.preventDefault()
-            this.toolbox.positions.movementX = this.toolbox.positions.clientX - event.clientX
-            this.toolbox.positions.movementY = this.toolbox.positions.clientY - event.clientY
-            this.toolbox.positions.clientX = event.clientX
-            this.toolbox.positions.clientY = event.clientY
-            // set the element's new position:
-            this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.toolbox.positions.movementY) + 'px'
-            this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.toolbox.positions.movementX) + 'px'
-        },
-        closeDragElement () {
-            document.onmouseup = null
-            document.onmousemove = null
+        getIviMapSigns() {
+            axios.get('api/ivisign?token=' + localStorage.getItem('api_token'))
+            .then(response => {
+                this.iviMapSigns = response.data
+            }).catch(err => {
+                console.log(err)
+            });
         },
 
-        addSign() {            
+        toolboxHandler(action) {
+            if (action == 'delete') { // if not edit or select
+                this.deleteToggle = true
+            } else if (action == 'edit') {
+                this.editToggle = true
+            }
+        },
+
+        markerHandler(item) {
+            if (this.deleteToggle) {
+                if (item.locked) {
+                    this.insertToast("Can't delete a locked sign. Unlock it first to delete")
+                    this.deleteToggle = false
+                } else {
+                    this.signToDelete = item
+                    this.showConfirmationModal = true
+                }
+            } else if (this.editSign) {
+               if (item.locked) {
+                    this.insertToast("Can't edit a locked sign. Unlock it first to edit")
+                    this.editToggle = false
+                } else {
+                    this.editSign(item)
+                }
+            } else {
+                this.toggleInfoWindow(item)
+            }
+        },
+
+        addSign() {   
             this.$refs.mapRef.$mapPromise.then((map) => {
-                
-                map.addListener("click", (mapsMouseEvent) => {
+                var listener = map.addListener("click", (mapsMouseEvent) => {
+                    
+                    // Add marker in click location
+                    var marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png'
+                    });
+
+                    //map.removeListener(listenerHandler)
                     this.showform = true
 
                     var coordinates = mapsMouseEvent.latLng.toJSON();
 
                     this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates.lat
                     this.$refs.insertSignRef.IviSignMap.coordinates.lng = coordinates.lng
+
+                    listener.remove()
                 });
+                
             });
+        },
+
+        editSign(sign) {
+            
+        },
+
+        deleteSign(sign) {
+            axios.delete('api/ivisign/' + sign.id + '?token=' + localStorage.getItem("api_token"))
+            .then(response => {
+                this.showConfirmationModal = false
+                this.signToDelete = []
+                this.infoWinOpen = false
+                this.deleteToggle = false
+
+                this.insertToast(response.data.message)
+                this.getIviMapSigns()
+
+            }).catch(err => {
+                console.log(err)
+            })
         },
 
         insertIviSign() {
             this.$refs.insertSignRef.insertSign();
         },
 
+
+        // Updates in map after some action
         updateAfterInsertSign(sign) {
             this.insertToast(sign.message)
 
@@ -246,23 +341,27 @@ export default {
 
             this.showform = false
 
-        },
+            if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
 
-        getIviMapSigns() {
-            axios.get('api/ivisign?token=' + localStorage.getItem('api_token'))
-            .then(response => {
-                this.iviMapSigns = response.data
-            }).catch(error => {
-
-            });
-        },
-
-        infoWindowOrFormDecider(item) {
-            if (false) { // if not edit or select
-
+                this.$refs.insertSignRef.detectionZonePolyLine.setMap(null)
             }
+            if (this.$refs.insertSignRef.awarenessZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.awarenessZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
 
-            this.toggleInfoWindow(item)
+                this.$refs.insertSignRef.awarenessZonePolyLine.setMap(null)
+            }
+            if (this.$refs.insertSignRef.relevanceZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.relevanceZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
+
+                this.$refs.insertSignRef.relevanceZonePolyLine.setMap(null)
+            }
 
         },
 
@@ -300,22 +399,121 @@ export default {
             });
         },
 
+        // Insert Toasts
         insertToast(message) {
             this.fixedToasts++
             this.toastMessage = message
         },
 
-        updateAfterDelete(toastMessage) {
-            this.insertToast(toastMessage)
-            this.infoWinOpen = false
-
-            this.getIviMapSigns()
+        insertStayToast(message) {
+            this.stayToasts++
+            this.stayToastMessage = message
         },
 
-        drawPolyLineOnMap() {
-            
-        }
-        
+        // Draw lines for Zones of sign
+        drawPolyLineOnMap(zoneType) {
+            var linePoint = []
+            this.$refs.mapRef.$mapPromise.then((map) => {
+
+                var markerIcon = ''
+                var polyColor = ''
+
+                switch(zoneType) {
+                    case 1:
+                        markerIcon = 'http://maps.google.com/mapfiles/ms/icons/orange.png'
+                        polyColor = '#ff9900'
+                        break;
+                    case 2:
+                        markerIcon = 'http://maps.google.com/mapfiles/ms/icons/pink.png'
+                        polyColor = '#e661ac'
+                        break;
+                    case 3:
+                        markerIcon = 'http://maps.google.com/mapfiles/ms/icons/purple.png'
+                        polyColor = '#8e67fd'
+                        break;
+                }
+
+                var poly = new google.maps.Polyline({
+                    strokeColor: polyColor,
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                })
+                
+                poly.setMap(map)
+                var clickCounter = 0
+
+                var listener = map.addListener("click", (mapsMouseEvent) => {
+                    
+                    clickCounter++
+
+                    const path = poly.getPath();
+                    // Because path is an MVCArray, we can simply append a new coordinate
+                    // and it will automatically appear.
+                    path.push(mapsMouseEvent.latLng);
+                    // Add a new marker at the new plotted point on the polyline.
+                    var marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        title: "#" + path.getLength(),
+                        map: map,
+                        icon: markerIcon
+                    });
+
+                    switch(zoneType) {
+                        case 1:
+                            this.$refs.insertSignRef.detectionZoneMarkers.push(marker)
+                            this.$refs.insertSignRef.detectionZonePolyLine = poly
+                            break;
+                        case 2:
+                            this.$refs.insertSignRef.awarenessZoneMarkers.push(marker)
+                            this.$refs.insertSignRef.awarenessZonePolyLine = poly
+                            break;
+                        case 3:
+                            this.$refs.insertSignRef.relevanceZoneMarkers.push(marker)
+                            this.$refs.insertSignRef.relevanceZonePolyLine = poly
+                            break;
+                    }
+
+
+                    linePoint.push(mapsMouseEvent.latLng.toJSON())
+
+                    if (clickCounter == 1) {
+                        this.stayToastMessage = ('Click on map to insert the second point for the Point')
+                    }
+
+                    if (clickCounter == 2) {
+                        this.showform = true
+                        this.showStayToast = false
+                        listener.remove()
+                    }
+                });
+            });
+
+            return linePoint
+        },
+
+        // ############# TOOLBOX METHODS ################
+        dragMouseDown: function (event) {
+            event.preventDefault();
+            // get the mouse cursor position at startup:
+            this.toolbox.positions.clientX = event.clientX
+            this.toolbox.positions.clientY = event.clientY
+            document.onmousemove = this.elementDrag
+            document.onmouseup = this.closeDragElement
+        },
+        elementDrag: function (event) {
+            event.preventDefault()
+            this.toolbox.positions.movementX = this.toolbox.positions.clientX - event.clientX
+            this.toolbox.positions.movementY = this.toolbox.positions.clientY - event.clientY
+            this.toolbox.positions.clientX = event.clientX
+            this.toolbox.positions.clientY = event.clientY
+            // set the element's new position:
+            this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.toolbox.positions.movementY) + 'px'
+            this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.toolbox.positions.movementX) + 'px'
+        },
+        closeDragElement () {
+            document.onmouseup = null
+            document.onmousemove = null
+        },
     },
     mounted() {
         this.getIviMapSigns();

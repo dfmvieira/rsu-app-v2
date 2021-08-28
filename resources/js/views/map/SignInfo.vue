@@ -36,21 +36,9 @@
                 </div>
             </CCol>
             <CCol lg="6" style="text-align: right; padding-right: 0px">
-                <CButton @click="deleteSignModal();" color="danger" v-if="!iviSignInfo.locked">Delete Sign</CButton>
+                <CButton @click="deleteSign();" color="danger" v-if="!iviSignInfo.locked">Delete Sign</CButton>
             </CCol>
-        </CRow>
-
-        <CModal 
-        :show.sync="showConfirmationModal"
-        :closeOnBackdrop=false>
-            Are you sure you want to delete this sign? This cannot be undone.
-            <template #footer>
-                <CButton @click="closeModal();" color="danger">Discard</CButton>
-                <CButton @click="deleteSign();" color="success">Accept</CButton>
-            </template>
-        </CModal>
-
-        
+        </CRow>        
     </CContainer>
 
     
@@ -100,23 +88,9 @@ export default {
                 console.log(err)
             });
         },
-
-        deleteSignModal() {
-            this.showConfirmationModal = true
-        },
-
-        closeModal() {
-            this.showConfirmationModal = false
-        },
-
         deleteSign() {
-            axios.delete('api/ivisign/' + this.iviSignInfo.id + '?token=' + localStorage.getItem("api_token"))
-            .then(response => {
-                this.closeModal()
-                this.$parent.$parent.$parent.updateAfterDelete(response.data.message)
-            }).catch(err => {
-                console.log(err)
-            })
+            this.$parent.$parent.$parent.deleteToggle = true
+            this.$parent.$parent.$parent.markerHandler(this.iviSignInfo)
         }
 
     },

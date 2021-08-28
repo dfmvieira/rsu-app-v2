@@ -7,7 +7,6 @@
             placeholder="Name"
         />
 
-        
         <CRow>
             <label style="padding-left: 19px">Vienna Sign</label>
         </CRow>
@@ -47,13 +46,13 @@
 
         <CRow>
             <CCol lg="4">
-                <CButton @click="addDetectionZone" color="light">Detection Zone</CButton>
+                <CButton @click="addDetectionZone()" color="light">Detection Zone</CButton>
             </CCol>
             <CCol lg="4">
-                <CButton @click="addAwarenessZone" color="light">Awereness Zone</CButton>
+                <CButton @click="addAwarenessZone()" color="light">Awereness Zone</CButton>
             </CCol>
             <CCol lg="4">
-                <CButton @click="addRelevanceZone" color="light">Relevance Zone</CButton>
+                <CButton @click="addRelevanceZone()" color="light">Relevance Zone</CButton>
             </CCol>
         </CRow>
 
@@ -129,6 +128,15 @@ export default {
             },
 
             viennaSignsModal: false,
+
+            detectionZoneMarkers: [],
+            detectionZonePolyLine: '',
+            awarenessZoneMarkers: [],
+            awarenessZonePolyLine: '',
+            relevanceZoneMarkers: [],
+            relevanceZonePolyLine: '',
+
+
         }
         
     },
@@ -152,7 +160,8 @@ export default {
                 coordinates: {
                     lat: 0,
                     lng: 0
-                }
+                },
+                detectionZone: []
             },
 
             this.finalSelectedViennaSign = {
@@ -237,13 +246,18 @@ export default {
 
         addDetectionZone() {
             this.$parent.$parent.showform = false
-            this.$parent.$parent.drawPolyLineOnMap()
+            this.$parent.$parent.insertStayToast("Click on map to draw a line for Detection Zone")
+            this.IviSignMap.detectionZone = this.$parent.$parent.drawPolyLineOnMap(1)
         },
         addAwarenessZone() {
-
+            this.$parent.$parent.showform = false
+            this.$parent.$parent.insertStayToast("Click on map to draw a line for Detection Zone")
+            this.IviSignMap.awarenessZone = this.$parent.$parent.drawPolyLineOnMap(2)
         },
         addRelevanceZone() {
-
+            this.$parent.$parent.showform = false
+            this.$parent.$parent.insertStayToast("Click on map to draw a line for Detection Zone")
+            this.IviSignMap.relevanceZone = this.$parent.$parent.drawPolyLineOnMap(3)
         },
     
     },

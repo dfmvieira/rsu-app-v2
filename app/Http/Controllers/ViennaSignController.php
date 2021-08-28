@@ -85,7 +85,7 @@ class ViennaSignController extends Controller
             $fileName   = time() . '.' . $image->getClientOriginalExtension();
 
             $img = Image::make($image->getRealPath());
-            /* $img->resize(120, 120, function ($constraint) {
+            /* $img->resize(120, 120, function ($constraint) { 
                 $constraint->aspectRatio();                 
             }); */
 

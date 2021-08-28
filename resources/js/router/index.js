@@ -40,7 +40,7 @@ const InsertUser = () => import('../views/users/InsertUser.vue')
 
 //Notes
 /* const Notes = () => import('../views/notes/Notes.vue')
-const Note = () => import('../views/notes/Note.vue')
+const Note = () => import('../views/eu duvido que tenha sido o djodjenotes/Note.vue')
 const EditNote = () => import('../views/notes/EditNote.vue')
 const CreateNote = () => import('../views/notes/CreateNote.vue')
  */
