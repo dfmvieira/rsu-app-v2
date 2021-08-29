@@ -60,6 +60,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
+        Route::get('/zones/{id}', 'IviSignMapController@getZones')->name('ivisign.zones');
 
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
 

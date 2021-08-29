@@ -281,6 +281,7 @@ export default {
             if (action == 'add') {
                 if (this.addToggle) {
                     this.addToggle = false
+                    this.addSignListener.remove()
                 } else {
                     this.addToggle = true
                     this.addSign()
@@ -335,7 +336,7 @@ export default {
                     this.editSign(item)
                 }
             } else if (this.selectToggle) {
-
+                this.selectSignMarker(item)
             } else {
                 this.toggleInfoWindow(item)
             }
@@ -393,8 +394,6 @@ export default {
 
                     this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates.lat
                     this.$refs.insertSignRef.IviSignMap.coordinates.lng = coordinates.lng
-
-                    addSignListener.remove()
                 });
                 
             });
@@ -460,13 +459,101 @@ export default {
 
         },
 
-        showPolyLinesZones() {
+        selectSignMarker(marker) {
+            axios.get('/api/ivisign/zones/' + marker.id + '?token=' + localStorage.getItem("api_token"))
+            .then(response => {
+                console.log(response.data)
+                this.showPolyLines(response.data[0])
+            }).catch(err => {
+                console.log(err)
+            })
+        },
 
+        showPolyLines(sign) {
+
+            
+            const detectionCoordinates = [
+                { lat: sign.detection_latitude1, lng: sign.detection_longitude1 },
+                { lat: sign.detection_latitude2, lng: sign.detection_longitude2 },
+            ]
+            const awarenessCoordinates = [
+                { lat: sign.awareness_latitude1, lng: sign.awareness_longitude1 },
+                { lat: sign.awareness_latitude2, lng: sign.awareness_longitude2 },
+            ]
+            const relevanceCoordinates = [
+                { lat: sign.relevance_latitude1, lng: sign.relevance_longitude1 },
+                { lat: sign.relevance_latitude2, lng: sign.relevance_longitude2 },
+            ]
+
+
+            this.$refs.mapRef.$mapPromise.then((map) => {
+                var detectionPoly = new google.maps.Polyline({
+                    strokeColor: '#ff9900',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                })
+
+                var awarenessPoly = new google.maps.Polyline({
+                    strokeColor: '#e661ac',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                })
+
+                var relevancePoly = new google.maps.Polyline({
+                    strokeColor: '#8e67fd',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                })
+
+                detectionPoly.setMap(map)
+                awarenessPoly.setMap(map)
+                relevancePoly.setMap(map)
+
+                const detectionMarkers = []
+                const awarenessMarkers = []
+                const relevanceMarkers = []
+
+                detectionCoordinates.forEach(detectionCoord => {
+                    var detectionMarker = new google.maps.Marker({
+                        position: detectionCoord,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/orange.png'
+                    });
+                    
+                    detectionPoly.getPath().push(new google.maps.LatLng(detectionCoord))
+                    detectionMarkers.push(detectionMarker)
+                })
+
+                awarenessCoordinates.forEach(awarenessCoord => {
+                    var awarenessMarker = new google.maps.Marker({
+                        position: awarenessCoord,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/pink.png'
+                    });
+
+                    awarenessPoly.getPath().push(new google.maps.LatLng(awarenessCoord))
+                    awarenessMarkers.push(awarenessMarker)
+                })
+
+                relevanceCoordinates.forEach(relevanceCoord => {
+                    var relevanceMarker = new google.maps.Marker({
+                        position: relevanceCoord,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/purple.png'
+                    });
+
+                    relevancePoly.getPath().push(new google.maps.LatLng(relevanceCoord))
+                    relevanceMarkers.push(relevanceMarker)
+                })
+                
+            })
         },
 
         cancelSignForm() {
             // close modal
             this.showform = false
+            this.addToggle = false
+            this.addSignListener.remove()
 
             // reset insert sign form
             this.$refs.insertSignRef.resetForm()

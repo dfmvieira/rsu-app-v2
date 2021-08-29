@@ -315,6 +315,32 @@ class IviSignMapController extends Controller
         return response()->json($signs, 200);
     }
 
+    public function getZones($id) {
+        $zones = DB::table('ivi_signs_map')
+        ->leftJoin('detection_zones', 'ivi_signs_map.IDDetection', '=', 'detection_zones.id')
+        ->leftJoin('awareness_zones', 'ivi_signs_map.IDAwareness', '=', 'awareness_zones.id')
+        ->leftJoin('relevance_zones', 'ivi_signs_map.IDRelevance', '=', 'relevance_zones.id')
+        ->select(
+            'ivi_signs_map.id',
+            'detection_zones.latitude1 as detection_latitude1',
+            'detection_zones.latitude2 as detection_latitude2',
+            'detection_zones.longitude1 as detection_longitude1',
+            'detection_zones.longitude2 as detection_longitude2',
+            'awareness_zones.latitude1 as awareness_latitude1',
+            'awareness_zones.latitude2 as awareness_latitude2',
+            'awareness_zones.longitude1 as awareness_longitude1',
+            'awareness_zones.longitude2 as awareness_longitude2',
+            'relevance_zones.latitude1 as relevance_latitude1',
+            'relevance_zones.latitude2 as relevance_latitude2',
+            'relevance_zones.longitude1 as relevance_longitude1',
+            'relevance_zones.longitude2 as relevance_longitude2',
+        )
+        ->where('ivi_signs_map.id', '=', $id)
+        ->get();
+
+        return response()->json($zones, 200);
+    }
+
 
     /**
      * Update status of locked state.
