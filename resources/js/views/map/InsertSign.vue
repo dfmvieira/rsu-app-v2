@@ -249,8 +249,8 @@ export default {
             axios.put('api/ivisign/updatelockstatus/' + this.IviSignMap.id + '?token=' + localStorage.getItem("api_token"), data)
             .then(response => {
                 
-            }). catch({
-
+            }).catch(err => {
+                console.log(err)
             });
         },
 

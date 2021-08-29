@@ -18,8 +18,9 @@
                 v-for="(m, index) in iviMapSigns"
                 :position="m.coordinates"
                 :clickable="true"
-                :draggable="m.draggable"
+                :draggable="dragToggle"
                 @click="markerHandler(m)"
+                @dragend="dragMarkerHandler(m, $event.latLng)"
             />
             </GmapMap>
         </CCardBody>
@@ -45,11 +46,14 @@
         <!-- ############ DELETE MODAL ############## -->
         <CModal 
         :show.sync="showConfirmationModal"
-        :closeOnBackdrop=false>
-            Are you sure you want to delete this sign? This cannot be undone.
+        :closeOnBackdrop=false
+        color="danger"
+        title="Delete sign?!">
+            By deleting this sign, you will delete all the jobs and results that are related to this sign.<br><br>
+            <span class="font-weight-bold">Are you sure you want to delete this sign?</span>
             <template #footer>
-                <CButton @click="closeModal();" color="danger">Discard</CButton>
-                <CButton @click="deleteSign(signToDelete);" color="success">Accept</CButton>
+                <CButton @click="showConfirmationModal = false;" color="primary-color">Cancel</CButton>
+                <CButton @click="deleteSign(signToDelete);" color="danger">Delete</CButton>
             </template>
         </CModal>
         <!-- ###################################### -->
@@ -61,8 +65,9 @@
             <div class="toolboxBody">
                 <div class="toolboxItem">
                     <button class="toolboxButton"
-                    v-on:click="addSign"
-                    v-c-tooltip="'Add a new sign'">
+                    v-on:click="toolboxHandler('add')"
+                    v-c-tooltip="'Add a new sign'"
+                    v-bind:class="{toolboxButtonActive: addToggle}">
                         <CIcon 
                             name="cil-plus"
                             style="color: white"
@@ -74,7 +79,8 @@
                 <div class="toolboxItemRight">
                    <button class="toolboxButton"
                    v-on:click="toolboxHandler('delete')"
-                   v-c-tooltip="'Delete a sign'">
+                   v-c-tooltip="'Delete a sign'"
+                   v-bind:class="{toolboxButtonActive: deleteToggle}">
                         <CIcon 
                             name="cil-trash"
                             style="color: white"
@@ -86,7 +92,8 @@
                 <div class="toolboxItem">
                     <button class="toolboxButton"
                     v-on:click="toolboxHandler('edit')"
-                    v-c-tooltip="'Edit a sign'">
+                    v-c-tooltip="'Edit a sign'"
+                    v-bind:class="{toolboxButtonActive: editToggle}">
                         <CIcon 
                             name="cil-pencil"
                             style="color: white"
@@ -95,30 +102,44 @@
                     </button>
                 </div>
 
-                <div class="toolboxItemRight">
+                <!-- <div class="toolboxItemRight">
                     <button class="toolboxButton"
-                    v-c-tooltip="'Duplicate a sign'">
+                    v-c-tooltip="'Duplicate a sign'"
+                    v-bind:class="{toolboxButtonActive: deleteToggle}">
                         <CIcon 
                             name="cil-clone"
                             style="color: white"
                             size="lg"
                         />
                     </button>
+                </div> -->
+                <div class="toolboxItemRight">
+                    <button class="toolboxButton"
+                    v-c-tooltip="'Add RSU'"
+                    v-on:click="toolboxHandler('rsu')"
+                    v-bind:class="{toolboxButtonActive: rsuToggle}">
+                        <b-icon icon="cpu" style="width: 20px; height: 20px; color: white"></b-icon>
+                    </button>
                 </div>
 
                 <div class="toolboxItem">
                     <button class="toolboxButton"
-                    v-c-tooltip="'Select an element'">
-                        <b-icon icon="cursor-fill" style="width: 20px; height: 20px; color: white"></b-icon>
-                    </button>
-                </div>
-
-                <div class="toolboxItemRight">
-                    <button class="toolboxButton"
-                    v-c-tooltip="'Drag an element'">
+                    v-c-tooltip="'Drag an element'"
+                    v-on:click="toolboxHandler('drag')"
+                    v-bind:class="{toolboxButtonActive: dragToggle}">
                         <b-icon icon="cursor" style="width: 20px; height: 20px; color: white"></b-icon>
                     </button>
                 </div>
+                
+                <div class="toolboxItemRight">
+                    <button class="toolboxButton"
+                    v-c-tooltip="'Select an element'"
+                    v-on:click="toolboxHandler('select')"
+                    v-bind:class="{toolboxButtonActive: selectToggle}">
+                        <b-icon icon="cursor-fill" style="width: 20px; height: 20px; color: white"></b-icon>
+                    </button>
+                </div>
+                
             </div>
         </div>
 
@@ -228,6 +249,7 @@ export default {
 
 
             // ADD/EDIT MODAL
+            addSignListener: '',
             editAddSign: false,
             formModalTitle: 'Insert a Sign',
             newSignMarker: '',
@@ -242,8 +264,7 @@ export default {
             editToggle: false,
             selectToggle: false,
             dragToggle: false,
-
-
+            rsuToggle: false,
         }
     },
     methods: {
@@ -257,10 +278,43 @@ export default {
         },
 
         toolboxHandler(action) {
-            if (action == 'delete') { // if not edit or select
-                this.deleteToggle = true
+            if (action == 'add') {
+                if (this.addToggle) {
+                    this.addToggle = false
+                } else {
+                    this.addToggle = true
+                    this.addSign()
+                }
+            } else if (action == 'delete') { // if not edit or select
+                if (this.deleteToggle) {
+                    this.deleteToggle = false
+                } else {
+                    this.deleteToggle = true
+                }
             } else if (action == 'edit') {
-                this.editToggle = true
+                if (this.editToggle) {
+                    this.editToggle = false
+                } else {
+                    this.editToggle = true
+                }
+            } else if (action == 'select') {
+                if (this.selectToggle) {
+                    this.selectToggle = false
+                } else {
+                    this.selectToggle = true
+                }
+            } else if (action == 'drag') {
+                if (this.dragToggle) {
+                    this.dragToggle = false
+                } else {
+                    this.dragToggle = true
+                }
+            } else if (action == 'rsu') {
+                if (this.rsuToggle) {
+                    this.rsuToggle = false
+                } else {
+                    this.rsuToggle = true
+                }
             }
         },
 
@@ -280,15 +334,32 @@ export default {
                 } else {
                     this.editSign(item)
                 }
-            } else if (this.dragToggle) {
-                if (item.locked) {
+            } else if (this.selectToggle) {
+
+            } else {
+                this.toggleInfoWindow(item)
+            }
+        },
+
+        dragMarkerHandler(marker, location) {
+
+            var coordinates = {
+                latitude: location.lat(),
+                longitude: location.lng()
+            }
+            
+            if (this.dragToggle) {
+                if (marker.locked) {
                     this.insertToast("Can't edit a locked sign. Unlock it first to edit")
                     this.dragToggle = false
                 } else {
-                    this.dragElement()
+                    axios.put('api/ivisign/updatecoordinates/' + marker.id + '?token=' + localStorage.getItem("api_token"), coordinates)
+                    .then(response => {
+                        this.insertToast(response.data.message)
+                    }).catch(err => {
+                        console.log(err)
+                    })
                 }
-            } else {
-                this.toggleInfoWindow(item)
             }
         },
 
@@ -306,7 +377,7 @@ export default {
 
         addSign() {   
             this.$refs.mapRef.$mapPromise.then((map) => {
-                var listener = map.addListener("click", (mapsMouseEvent) => {
+                this.addSignListener = map.addListener("click", (mapsMouseEvent) => {
                     
                     // Add marker in click location
                     this.newSignMarker = new google.maps.Marker({
@@ -323,7 +394,7 @@ export default {
                     this.$refs.insertSignRef.IviSignMap.coordinates.lat = coordinates.lat
                     this.$refs.insertSignRef.IviSignMap.coordinates.lng = coordinates.lng
 
-                    listener.remove()
+                    addSignListener.remove()
                 });
                 
             });
@@ -350,10 +421,6 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
-        },
-
-        dragElement() {
-            
         },
 
         // Updates in map after some action
@@ -393,6 +460,10 @@ export default {
 
         },
 
+        showPolyLinesZones() {
+
+        },
+
         cancelSignForm() {
             // close modal
             this.showform = false
@@ -416,6 +487,7 @@ export default {
             this.infoContent = this.$refs.signInfoRef.$el.outerHTML
             this.infoWinOpen = true
         },
+        
         async getViennaSignImage(viennaId) {
 
             await axios.get('api/vienna/' + viennaId + '?token=' + localStorage.getItem("api_token"))
@@ -594,6 +666,10 @@ export default {
         padding: 5px 5px 5px 5px;
 
         text-align: center;
+    }
+
+    .toolboxButtonActive {
+        background-color: #272729;
     }
 
     .toolboxItem {

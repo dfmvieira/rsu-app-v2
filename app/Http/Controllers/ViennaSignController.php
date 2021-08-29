@@ -177,6 +177,7 @@ class ViennaSignController extends Controller
         return response()->json("ok");
     }
 
+
     /**
      * Display a listing of the signs categories.
      *

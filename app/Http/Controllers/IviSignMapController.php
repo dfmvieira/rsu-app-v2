@@ -133,7 +133,7 @@ class IviSignMapController extends Controller
 
         return response()->json($iviSign, 201);
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -218,9 +218,27 @@ class IviSignMapController extends Controller
 
 
         return response()->json([
-            'message'=>'Sign Updated Successfully!!',
+            'message'=>'Sign Updated Successfully!',
         ]); 
     }
+
+    /**
+     * Update the coordinates of the sign.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Array $coordinates
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateCoordinates(Request $request, $id) {
+        DB::table('ivi_signs_map')
+            ->where('id', '=', $id)
+            ->update(['latitude' => $request['latitude'], 'longitude' => $request['longitude']]);
+
+        return response()->json([
+            'message'=>'Coordinates Updated Successfully!',
+        ]);
+    }
+
 
     /**
      * Remove the specified resource from storage.

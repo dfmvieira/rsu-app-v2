@@ -65,6 +65,7 @@ Route::group(['middleware' => 'api'], function ($router) {
 
         Route::put('/{id}', 'IviSignMapController@update')->name('ivisign.update');
         Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
+        Route::put('/updatecoordinates/{id}', 'IviSignMapController@updateCoordinates')->name('ivisign.updatecoordinates');
 
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });
