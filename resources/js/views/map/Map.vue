@@ -470,8 +470,6 @@ export default {
         },
 
         showPolyLines(sign) {
-
-            
             const detectionCoordinates = [
                 { lat: sign.detection_latitude1, lng: sign.detection_longitude1 },
                 { lat: sign.detection_latitude2, lng: sign.detection_longitude2 },
@@ -704,9 +702,26 @@ export default {
             document.onmouseup = null
             document.onmousemove = null
         },
+
+        // GET CURRENT USER LOCATION
+        getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    this.$refs.mapRef.$mapPromise.then((map) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        }
+
+                        map.setCenter(pos)
+                    })
+                })
+            }
+        }
     },
     mounted() {
         this.getIviMapSigns();
+        this.getCurrentLocation()
     },
 }
 </script>
