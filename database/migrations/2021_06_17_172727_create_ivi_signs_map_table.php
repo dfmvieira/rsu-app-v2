@@ -23,12 +23,11 @@ class CreateIviSignsMapTable extends Migration
             $table->double('longitude', 16, 13);
             $table->string('comment');
             $table->boolean('locked');
+            $table->foreignId('IDDetection');
+            $table->foreignId('IDAwareness');
+            $table->foreignId('IDRelevance');
             $table->boolean('status');
             $table->boolean('published');
-
-            /* $table->foreignId('locationID');
-            $table->foreignId('envelopeIVI');
-            $table->foreignId('IVIMID'); */
             $table->timestamps();
         });
     }
@@ -43,3 +42,5 @@ class CreateIviSignsMapTable extends Migration
         Schema::dropIfExists('ivi_signs_map');
     }
 }
+
+            

@@ -16,11 +16,11 @@ const Widgets = () => import('../views/widgets/Widgets.vue')
 // Views - Components
 const Map = () => import('../views/map/Map.vue')
 const InsertSign = () => import('../views/map/InsertSign.vue')
+const SignInfo = () => import('../views/map/SignInfo.vue')
 const ViennaSigns = () => import('../views/viennaSigns/ViennaSigns.vue')
 const ViennaSignsCategories = () => import('../views/viennaSigns/ViennaSignsCategories.vue')
 const InsertViennaSign = () => import('../views/viennaSigns/InsertViennaSign.vue')
 const InsertViennaSignCategory = () => import('../views/viennaSigns/InsertViennaSignCategory.vue')
-
 const IVIsigns = () => import('../views/map/IVIsigns.vue')
 
 const Entity = () => import('../views/entity/Entity.vue')
@@ -29,6 +29,8 @@ const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 
 const Signpublication = () => import('../views/signPublication/Signpublication.vue')
 const PublishedSigns = () => import('../views/signPublication/PublishedSigns.vue')
+
+const NewDeploy = () => import('../views/deployGroups/newDeploy.vue')
 
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
@@ -243,6 +245,22 @@ function configRoutes () {
             {
               path: '/signpublication/add',
               component: Signpublication,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+          ]
+        },
+        {
+          path: 'deploygroups',
+          meta: { label: 'deploygroups'},
+          component: {
+            render (c) {return c('router-view')}
+          },
+          children: [
+            {
+              path: '',
+              component: NewDeploy,
               meta: {
                 requiresAdmin: true
               }
@@ -579,3 +597,4 @@ function configRoutes () {
     }
   ]
 }
+

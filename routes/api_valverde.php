@@ -37,47 +37,44 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('resource/{table}/resource', 'ResourceController');
 
     Route::prefix('vienna')->group(function () {
-        Route::get('/', 'ViennaSignController@index')->name('vienna.index')->middleware(['admin', 'deploymanager']);;
+        Route::get('/', 'ViennaSignController@index')->name('vienna.index')->middleware(['admin', 'deploymanager']);
         Route::get('/signscategories' , 'ViennaSignController@getSignsCategories')->name('vienna.signscategories')->middleware(['admin', 'deploymanager']);
         Route::get('/{id}', 'ViennaSignController@show')->name('vienna.show')->middleware(['admin', 'deploymanager']);
-
         Route::post('/insertsign', 'ViennaSignController@store')->name('vienna.store')->middleware(['admin', 'deploymanager']);
         Route::post('/insertcategory', 'ViennaSignController@storeCategories')->name('vienna.storecategory')->middleware(['admin', 'deploymanager']);
-
         Route::delete('/{id}', 'ViennaSignController@delete')->name('vienna.destroy');
         Route::delete('/categories/{id}', 'ViennaSignController@deleteCategories')->name('vienna.destroycategories');
-
         Route::put('/categories/{id}', 'ViennaSignController@updateCategory')->name('vienna.updatecategories');
-        Route::put('/{id}', 'ViennaSignController@update')->name('vienna.update');
+        Route::put('/{id}', 'ViennaSignController@edit')->name('vienna.update');
     });
 
     Route::prefix('entity')->group(function () {
         Route::get('/', 'EntityController@index')->name('entity.index')->middleware(['admin']);
-
-        Route::post('/insert', 'EntityController@store')->name('entity.store')->middleware(['admin']);
-
         Route::put('/{id}', 'EntityController@edit')->name('entity.update');
+        Route::post('/insert', 'EntityController@store')->name('entity.store')->middleware(['admin']);
+    });
+
+    Route::prefix('deploy')->group(function () {
+        Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store')->middleware(['admin', 'deploymanager']);
     });
 
 
 
     Route::prefix('ivisign')->group(function () {
         Route::get('/', 'IviSignMapController@index')->name('ivisign.index')->middleware(['admin', 'planner', 'monitor', 'deploymanager', 'technician']);
-        Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
-        Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
-        Route::get('/zones/{id}', 'IviSignMapController@getZones')->name('ivisign.zones');
         Route::get('/published', 'IviSignMapController@getpublishedsigns')->name('ivisign.published');
         Route::get('/unpublished', 'IviSignMapController@getunpublishedsigns')->name('ivisign.unpublished');
-
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
+        Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
+        Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
+        Route::put('/{id}', 'IviSignMapController@publishedUpdate')->name('ivisign.publishedUpdate');
+    });
 
-        Route::put('/{id}', 'IviSignMapController@update')->name('ivisign.update');
-        Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
-        Route::put('/updatecoordinates/{id}', 'IviSignMapController@updateCoordinates')->name('ivisign.updatecoordinates');
-        Route::put('/publicationupdate/{id}', 'IviSignMapController@publishedUpdate')->name('ivisign.publishedUpdate');
-
-        Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
-    });   
+    /* Route::prefix('signpublication')->group(function () {
+        Route::get('/', 'EntityController@index')->name('entity.index');
+    });
+ */
+    
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');
@@ -94,6 +91,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         
         Route::prefix('user')->group(function () {
             Route::get('/', 'UsersController@index')->name('user.index');
+            Route::get('/all', 'UsersController@usersbyentity')->name('user.usersbyentity');
             Route::post('/create', 'UsersController@create')->name('user.create');
         });
 

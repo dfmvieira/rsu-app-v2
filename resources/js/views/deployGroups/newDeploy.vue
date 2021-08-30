@@ -11,51 +11,55 @@
             >
               ({{dismissCountDown}}) {{ message }}
             </CAlert>
+      
       <CForm>
-        <CInput
-          label="Vienna ID"
-          horizontal
-          :lazy="false"
-          :value.sync="viennaSign.id"
-          
-          placeholder="Vienna ID"
-          invalidFeedback="This is a required field and must be at least 1 characters"
-        />
 
         <CInput
           label="Name"
           horizontal
           :lazy="false"
-          :value.sync="viennaSign.name"
+          :value.sync="deploy.name"
           
           placeholder="Name"
           invalidFeedback="This is a required field and must be at least 1 character"
         />
-
-        <CSelect
-          label="Select category"
+        <CInput
+          label="Notes"
           horizontal
-          :value.sync="viennaSign.IDCategory"
+          :lazy="false"
+          :value.sync="deploy.notes"
+          
+          placeholder="Notes"
+          invalidFeedback="This is a required field and must be at least 1 character"
+        />
+        
+        <Multiselect 
+          :multiple="true"
+          :close-on-select="false"
+          v-model="signs" 
           :options="options"
-          placeholder="Please select category"
-        />
+          placeholder="Please select sigs" 
+          label="label" 
+          track-by="value"
+          @input="updateSigns"
+          />
 
-        <CInputFile
-          label="Insert image"
-          placeholder="Please upload a image"
-          horizontal
-          @change="onImageChange"
-        />
+          <Multiselect 
+            :multiple="true"
+            :close-on-select="false"
+            v-model="users" 
+            :options="options2"
+            placeholder="Please select users"
+            label="label" 
+            track-by="id"  
+            @input="updateUsers"      
+            
+          />
 
 
-        <!-- <CRow>
-          <CCol sm="3">
-          </CCol>
-          <CCol sm="9">
-            <input type="file" v-on:change="onImageChange">
-          </CCol>
-        </CRow> -->
 
+        
+        
         <CRow>
           <CButton color="primary" @click="submit">Submit</CButton>
           
@@ -77,10 +81,16 @@
 import axios from 'axios'
 import { validationMixin } from "vuelidate"
 import { required, minLength} from "vuelidate/lib/validators"
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 
 export default {
   name: 'InsertViennaSign',
+
+  components: {
+    Multiselect,
+  },
    
   data() {
     return {
@@ -88,17 +98,17 @@ export default {
       horizontal: { label:'col-3', input:'col-9' },
       submitted: false,
       options: [],
-      filename: '',
-      viennaSign: {
-        id: '',
+      options2: [],
+      deploy: {
+
         name: '',
-        //image: '',
-        image: {
-          name: '',
-          base64: '',
-        },
-        IDCategory: null,
+        notes: '',
+        status: 0,
+        signs: [],
+        users: [],
       },
+      signs: [],
+      users: [],
       showMessage: false,
       message: '',
       dismissSecs: 7,
@@ -131,6 +141,57 @@ export default {
     }
   },
   methods: {
+
+    getIVIS() {
+      axios.get('api/ivisign/unpublished'+ '?token=' + localStorage.getItem("api_token")).then(response => {
+          response.data.forEach(item => {
+          let i = {
+              id: item.id,
+              label: item.name
+          }
+          this.options.push(i)
+          
+        })
+      })
+    },
+
+    getUsers() {
+      axios.get('api/user/all'+ '?token=' + localStorage.getItem("api_token")).then(response => {
+          response.data.forEach(item => {
+          let i = {
+              id: item.id,
+              label: item.name
+          }
+          this.options2.push(i)
+          
+        })
+        console.log(this.options2)
+      })
+      
+    },
+
+    updateSigns(signs) {
+      let ids = [];
+
+      signs.forEach((sign) => {
+            ids.push(sign.id);
+      });
+
+      this.deploy.signs = ids;
+      console.log(this.deploy.signs)
+    },
+
+    updateUsers(users) {
+      let ids = [];
+
+      users.forEach((user) => {
+            ids.push(user.id);
+      });
+
+      this.deploy.users = ids;
+      console.log(this.deploy.users)
+    },
+      
     checkIfValid (fieldName) {
       const field = this.$v.form[fieldName]
       if (!field.$dirty) {
@@ -139,21 +200,9 @@ export default {
       return !(field.$invalid || field.$model === '')
     },
 
-    /* submit () {
-      if (this.isValid) {
-        this.submitted = true
-      }
-    }, */
-
-    validate () {
-      console.log(this.viennaSign)
-      /* console.log(exampleFormControlFile1.value) */
-      /* this.viennaSign.image=this.exampleFormControlFile1.value; */
-      this.$v.$touch()
-    },
 
     reset () {
-      this.viennaSign = this.getEmptyForm()
+      this.deploy = this.getEmptyForm()
       this.submitted = false
       this.$v.$reset()
     },
@@ -161,60 +210,34 @@ export default {
     getEmptyForm () {
       return {
 
-          id: '',
-          name: '',
-          image: {
-            name: '',
-            base64: '',
-          },
-          IDCategory: null,
+        name: '',
+        notes: '',
+        status: 0,
+        options: [],
+        options2: [],
         
       }
     },
 
-    onImageChange(file, event) {
-      console.log(file[0])
-      let image = file[0];
-      this.viennaSign.image.name = image.name;
-      this.createImage(image);
-    },
-    createImage(file) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          this.viennaSign.image.base64 = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    },
+   
 
     async load() {
-        this.viennaSign = await this.getEmptyForm();
+        this.deploy = await this.getEmptyForm();
         await this.$nextTick() // waits for the next event tick before completeing function.
     },
 
-    getCategories() {
-      axios.get('/api/vienna/signscategories').then(response => {
-        response.data.forEach(item => {
-          let i = {
-              value: item.id,
-              label: item.category
-          }
-          this.options.push(i)
-          
-        })
-      })
-    },
+    
 
     submit() {
-      axios.post('api/vienna/insertsign', this.viennaSign)
+      
+      axios.post('api/deploy/insert', this.deploy)
         .then(response => {
-            this.message = 'Successfully created sign.';
+            this.message = 'Successfully created sign deploy.';
             this.showAlert();
 
-            this.viennaSign = this.getEmptyForm();
+            this.deploy = this.getEmptyForm();
 
-            //console.log(response);
-            /* this.showSuccess = true;
-            this.successMessage = 'Sign Created'; */
+     
             this.submitted = true;
             
             
@@ -239,10 +262,12 @@ export default {
       showAlert () {
           this.dismissCountDown = this.dismissSecs
       },
-  },
+    },
+
 
   mounted() {
-    this.getCategories();
+    this.getIVIS();
+    this.getUsers();
   },
 }
 </script>

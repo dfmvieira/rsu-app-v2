@@ -86,6 +86,7 @@ import {
   cilListRich,
   cilLocationPin,
   cilLockLocked,
+  cilLockUnlocked,
   cilMagnifyingGlass,
   cilMap,
   cilMoon,
@@ -123,7 +124,7 @@ import {
   cilClone,
   cilBuilding,
   cilHttps,
-  cilNewspaper
+  cilNewspaper,
 } from '@coreui/icons'
 import { logo } from './logo'
 
@@ -182,6 +183,7 @@ export const iconsSet = Object.assign({}, { logo }, {
   cilListRich,
   cilLocationPin,
   cilLockLocked,
+  cilLockUnlocked,
   cilMagnifyingGlass,
   cilMap,
   cilMoon,
@@ -219,7 +221,7 @@ export const iconsSet = Object.assign({}, { logo }, {
   cilClone,
   cilBuilding,
   cilHttps,
-  cilNewspaper
+  cilNewspaper,
 }, {
   cifUs,
   cifBr,

@@ -16,7 +16,6 @@ class CreateSignsGroupsTable extends Migration
         Schema::create('signs_groups', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ID_ivi_signs_map');
-            $table->foreignId('ID_Group');
             $table->timestamps();
         });
     }

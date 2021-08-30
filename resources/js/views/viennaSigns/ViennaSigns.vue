@@ -161,7 +161,6 @@ export default {
     methods: {
         getViennaSigns() {
             axios.get('api/vienna').then(response => {
-                console.log(response.data)
                 this.signs=response.data
             })
         },

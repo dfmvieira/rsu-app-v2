@@ -37,6 +37,25 @@ class UsersController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function usersbyentity()
+    {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        $users = DB::table('users')->where('IDEntity', '=', $entityId)->get();
+
+        return response()->json($users, 200);
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
