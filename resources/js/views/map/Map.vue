@@ -1,6 +1,14 @@
 <template>
     <CCard>
         <CCardBody style="padding: 0; z-index:0">
+            <input
+                id='map_input'
+                type='input'
+                placeholder="Map Search"
+                class='form-control'
+                v-model="searchInput"
+            />
+
             <GmapMap
                 class="map"
                 ref="mapRef"
@@ -22,7 +30,7 @@
                 @click="markerHandler(m)"
                 @dragend="dragMarkerHandler(m, $event.latLng)"
             />
-            </GmapMap>
+            </GmapMap>            
         </CCardBody>
 
 
@@ -63,6 +71,15 @@
                 Toolbox
             </div>
             <div class="toolboxBody">
+                <div class="toolboxItemFull">
+                    <button class="toolboxButton"
+                    v-on:click="toolboxHandler('search')"
+                    v-c-tooltip="'Search in Map'"
+                    v-bind:class="{toolboxButtonActive: searchToggle}">
+                        <b-icon icon="search" style="width: 20px; height: 20px; color: white"></b-icon>
+                    </button>
+                </div>
+                
                 <div class="toolboxItem">
                     <button class="toolboxButton"
                     v-on:click="toolboxHandler('add')"
@@ -182,13 +199,15 @@ import InsertSign from './InsertSign.vue'
 import SignInfo from './SignInfo.vue'
 
 Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyC0XdUsH5A6srnoLVH2q9WA1lhiHcVSF3w'
-    // key: ''
-    // To use the Google Maps JavaScript API, you must register your app project on the Google API Console and get a Google API key which you can add to your app
-    // v: 'OPTIONAL VERSION NUMBER',
-    // libraries: 'places', //// If you need to use place input
-  }
+    load: {
+        key: 'AIzaSyC0XdUsH5A6srnoLVH2q9WA1lhiHcVSF3w',
+        // To use the Google Maps JavaScript API, you must register your app project on the Google API Console and get a Google API key which you can add to your app
+        // v: 'OPTIONAL VERSION NUMBER',
+        libraries: 'places', //// If you need to use place input
+
+        //// If you want to automatically install all the components this property must be set to 'true':
+        installComponents: true
+    }
 });
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
@@ -258,7 +277,11 @@ export default {
             showConfirmationModal: false,
             signToDelete: [],
 
+            // SEARCH
+            searchInput: '',
+
             // TOOLBOX
+            searchToggle: false,
             addToggle: false,
             deleteToggle: false,
             editToggle: false,
@@ -278,7 +301,13 @@ export default {
         },
 
         toolboxHandler(action) {
-            if (action == 'add') {
+            if (action == 'search') {
+                if (this.searchToggle) {
+                    this.searchToggle = false
+                } else {
+                    this.searchToggle = true
+                }
+            }else if (action == 'add') {
                 if (this.addToggle) {
                     this.addToggle = false
                     this.addSignListener.remove()
@@ -679,6 +708,49 @@ export default {
             return linePoint
         },
 
+        searchAutoComplete() {
+            this.$refs.mapRef.$mapPromise.then((map) => {
+                // Create the search box and link it to the UI element.
+                
+                const input = document.getElementById("map_input")
+                const searchBox = new google.maps.places.SearchBox(input)
+
+                console.log(searchBox)
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+                // Bias the SearchBox results towards current map's viewport.
+                map.addListener("bounds_changed", () => {
+                    searchBox.setBounds(map.getBounds());
+                });
+
+                // Listen for the event fired when the user selects a prediction and retrieve more details for that place.
+                searchBox.addListener("places_changed", () => {
+                    const places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+
+                    // For each place, get the icon, name and location.
+                    const bounds = new google.maps.LatLngBounds();
+                    places.forEach((place) => {
+                    if (!place.geometry || !place.geometry.location) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                    });
+                    map.fitBounds(bounds);
+                });
+            })
+        },
+
         // ############# TOOLBOX METHODS ################
         dragMouseDown: function (event) {
             event.preventDefault();
@@ -720,8 +792,9 @@ export default {
         }
     },
     mounted() {
-        this.getIviMapSigns();
+        this.getIviMapSigns()
         this.getCurrentLocation()
+        this.searchAutoComplete()
     },
 }
 </script>
@@ -739,7 +812,8 @@ export default {
         border: 1px #000;
         width: 100px;
         padding-bottom: 5px;
-        
+        top: 60px;
+        left: 10px;
     }
 
     .toolboxHeader {
@@ -774,6 +848,12 @@ export default {
         background-color: #272729;
     }
 
+    .toolboxItemFull {
+        width: 100%;
+        float: left;
+        padding: 5px 5px 0px 5px;
+    }
+
     .toolboxItem {
         width: 50%;
         float: left;
@@ -784,5 +864,24 @@ export default {
         width: 50%;
         float: left;
         padding: 5px 5px 0px 2.5px;
+    }
+
+    #map_input {
+        position: absolute;
+        z-index: 999999999999;
+        background-color: #2c2c34;
+        left: 180px;
+        top: 12px;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+        max-width: 400px;
+    }
+
+    .hide {
+        display: none;
     }
 </style>

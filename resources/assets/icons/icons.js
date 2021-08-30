@@ -124,7 +124,7 @@ import {
   cilClone,
   cilBuilding,
   cilHttps,
-  cilNewspaper
+  cilNewspaper,
 } from '@coreui/icons'
 import { logo } from './logo'
 
@@ -221,7 +221,7 @@ export const iconsSet = Object.assign({}, { logo }, {
   cilClone,
   cilBuilding,
   cilHttps,
-  cilNewspaper
+  cilNewspaper,
 }, {
   cifUs,
   cifBr,
