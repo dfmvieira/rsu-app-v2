@@ -4,8 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers;
-use App\Http\Middleware\Admin;
-use App\Http\Middleware\Authenticate;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +60,7 @@ Route::group(['middleware' => 'api'], function ($router) {
 
 
     Route::prefix('ivisign')->group(function () {
-        Route::get('/', 'IviSignMapController@index')->name('ivisign.index')->middleware(['admin', 'planner', 'monitor', 'deploymanager', 'technician']);
+        Route::get('/', 'IviSignMapController@index')->name('ivisign.index');
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
         Route::get('/zones/{id}', 'IviSignMapController@getZones')->name('ivisign.zones');
