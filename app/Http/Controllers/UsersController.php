@@ -41,6 +41,17 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function username()
+    {
+        $user = auth()->user();
+        return response()->json($user, 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function usersbyentity()
     {
         $user = auth()->user();
