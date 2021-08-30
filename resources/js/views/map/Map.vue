@@ -7,7 +7,7 @@
                 placeholder="Map Search"
                 class='form-control'
                 v-model="searchInput"
-                v-bind:class="{ hide: searchToggle }"
+                v-bind:class="{ hide: !searchToggle }"
             />
 
             <GmapMap
