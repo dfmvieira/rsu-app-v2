@@ -124,12 +124,18 @@ class UsersAndNotesSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'menuroles' => 'planner,admin',
+            'menuroles' => 'admin,deploymanager,entityadmin,factory,maintenanceteam,monitor,planner,technician',
             'IDEntity' => 1,
             'status' => 'Active'
         ]);
         $user->assignRole('admin');
+        $user->assignRole('deploymanager');
+        $user->assignRole('entityadmin');
+        $user->assignRole('factory');
+        $user->assignRole('maintenanceteam');
+        $user->assignRole('monitor');
         $user->assignRole('planner');
+        $user->assignRole('technician');
 
         $user = User::create([
             'name' => 'entityadmin',

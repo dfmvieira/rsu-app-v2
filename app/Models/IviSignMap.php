@@ -21,7 +21,9 @@ class IviSignMap extends Model
         'longitude',
         'comment',
         'locked',
-        'status',
-        'published'
+        'published',
+        'IDDetection',
+        'IDAwareness',
+        'IDRelevance',
     ];
 }

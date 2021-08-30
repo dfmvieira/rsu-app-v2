@@ -6,13 +6,6 @@
             </slot>
         </CCardHeader>
         <CCardBody>
-            <CAlert
-              :show.sync="dismissCountDown"
-              color="success"
-              fade
-            >
-              ({{dismissCountDown}}) {{ message }}
-            </CAlert>
             <CDataTable
             :items="ivis"
             :fields="fields"
@@ -26,26 +19,24 @@
             >
             <template #published="{item, index}">
                 <td class="py-2">
-                <input type="checkbox" id="checkbox" v-model="item.published" @change="update(item.id)">
+                <input type="checkbox" id="checkbox" v-model="item.published" @change="update(item)">
                 </td>
-            </template>
-            <template #details="{item, index}">
-                <CCollapse :show="details.includes(index)">
-                    <CForm>
-                        Published: 
-                        <input type="checkbox" id="checkbox" v-model="item.published">
-                        <CButton
-                            @click="update(item.id)"
-                            size="sm" 
-                            color="primary"
-                            >
-                            Guardar
-                        </CButton>
-                    </CForm>
-                </CCollapse>
             </template>
             </CDataTable>
         </CCardBody>
+
+        <CToaster :autohide="3000">
+            <template v-for="toast in fixedToasts">
+                <CToast
+                :key="'toast' + toast"
+                :show="true"
+                header="Info"
+                style="max-height: 90px;"
+                >
+                    {{ toastMessage }}
+                </CToast>
+            </template>
+        </CToaster>
     </CCard>
 </template>
 
@@ -58,12 +49,9 @@ export default {
             ivis: [],
             fields: [
                 {key: 'id', label: 'ID'},
-                {key: 'entityId', label: 'Entity Id'},
                 {key: 'name', label: 'Name'},  
                 {key: 'GUID', label: 'GUID'},
                 {key: 'viennaSignId', label: 'Vienna Sign Id'},
-                {key: 'locked', label: 'Locked'},
-                {key: 'status', label: 'Status'},
                 {key: 'comment', label: 'Comment'},
                 {key: 'latitude', label: 'Latitude'},              
                 {key: 'longitude', label: 'Longitude'}, 
@@ -83,21 +71,23 @@ export default {
                 published: '',
                 _method:"patch"
             },
-            showMessage: false,
-            message: '',
             dismissSecs: 7,
             dismissCountDown: 0,
             showDismissibleAlert: false,
+
+            // TOAST
+            toastMessage: '',
+            fixedToasts: 0
 
         }
     },
     methods: {
         getIVIS() {
-            axios.get('api/ivisign'+ '?token=' + localStorage.getItem("api_token")).then(response => {
-                console.log(response.data)
-                this.ivis=response.data
-                this.ivi=this.ivis[0]
-                console.log(this.ivis)
+            axios.get('api/ivisign?token=' + localStorage.getItem("api_token"))
+            .then(response => {
+                this.ivis = response.data
+            }).catch(err => {
+                console.log(err)
             })
         },
         
@@ -106,40 +96,30 @@ export default {
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
         },
             
-        update(id){
-            console.log(this.ivi)
-         /*    let self = this; */
-           axios.put(`api/ivisign/publicationupdate/${id.toString()}`, this.ivi)
-               .then(response=>{
-                console.log("sucess")
-                
-                self.message = 'Sign successfully published.';
-                self.showAlert();
-               /*  this.loadViennaSigns() */
-
-                    
+        update(sign){
+           axios.put('api/ivisign/publicationupdate/' + sign.id, sign )
+               .then(response => {
+                    this.insertToast(response.data.message)
                })
-               .catch(()=>{
-                  console.log("Error.....")
+               .catch(err => {
+                  console.log(err)
                })
         },
- /*        async loadViennaSigns() {
-            this.signs = await this.getEntities();
-            this.viennaSign = await this.getEmptyForm();
-            await this.$nextTick() // waits for the next event tick before completeing function.
-        }, */
+
+        // Insert Toasts
+        insertToast(message) {
+            this.fixedToasts++
+            this.toastMessage = message
+        },
+
 
         countDownChanged (dismissCountDown) {
             this.dismissCountDown = dismissCountDown
-        },
-        showAlert () {
-            this.dismissCountDown = this.dismissSecs
         },
     
     },
     mounted() {
         this.getIVIS();
-        
     }
 }
 </script>

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class planner
+class Monitor
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,8 @@ class planner
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        if(empty($user) || !$user->hasRole('planner')){
-            return response()->json(['message' => 'Unauthenticated. Planner role required'], 401);
+        if(empty($user) || !$user->hasRole('monitor')){
+            return response()->json(['message' => 'Unauthenticated. Monitor role required'], 401);
         }
         return $next($request);
     }
