@@ -184,10 +184,10 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('planner,admin,monitor,deploymanager,technician', 'Signs Table', '/ivisignmap/signstable');
         $this->endDropdown();
 
-        $this->beginDropdown('admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
+        /* $this->beginDropdown('admin', 'Ivi Messages', '/ivimessages', 'cil-envelope-open');
             $this->insertLink('admin', 'View Ivi Messages', '/ivimessages');
             $this->insertLink('admin', 'Create Ivi Message', '/ivimessages/create');
-        $this->endDropdown();
+        $this->endDropdown(); */
         
         $this->beginDropdown('deploymanager,admin, technician', 'Sign Publication', '/signpublication', 'cil-newspaper');
             $this->insertLink('deploymanager,admin,technician', 'Published Signs', '/signpublication');
@@ -211,9 +211,7 @@ class MenusTableSeeder extends Seeder
                 $this->insertLink('admin,entityadmin', 'Insert User', '/user/add');
             $this->endDropdown();
             $this->beginDropdown('admin', 'Roles', '#', 'cil-https');
-                $this->insertLink('admin', 'View All', '/roles');
                 $this->insertLink('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'View Role', '/roles/view');
-                $this->insertLink('admin', 'Add Role', '/roles/add');
             $this->endDropdown();
             $this->beginDropdown('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'Entities', '#', 'cil-building');
                 $this->insertLink('admin', 'View All', '/entities');
@@ -221,16 +219,6 @@ class MenusTableSeeder extends Seeder
                 $this->insertLink('admin', 'Add Entity', 'entities/add');
             $this->endDropdown();
         $this->endDropdown();
-
-        $id = $this->beginDropdown('admin', 'Settings', '#', 'cil-puzzle');
-            $id = $this->insertLink('admin', 'Media',    '/media');
-            $id = $this->insertLink('admin', 'Users',    '/users');
-            $id = $this->insertLink('admin', 'Menu',    '/menu');
-            $id = $this->insertLink('admin', 'BREAD',    '/bread');
-            $id = $this->insertLink('admin', 'Email',    '/email');
-        $this->endDropdown();
-
-
         
         /* Create top menu */
         DB::table('menulist')->insert([

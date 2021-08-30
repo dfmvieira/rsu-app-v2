@@ -109,7 +109,7 @@ export default {
         update(id){
             console.log(this.ivi)
          /*    let self = this; */
-           axios.put(`api/ivisign/${id.toString()}`, this.ivi)
+           axios.put(`api/ivisign/publicationupdate/${id.toString()}`, this.ivi)
                .then(response=>{
                 console.log("sucess")
                 
