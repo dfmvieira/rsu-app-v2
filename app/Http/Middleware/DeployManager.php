@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class deploymanager
+class DeployManager
 {
     /**
      * Handle an incoming request.

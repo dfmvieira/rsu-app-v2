@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class monitor
+class MaintenanceTeam
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,8 @@ class monitor
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        if(empty($user) || !$user->hasRole('monitor')){
-            return response()->json(['message' => 'Unauthenticated. Monitor role required'], 401);
+        if(empty($user) || !$user->hasRole('maintenanceteam')){
+            return response()->json(['message' => 'Unauthenticated. Maintenance Team role required'], 401);
         }
         return $next($request);
     }

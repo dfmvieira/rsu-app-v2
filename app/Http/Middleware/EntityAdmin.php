@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class factory
+class EntityAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,8 @@ class factory
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        if(empty($user) || !$user->hasRole('factory')){
-            return response()->json(['message' => 'Unauthenticated. Factory role required'], 401);
+        if(empty($user) || !$user->hasRole('entityadmin')){
+            return response()->json(['message' => 'Unauthenticated. Entity Admin role required'], 401);
         }
         return $next($request);
     }

@@ -42,8 +42,8 @@ class IviSignMapController extends Controller
 
 
             // Remove old latitude and longitude from object
-            unset($signs[$key]->latitude);
-            unset($signs[$key]->longitude);
+            /* unset($signs[$key]->latitude);
+            unset($signs[$key]->longitude); */
         }
         
 
@@ -364,7 +364,7 @@ class IviSignMapController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getpublishedsigns()
     {
@@ -381,13 +381,13 @@ class IviSignMapController extends Controller
             $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 1)->get();
         }
 
-        foreach($signs as $key => $sign) {
+        /* foreach($signs as $key => $sign) {
 
             // Put latitude and longitude in new object inside signs for markers in map
             $signs[$key]->coordinates = new \stdClass();
             $signs[$key]->coordinates->lat = $sign->latitude;
             $signs[$key]->coordinates->lng = $sign->longitude;
-        }
+        } */
         
 
         return response()->json($signs, 200);
@@ -396,7 +396,7 @@ class IviSignMapController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getunpublishedsigns()
     {
@@ -426,16 +426,17 @@ class IviSignMapController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the published status of a sign.
      *
      * @param  \App\Models\IviSignMap  $iviSignMap
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function publishedUpdate (Request $request, $id)
-    {
+    public function publishedUpdate (Request $request, $id) {
         $affected = DB::table('ivi_signs_map')
               ->where('id', $id)
               ->update(['published' => $request->published]);
 
+        return response()->json(['message' => 'Sign updated with success'], 200);
     }
 }

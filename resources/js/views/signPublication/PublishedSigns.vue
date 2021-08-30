@@ -58,12 +58,9 @@ export default {
             ivis: [],
             fields: [
                 {key: 'id', label: 'ID'},
-                {key: 'entityId', label: 'Entity Id'},
                 {key: 'name', label: 'Name'},  
                 {key: 'GUID', label: 'GUID'},
                 {key: 'viennaSignId', label: 'Vienna Sign Id'},
-                {key: 'locked', label: 'Locked'},
-                {key: 'status', label: 'Status'},
                 {key: 'comment', label: 'Comment'},
                 {key: 'latitude', label: 'Latitude'},              
                 {key: 'longitude', label: 'Longitude'}, 
@@ -93,10 +90,10 @@ export default {
     },
     methods: {
         getIVIS() {
-            axios.get('api/ivisign/published'+ '?token=' + localStorage.getItem("api_token")).then(response => {
+            axios.get('api/ivisign/published?token=' + localStorage.getItem("api_token"))
+            .then(response => {
                 console.log(response.data)
                 this.ivis=response.data
-                this.ivi=this.ivis[0]
                 console.log(this.ivis)
             })
         },
