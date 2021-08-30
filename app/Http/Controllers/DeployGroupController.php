@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\DeployGroup;
 use Illuminate\Http\Request;
+use App\Models\UsersDeployGroups;
+use App\Models\SignsDeployGroups;
 
 class DeployGroupController extends Controller
 {
@@ -31,18 +33,31 @@ class DeployGroupController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        dd($request);
         $deploygroup = new DeployGroup();
-        $deploygroup->fill($request->all());
+        $deploygroup->name = $request['name'];
+        $deploygroup->notes = $request['notes'];
         $deploygroup->save();
-
-        return response()->json($deploygroup, 201);
-
         
+        foreach ($request['users'] as $user) {
+            $usersDeployGroups = new UsersDeployGroups();
+            $usersDeployGroups->IDUser = $user;
+            $usersDeployGroups->IDDeployGroup = $deploygroup->id;
+            $usersDeployGroups->save();
+        }
+        
+        foreach($request['signs'] as $sign) {
+            $signsDeployGroups = new SignsDeployGroups();
+            $signsDeployGroups->IDIviSign = $sign;
+            $signsDeployGroups->IDDeployGroup = $deploygroup->id;
+            $signsDeployGroups->save();
+        }
+
+
+        return response()->json(['message' => 'Deploy group has been created'], 201);
     }
 
     /**

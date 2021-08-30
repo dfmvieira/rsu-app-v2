@@ -24,7 +24,7 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -33,13 +33,15 @@ class UsersController extends Controller
         ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered')
         ->whereNull('deleted_at')
         ->get();
+
+
         return response()->json( compact('users', 'you') );
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function usersbyentity()
     {
@@ -50,7 +52,16 @@ class UsersController extends Controller
             return response()->json($response, 401);
         }
 
-        $users = DB::table('users')->where('IDEntity', '=', $entityId)->get();
+        if ($entityId != 0 ) {
+            $users = DB::table('users')
+                ->where('IDEntity', '=', $entityId)
+                ->wherenull('deleted_at')
+                ->get();
+        } else {
+            $users = DB::table('users')
+                ->wherenull('deleted_at')
+                ->get();
+        }
 
         return response()->json($users, 200);
     }
@@ -90,7 +101,7 @@ class UsersController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -105,7 +116,7 @@ class UsersController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($id)
     {

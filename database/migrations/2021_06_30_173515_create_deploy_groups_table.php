@@ -17,9 +17,6 @@ class CreateDeployGroupsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('notes');
-            $table->boolean('status');
-            $table->foreignId('ID_sign_group');
-            $table->foreignId('ID_user_group');
             $table->timestamps();
         });
     }

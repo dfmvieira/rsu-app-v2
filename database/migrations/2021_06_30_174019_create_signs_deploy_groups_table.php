@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSignsGroupsTable extends Migration
+class CreateSignsDeployGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateSignsGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('signs_groups', function (Blueprint $table) {
+        Schema::create('signs_deploy_groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ID_ivi_signs_map');
+            $table->foreignId('IDIviSign');
+            $table->foreignId('IDDeployGroup');
             $table->timestamps();
         });
     }

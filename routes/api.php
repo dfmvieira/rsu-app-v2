@@ -76,6 +76,13 @@ Route::group(['middleware' => 'api'], function ($router) {
 
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });   
+
+
+    Route::prefix('deploy')->group(function () {
+        Route::get('/', 'DeployGroupController@index')->name('deploygroup.index')->middleware(['admin', 'deploymanager', 'technician']);
+
+        Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store')->middleware(['admin', 'deploymanager']);
+    });
     
     Route::group(['middleware' => 'admin'], function ($router) {
         Route::resource('mail',        'MailController');
@@ -92,6 +99,8 @@ Route::group(['middleware' => 'api'], function ($router) {
         
         Route::prefix('user')->group(function () {
             Route::get('/', 'UsersController@index')->name('user.index');
+            Route::get('/byentity', 'UsersController@usersbyentity')->name('user.usersbyentity');
+
             Route::post('/create', 'UsersController@create')->name('user.create');
         });
 
