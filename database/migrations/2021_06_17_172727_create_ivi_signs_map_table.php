@@ -27,6 +27,7 @@ class CreateIviSignsMapTable extends Migration
             $table->foreignId('IDAwareness');
             $table->foreignId('IDRelevance');
             $table->boolean('status');
+            $table->boolean('published');
             $table->timestamps();
         });
     }
@@ -41,3 +42,5 @@ class CreateIviSignsMapTable extends Migration
         Schema::dropIfExists('ivi_signs_map');
     }
 }
+
+            

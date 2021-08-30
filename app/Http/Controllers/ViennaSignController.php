@@ -27,7 +27,7 @@ class ViennaSignController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -68,6 +68,14 @@ class ViennaSignController extends Controller
         /* $request->validate([
         ]); */
 
+        /* $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        } */
+
+
         if($request->image['base64']) {
 
             $image = $request->image;
@@ -78,21 +86,6 @@ class ViennaSignController extends Controller
             if (!Storage::disk('public')->exists('img/ViennaSigns/' . $image['name'])) {
                 Storage::disk('public')->put('img/ViennaSigns/' . $image['name'], $imageBin);
             }
-        }
-
-        if ($request->hasFile('image')) {
-            $image      = $request->file('image');
-            $fileName   = time() . '.' . $image->getClientOriginalExtension();
-
-            $img = Image::make($image->getRealPath());
-            /* $img->resize(120, 120, function ($constraint) { 
-                $constraint->aspectRatio();                 
-            }); */
-
-            $img->stream(); // <-- Key point
-
-            //dd();
-            Storage::disk('local')->put('img/ViennaSigns/'.$request->image['name'], $img, 'public');
         }
 
         $viennaSign = new ViennaSign();
@@ -107,11 +100,9 @@ class ViennaSignController extends Controller
      * Display the specified resource.
      *
      * @param  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function show($id)
     {
-        $viennaSign = DB::table('vienna_signs')->where('id', '=', $id)->get();
 
         return response()->json($viennaSign, 201);
     }
@@ -120,21 +111,9 @@ class ViennaSignController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\ViennaSign  $viennaSign
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ViennaSign  $viennaSign
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request, $id)
     {
         $sign = ViennaSign::findOrFail($id);
 
@@ -142,6 +121,18 @@ class ViennaSignController extends Controller
         return response()->json([
             'message'=>'Sign Updated Successfully!!',
         ]); 
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\ViennaSign  $viennaSign
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**
@@ -177,11 +168,10 @@ class ViennaSignController extends Controller
         return response()->json("ok");
     }
 
-
     /**
      * Display a listing of the signs categories.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
@@ -222,3 +212,6 @@ class ViennaSignController extends Controller
         ]); */
     }
 }
+
+    public function show($id)
+        $viennaSign = ViennaSign::findOrFail($id);

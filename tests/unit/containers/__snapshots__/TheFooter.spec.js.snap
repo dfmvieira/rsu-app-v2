@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TheFooter.vue renders correctly 1`] = `
+<cfooter-stub
+  fixed="true"
+  tag="footer"
+>
+  
+   
+  
+</cfooter-stub>
+`;

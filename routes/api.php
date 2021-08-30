@@ -61,6 +61,8 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/ivisignbyid', 'IviSignMapController@getSignById')->name('ivisign.getsignbyid');
         Route::get('/ivisignsmarkers', 'IviSignMapController@getIviSignsMapMarkers')->name('ivisign.ivisignsmarkers');
         Route::get('/zones/{id}', 'IviSignMapController@getZones')->name('ivisign.zones');
+        Route::get('/published', 'IviSignMapController@getpublishedsigns')->name('ivisign.published');
+        Route::get('/unpublished', 'IviSignMapController@getunpublishedsigns')->name('ivisign.unpublished');
 
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
 
@@ -71,6 +73,10 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });
 
+       
+    Route::prefix('signpublication')->group(function () {
+        Route::get('/', 'EntityController@index')->name('entity.index');
+    });
     
     
     Route::group(['middleware' => 'admin'], function ($router) {

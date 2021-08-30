@@ -28,9 +28,7 @@ class IviSignMapSeeder extends Seeder
             'IDRelevance' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
-            /* 'locationID' => 1,
-            'envelopeIVI' => 1,
-            'IVIMID' => 1 */
+            'published' => 0,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 2,
@@ -46,9 +44,7 @@ class IviSignMapSeeder extends Seeder
             'IDRelevance' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
-            /* 'locationID' => 1,
-            'envelopeIVI' => 1,
-            'IVIMID' => 1 */
+            'published' => 0,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 3,
@@ -64,9 +60,9 @@ class IviSignMapSeeder extends Seeder
             'IDRelevance' => 0,
             'status' => 1,
             'comment' => 'testestestesteste',
-           /*  'locationID' => 1,
-            'envelopeIVI' => 1,
-            'IVIMID' => 1 */
+            'published' => 0,
         ]);
     }
 }
+
+           
