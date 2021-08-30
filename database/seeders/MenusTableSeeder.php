@@ -181,7 +181,6 @@ class MenusTableSeeder extends Seeder
         
         $this->beginDropdown('planner,admin,monitor,deploymanager,technician', 'Ivi Sign Map', '/ivisignmap', 'cil-map');
             $this->insertLink('planner,admin,monitor,deploymanager,technician', 'View', '/ivisignmap');
-            $this->insertLink('planner,admin,deploymanager', 'Add', '/ivisignmap/add');
             $this->insertLink('planner,admin,monitor,deploymanager,technician', 'Signs Table', '/ivisignmap/signstable');
         $this->endDropdown();
 

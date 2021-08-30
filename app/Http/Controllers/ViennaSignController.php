@@ -100,9 +100,12 @@ class ViennaSignController extends Controller
      * Display the specified resource.
      *
      * @param  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    {
+    public function show($id) {
+
+        $viennaSign = ViennaSign::findOrFail($id);
+    
 
         return response()->json($viennaSign, 201);
     }
@@ -212,6 +215,3 @@ class ViennaSignController extends Controller
         ]); */
     }
 }
-
-    public function show($id)
-        $viennaSign = ViennaSign::findOrFail($id);
