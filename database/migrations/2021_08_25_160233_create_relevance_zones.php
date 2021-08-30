@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDetectionZones extends Migration
+class CreateRelevanceZones extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDetectionZones extends Migration
      */
     public function up()
     {
-        Schema::create('detection_zones', function (Blueprint $table) {
+        Schema::create('relevance_zones', function (Blueprint $table) {
             $table->id();
             $table->double('latitude1', 16, 13);
             $table->double('longitude1', 16, 13);
@@ -30,6 +30,6 @@ class CreateDetectionZones extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detection_zones');
+        Schema::dropIfExists('relevance_zones');
     }
 }
