@@ -30,6 +30,8 @@ const InsertEntity = () => import('../views/entity/InsertEntity.vue')
 const Signpublication = () => import('../views/signPublication/Signpublication.vue')
 const PublishedSigns = () => import('../views/signPublication/PublishedSigns.vue')
 
+const DeployGroups = () => import('../views/deployGroups/DeployGroups.vue')
+const DeployGroupsUser = () => import('../views/deployGroups/DeployGroupsUser.vue')
 const NewDeploy = () => import('../views/deployGroups/newDeploy.vue')
 
 // Views - Pages
@@ -147,14 +149,14 @@ function configRoutes () {
               path: '/ivisignmap/add',
               component: InsertSign,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
               }
             },
             {
               path: '/ivisignmap/signstable',
               component: IVIsigns,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
               }
             }
           ]
@@ -239,32 +241,48 @@ function configRoutes () {
               path: '',
               component: PublishedSigns,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
               }
             },
             {
               path: '/signpublication/add',
               component: Signpublication,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
               }
             },
           ]
         },
         {
           path: 'deploygroups',
-          meta: { label: 'deploygroups'},
+          meta: { label: 'DeployGroups'},
           component: {
             render (c) {return c('router-view')}
           },
           children: [
             {
               path: '',
-              component: NewDeploy,
+              component: DeployGroups,
               meta: {
-                requiresAdmin: true
+                requiresAdmin: false
               }
             },
+            {
+              path: '/deploygroups/user',
+              component: DeployGroupsUser,
+              meta: {
+                requiresAdmin: false
+
+              }
+            },
+            {
+              path: '/deploygroups/add',
+              component: NewDeploy,
+              meta: {
+                requiresAdmin: false
+
+              }
+            }
           ]
         },
         {

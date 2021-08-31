@@ -42,6 +42,10 @@ class GetSidebarMenu implements MenuInterface{
         $this->getMenuFromDB($menuName, 'admin', $locale);
     }
 
+    private function getRoleMenu($locale, $role, $menuName) {
+        $this->getMenuFromDB($menuName, $role, $locale);
+    }
+
     public function get($roles, $locale, $menuName = 'sidebar menu'){
         $roles = explode(',', $roles);
         if(empty($roles)){
@@ -50,7 +54,21 @@ class GetSidebarMenu implements MenuInterface{
             $this->getAdminMenu($locale, $menuName);
         }elseif(in_array('user', $roles)){
             $this->getUserMenu($locale, $menuName);
-        }else{
+        }elseif(in_array('entityadmin', $roles)){
+            $this->getRoleMenu($locale, 'entityadmin', $menuName);
+        }elseif(in_array('planner', $roles)){
+            $this->getRoleMenu($locale, 'planner', $menuName);
+        }elseif(in_array('factory', $roles)){
+            $this->getRoleMenu($locale, 'factory', $menuName);
+        }elseif(in_array('maintenanceteam', $roles)){
+            $this->getRoleMenu($locale, 'maintenanceteam', $menuName);
+        }elseif(in_array('monitor', $roles)){
+            $this->getRoleMenu($locale, 'monitor', $menuName);
+        }elseif(in_array('deploymanager', $roles)){
+            $this->getRoleMenu($locale, 'deploymanager', $menuName);
+        }elseif(in_array('technician', $roles)){
+            $this->getRoleMenu($locale, 'technician', $menuName);
+        }else {
             $this->getGuestMenu($locale, $menuName);
         }
         $rfd = new RenderFromDatabaseData;

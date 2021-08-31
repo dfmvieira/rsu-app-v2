@@ -22,6 +22,7 @@ class IviSignMap extends Model
         'comment',
         'locked',
         'published',
+        'deployed',
         'IDDetection',
         'IDAwareness',
         'IDRelevance',

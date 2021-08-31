@@ -19,6 +19,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('deploymanager');
     }
 
     /**
@@ -52,13 +53,42 @@ class UsersController extends Controller
             return response()->json($response, 401);
         }
 
-        if ($entityId != 0 ) {
+        if (!$user->hasRole('admin')) {
             $users = DB::table('users')
                 ->where('IDEntity', '=', $entityId)
                 ->wherenull('deleted_at')
                 ->get();
         } else {
             $users = DB::table('users')
+                ->wherenull('deleted_at')
+                ->get();
+        }
+
+        return response()->json($users, 200);
+    }
+
+    /**
+     * Display a listing of the techniciansOfEntity.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function techniciansOfEntity() {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if (!$user->hasRole('admin')) {
+            $users = DB::table('users')
+                ->where('menuroles', 'LIKE', '%technician%')
+                ->where('IDEntity', '=', $entityId)
+                ->wherenull('deleted_at')
+                ->get();
+        } else {
+            $users = DB::table('users')
+                ->where('menuroles', 'LIKE', '%technician%')
                 ->wherenull('deleted_at')
                 ->get();
         }
@@ -132,7 +162,7 @@ class UsersController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -152,7 +182,7 @@ class UsersController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
