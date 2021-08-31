@@ -56,10 +56,17 @@
                                     </CListGroup>
                                 </CCol>
                                 <CCol lg="6">
-                                    <label>Notes:</label>
-                                    <CTextarea v-model="item.notes" readonly='true' rows="4"></CTextarea>
+                                    <CListGroup>
+                                        <label>Notes:</label>
+                                        <CTextarea v-model="item.notes" readonly='true'></CTextarea>
                                 </CCol>
-                            </CRow>                            
+                            </CRow>
+
+                            <CRow style="margin-top: 20px; text-align: right" v-if="item.deployed == 'No'">
+                                <CButton color="success" @click="setDeployed(item, index)" style="margin-left: 15px">Mark this group has deployed!</CButton>
+                            </CRow>
+                            
+                            
                         </CCardBody>
                     </CCollapse>
                 </template>
@@ -121,15 +128,26 @@
                 axios.get('/api/deploy/user?token=' + localStorage.getItem("api_token"))
                 .then(response => {
                     this.deployGroups = response.data
+                    console.log(this.deployGroups)
                 }).catch(err =>{
+                    this.insertToast(err)
                     console.log(err)
-                    this.insertToast = err
                 })
             },
 
             toggleDetails(index) {
                 const position = this.deployGroupDetails.indexOf(index)
                 position !== -1 ? this.deployGroupDetails.splice(position, 1) : this.deployGroupDetails.push(index)
+            },
+
+            setDeployed(group, index) {
+                axios.put('api/deploy/setdeployed/' + group.id + '?token=' + localStorage.getItem("api_token"), group)
+                .then(response => {
+                    this.deployGroups[index].deployed = 'Yes'
+                    this.insertToast(response.data.message)
+                }).catch(err => {
+                    console.log(err)
+                })
             },
 
             // Insert Toasts
