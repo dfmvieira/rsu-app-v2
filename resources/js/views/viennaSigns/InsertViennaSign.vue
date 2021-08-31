@@ -192,7 +192,7 @@ export default {
     },
 
     getCategories() {
-      axios.get('/api/vienna/signscategories').then(response => {
+      axios.get('/api/vienna/signscategories?token=' + localStorage.getItem("api_token")).then(response => {
         response.data.forEach(item => {
           let i = {
               value: item.id,

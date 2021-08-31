@@ -144,7 +144,7 @@ export default {
     submit() {
       console.log(this.viennaSignCategory)
       let self = this;
-      axios.post('api/vienna/insertcategory', this.viennaSignCategory)
+      axios.post('api/vienna/insertcategory?token=' + localStorage.getItem("api_token"), this.viennaSignCategory)
         .then(response => {
             console.log(response);
             self.message = 'Successfully created category.';

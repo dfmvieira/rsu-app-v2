@@ -26,6 +26,7 @@ class IviSignMapSeeder extends Seeder
             'IDDetection' => 0,
             'IDAwareness' => 0,
             'IDRelevance' => 0,
+            'deployed' => 0,
             'comment' => 'testestestesteste',
             'published' => 0,
         ]);
@@ -41,6 +42,7 @@ class IviSignMapSeeder extends Seeder
             'IDDetection' => 0,
             'IDAwareness' => 0,
             'IDRelevance' => 0,
+            'deployed' => 0,
             'comment' => 'testestestesteste',
             'published' => 0,
         ]);
@@ -56,6 +58,7 @@ class IviSignMapSeeder extends Seeder
             'IDDetection' => 0,
             'IDAwareness' => 0,
             'IDRelevance' => 0,
+            'deployed' => 0,
             'comment' => 'testestestesteste',
             'published' => 0,
         ]);

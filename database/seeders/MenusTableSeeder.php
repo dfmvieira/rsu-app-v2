@@ -15,6 +15,13 @@ class MenusTableSeeder extends Seeder
     private $translationData = array();
     private $defaultTranslation = 'en';
     private $adminRole = null;
+    private $entityAdminRole = null;
+    private $plannerRole = null;
+    private $factoryRole = null;
+    private $maintenanceTeamRole = null;
+    private $monitorRole = null;
+    private $deployManagerRole = null;
+    private $technicianRole = null;
     private $userRole = null;
 
     public function join($roles, $menusId){
@@ -94,8 +101,26 @@ class MenusTableSeeder extends Seeder
         if(in_array('user', $roles)){
             $this->userRole->givePermissionTo($permission);
         }
-        if(in_array('admin', $roles)){
-            $this->adminRole->givePermissionTo($permission);
+        if(in_array('entityadmin', $roles)){
+            $this->entityAdminRole->givePermissionTo($permission);
+        }
+        if(in_array('planner', $roles)){
+            $this->plannerRole->givePermissionTo($permission);
+        }
+        if(in_array('facttory', $roles)){
+            $this->factoryRole->givePermissionTo($permission);
+        }
+        if(in_array('maintenanceteam', $roles)){
+            $this->maintenanceTeamRole->givePermissionTo($permission);
+        }
+        if(in_array('monitor', $roles)){
+            $this->monitorRole->givePermissionTo($permission);
+        }
+        if(in_array('deploymanager', $roles)){
+            $this->deployManagerRole->givePermissionTo($permission);
+        }
+        if(in_array('technician', $roles)){
+            $this->technicianRole->givePermissionTo($permission);
         }
         return $lastId;
     }
@@ -157,6 +182,36 @@ class MenusTableSeeder extends Seeder
         if(empty($this->plannerRole)){
             $this->plannerRole = Role::create(['name' => 'planner']);
         }
+
+        $this->deployManagerRole = Role::where('name' , '=' , 'deploymanager' )->first();
+        if(empty($this->deployManagerRole)){
+            $this->deployManagerRole = Role::create(['name' => 'deploymanager']);
+        }
+
+        $this->entityAdminRole = Role::where('name' , '=' , 'entityadmin' )->first();
+        if(empty($this->entityAdminRole)){
+            $this->entityAdminRole = Role::create(['name' => 'entityadmin']);
+        }
+        
+        $this->factoryRole = Role::where('name' , '=' , 'factory' )->first();
+        if(empty($this->factoryRole)){
+            $this->factoryRole = Role::create(['name' => 'factory']);
+        }
+
+        $this->maintenanceTeamRole = Role::where('name' , '=' , 'maintenanceteam' )->first();
+        if(empty($this->maintenanceTeamRole)){
+            $this->maintenanceTeamRole = Role::create(['name' => 'maintenanceteam']);
+        }
+
+        $this->monitorRole = Role::where('name' , '=' , 'monitor' )->first();
+        if(empty($this->monitorRole)){
+            $this->monitorRole = Role::create(['name' => 'monitor']);
+        }
+
+        $this->technicianRole = Role::where('name' , '=' , 'technician' )->first();
+        if(empty($this->technicianRole)){
+            $this->technicianRole = Role::create(['name' => 'technician']);
+        }
         /* Create Translation languages */
         DB::table('menu_lang_lists')->insert([
             'name' => 'English',
@@ -195,7 +250,8 @@ class MenusTableSeeder extends Seeder
         $this->endDropdown();
 
         $this->beginDropdown('deploymanager,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
-            $this->insertLink('deploymanager,admin', 'New Deploy', '/deploygroups');
+            $this->insertLink('deploymanager,admin', 'View Deploy Groups', '/deploygroups');
+            $this->insertLink('deploymanager,admin', 'New Deploy', '/deploygroups/add');
         $this->endDropdown();
 
         $this->beginDropdown('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Master Data', '#', 'cil-settings');

@@ -141,12 +141,12 @@ export default {
   methods: {
 
     getIVIS() {
-		axios.get('api/ivisign/unpublished?token=' + localStorage.getItem("api_token"))
+		axios.get('api/deploy/signsfordeploy?token=' + localStorage.getItem("api_token"))
 		.then(response => {
 			response.data.forEach(item => {
 				let i = {
 					id: item.id,
-					label: item.name
+					label: item.name + ' - ' + item.GUID
 				}
 				this.signsOptions.push(i)
 			})
@@ -156,7 +156,7 @@ export default {
 	},
 
     getUsers() {
-		axios.get('api/user/byentity?token=' + localStorage.getItem("api_token"))
+		axios.get('api/user/techniciansofentity?token=' + localStorage.getItem("api_token"))
 		.then(response => {
 			response.data.forEach(item => {
 				let i = {

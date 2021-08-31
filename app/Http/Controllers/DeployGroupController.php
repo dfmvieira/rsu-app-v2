@@ -6,17 +6,51 @@ use App\Models\DeployGroup;
 use Illuminate\Http\Request;
 use App\Models\UsersDeployGroups;
 use App\Models\SignsDeployGroups;
+use Illuminate\Support\Facades\DB;
 
 class DeployGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if ($user->hasRole('admin')) {
+            $groups = DB::table('deploy_groups')
+                ->select('*', DB::raw('(CASE WHEN deployed=1 THEN "Yes" ELSE "No" END) as deployed'))
+                ->get();
+        } else {
+            $groups = DB::table('deploy_groups')
+                ->select('*', DB::raw('(CASE WHEN deployed=1 THEN "Yes" ELSE "No" END) as deployed'))
+                ->where('entityID', '=', $entityId)
+                ->get();
+        }
+
+        foreach ($groups as $key => $group) {
+            $groups[$key]->signs = DB::table('ivi_signs_map')
+                ->select('ivi_signs_map.*')
+                ->leftJoin('signs_deploy_groups', 'signs_deploy_groups.IDIviSign', '=', 'ivi_signs_map.id')
+                ->where('signs_deploy_groups.IDDeployGroup', '=', $group->id)
+                ->get();
+
+            $groups[$key]->users = DB::table('users')
+                ->select('users.name', 'users.email')
+                ->leftjoin('users_deploy_groups', 'users_deploy_groups.IDUser', '=', 'users.id')
+                ->where('users_deploy_groups.IDDeployGroup', '=', $group->id)
+                ->get();
+        }
+
+        return response()->json($groups, 200);
+
     }
 
     /**
@@ -37,9 +71,18 @@ class DeployGroupController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
         $deploygroup = new DeployGroup();
         $deploygroup->name = $request['name'];
         $deploygroup->notes = $request['notes'];
+        $deploygroup->entityID = $entityId;
+        $deploygroup->deployed = 0;
         $deploygroup->save();
         
         foreach ($request['users'] as $user) {
@@ -103,5 +146,35 @@ class DeployGroupController extends Controller
     public function destroy(DeployGroup $deployGroup)
     {
         //
+    }
+
+    public function signsForDeploy() {
+
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        $signs = DB::table('ivi_signs_map')
+            ->where('deployed', '=', 0)
+            ->where('entityId', '=', $entityId)
+            ->get();
+
+        return response()->json($signs, 200);
+    }
+
+
+    /**
+     * Set group as deployed.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setDeployed(Request $request, $id) {
+        DB::table('deploy_groups')->where('id', '=', $id)->update(['deployed' => 1]);
+
+        foreach ($request->signs as $sign) {
+            DB::table('ivi_signs_map')->where('id', '=', $sign['id'])->update(['deployed' => 1]);
+        }
+
+        return response()->json(['message' => 'The group with id ' . $id . ' has been marked has deployed']);
     }
 }

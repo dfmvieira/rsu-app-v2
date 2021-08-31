@@ -23,10 +23,12 @@ class CreateIviSignsMapTable extends Migration
             $table->double('longitude', 16, 13);
             $table->string('comment');
             $table->boolean('locked');
+            $table->boolean('deployed');
+            $table->boolean('published');
             $table->foreignId('IDDetection');
             $table->foreignId('IDAwareness');
             $table->foreignId('IDRelevance');
-            $table->boolean('published');
+            //$table->foreignId('IDDeployInfo');
             $table->timestamps();
         });
     }
