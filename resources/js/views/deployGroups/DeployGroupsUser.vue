@@ -2,7 +2,7 @@
     <CCard>
         <CCardHeader>
             <slot name='header'>
-                Deploy Groups
+                My Deploy Groups
             </slot>
         </CCardHeader>
         <CCardBody>

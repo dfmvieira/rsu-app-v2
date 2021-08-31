@@ -253,7 +253,7 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('deploymanager,admin', 'View Deploy Groups', '/deploygroups');
             $this->insertLink('deploymanager,admin', 'New Deploy', '/deploygroups/add');
 
-            $this->insertLink('technician', 'View Deploy Groups', '/deploygroups/user');
+            $this->insertLink('technician', 'My Deploy Groups', '/deploygroups/user');
         $this->endDropdown();
 
         $this->beginDropdown('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'Master Data', '#', 'cil-settings');
