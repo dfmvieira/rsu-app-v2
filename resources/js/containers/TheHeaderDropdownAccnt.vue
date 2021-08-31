@@ -7,7 +7,7 @@
   >
     <template #toggler>
       <CHeaderNavLink>
-        <div class="c-avatar">
+        <div class="c-avatar" style="margin-right: 20px">
           {{ name }}
         </div>
        
