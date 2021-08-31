@@ -419,6 +419,7 @@ export default {
 
                     //map.removeListener(listenerHandler)
                     this.showform = true
+                    this.addSignListener.remove()
 
                     var coordinates = mapsMouseEvent.latLng.toJSON();
 
