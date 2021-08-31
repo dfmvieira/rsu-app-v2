@@ -419,6 +419,7 @@ export default {
 
                     //map.removeListener(listenerHandler)
                     this.showform = true
+                    this.addSignListener.remove()
 
                     var coordinates = mapsMouseEvent.latLng.toJSON();
 
@@ -698,6 +699,8 @@ export default {
                         this.stayToastMessage = ('Click on map to insert the second point for the Point')
                     }
 
+                    console.log(clickCounter)
+
                     if (clickCounter == 2) {
                         this.showform = true
                         this.showStayToast = false
@@ -795,7 +798,7 @@ export default {
     mounted() {
         this.getIviMapSigns()
         this.getCurrentLocation()
-        this.searchAutoComplete()
+        //this.searchAutoComplete()
     },
 }
 </script>

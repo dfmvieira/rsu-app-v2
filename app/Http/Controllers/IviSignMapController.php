@@ -123,7 +123,8 @@ class IviSignMapController extends Controller
         $iviSign->IDDetection = isset($detectionZone->id) ? $detectionZone->id : 0;
         $iviSign->IDAwareness = isset($awarenessZone->id) ? $awarenessZone->id : 0;
         $iviSign->IDRelevance = isset($relevanceZone->id) ? $relevanceZone->id : 0;
-        $iviSign->status = isset($request->status['value']) ? $request->status['value'] : 1;
+        $iviSign->deployed = 0;
+        $iviSign->published = 0;
         
         $iviSign->save();
 
