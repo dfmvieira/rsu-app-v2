@@ -56,17 +56,14 @@
                                     </CListGroup>
                                 </CCol>
                                 <CCol lg="6">
-                                    <CListGroup>
-                                        <label>Notes:</label>
-                                        <CTextarea v-model="item.notes" readonly='true'></CTextarea>
+                                    <label>Notes:</label>
+                                    <CTextarea v-model="item.notes" readonly='true'></CTextarea>
                                 </CCol>
                             </CRow>
 
                             <CRow style="margin-top: 20px; text-align: right" v-if="item.deployed == 'No'">
                                 <CButton color="success" @click="setDeployed(item, index)" style="margin-left: 15px">Mark this group has deployed!</CButton>
                             </CRow>
-                            
-                            
                         </CCardBody>
                     </CCollapse>
                 </template>
