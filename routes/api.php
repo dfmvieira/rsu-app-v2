@@ -99,18 +99,15 @@ Route::group(['middleware' => 'api'], function ($router) {
     
 
     Route::resource('mail',        'MailController');
-        Route::get('prepareSend/{id}', 'MailController@prepareSend')->name('prepareSend');
-        Route::post('mailSend/{id}',   'MailController@send')->name('mailSend');
+    Route::get('prepareSend/{id}', 'MailController@prepareSend')->name('prepareSend');
+    Route::post('mailSend/{id}',   'MailController@send')->name('mailSend');
 
-        Route::resource('bread',  'BreadController');   //create BREAD (resource)
+    Route::resource('bread',  'BreadController');   //create BREAD (resource)
 
-        Route::resource('users', 'UsersController')->except( ['create', 'store'] );
-        Route::get('menu/edit', 'MenuEditController@index');
-        Route::get('menu/edit/selected', 'MenuEditController@menuSelected');
-        Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
-
-        
-       
+    Route::resource('users', 'UsersController')->except( ['create', 'store'] );
+    Route::get('menu/edit', 'MenuEditController@index');
+    Route::get('menu/edit/selected', 'MenuEditController@menuSelected');
+    Route::get('menu/edit/selected/switch', 'MenuEditController@switch');
 
         
     Route::prefix('menu/element')->group(function () { 
