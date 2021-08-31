@@ -93,6 +93,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::prefix('user')->group(function () {
         Route::get('/', 'UsersController@index')->name('user.index');
         Route::get('/techniciansofentity', 'UsersController@techniciansOfEntity')->name('user.usersbyentity');
+        Route::get('/logged', 'UsersController@username')->name('user.username');
 
         Route::post('/create', 'UsersController@create')->name('user.create');
     });

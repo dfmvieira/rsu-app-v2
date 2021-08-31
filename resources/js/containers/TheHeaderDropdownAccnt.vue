@@ -45,16 +45,20 @@ export default {
       });
     },
 
+    getUserInfo() {
+      let self = this;
+      axios.get('api/user/logged?token=' + localStorage.getItem("api_token"))
+      .then(function (response) {
+        self.name = response.data.name
+      }).catch(function (error) {
+        console.log(error);
+        self.$router.push({ path: '/login' })
+      });
+    }
+
   },
-  mounted: function(){
-    let self = this;
-    axios.get('api/user/logged'+ '?token=' + localStorage.getItem("api_token"))
-    .then(function (response) {
-      self.name = response.data.name
-    }).catch(function (error) {
-      console.log(error);
-      self.$router.push({ path: '/login' })
-    });
+  mounted() { 
+    this.getUserInfo()
   }
 }
 </script>
