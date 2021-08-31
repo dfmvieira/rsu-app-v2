@@ -31,6 +31,7 @@ const Signpublication = () => import('../views/signPublication/Signpublication.v
 const PublishedSigns = () => import('../views/signPublication/PublishedSigns.vue')
 
 const DeployGroups = () => import('../views/deployGroups/DeployGroups.vue')
+const DeployGroupsUser = () => import('../views/deployGroups/DeployGroupsUser.vue')
 const NewDeploy = () => import('../views/deployGroups/newDeploy.vue')
 
 // Views - Pages
@@ -264,6 +265,14 @@ function configRoutes () {
               component: DeployGroups,
               meta: {
                 requiresAdmin: false
+              }
+            },
+            {
+              path: '/deploygroups/user',
+              component: DeployGroupsUser,
+              meta: {
+                requiresAdmin: false
+
               }
             },
             {

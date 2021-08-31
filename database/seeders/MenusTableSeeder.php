@@ -249,12 +249,14 @@ class MenusTableSeeder extends Seeder
             $this->insertLink('deploymanager,admin', 'Publish Sign', '/signpublication/add');
         $this->endDropdown();
 
-        $this->beginDropdown('deploymanager,admin', 'Deploy Groups', '/deploygroups', 'cil-people');
+        $this->beginDropdown('deploymanager,admin,technician', 'Deploy Groups', '/deploygroups', 'cil-people');
             $this->insertLink('deploymanager,admin', 'View Deploy Groups', '/deploygroups');
             $this->insertLink('deploymanager,admin', 'New Deploy', '/deploygroups/add');
+
+            $this->insertLink('technician', 'View Deploy Groups', '/deploygroups/user');
         $this->endDropdown();
 
-        $this->beginDropdown('admin, planner, factory, maintenanceteam, entityadmin, monitor, deploymanager, technician', 'Master Data', '#', 'cil-settings');
+        $this->beginDropdown('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'Master Data', '#', 'cil-settings');
         $this->beginDropdown('deploymanager,admin', 'Vienna Signs', '/vienna', 'cil-circle');
                 $this->insertLink('deploymanager,admin', 'View', '/vienna');
                 $this->insertLink('deploymanager,admin', 'Add', '/vienna/add');

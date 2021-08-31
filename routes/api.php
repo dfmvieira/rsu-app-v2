@@ -80,7 +80,9 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     Route::prefix('deploy')->group(function () {
         Route::get('/', 'DeployGroupController@index')->name('deploygroup.index');
+        Route::get('/user', 'DeployGroupController@getGroupsByUser')->name('deploygroup.getGroupsByUser');
         Route::get('/signsfordeploy', 'DeployGroupController@signsForDeploy')->name('signsfordeploy.signsForDeploy');
+        
 
         Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store');
 

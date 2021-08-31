@@ -54,6 +54,46 @@ class DeployGroupController extends Controller
     }
 
     /**
+     * Display a listing of groups per user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getGroupsByUser() {
+        $user = auth()->user();
+
+        if (!isset($user)) {
+            $response['error'] = "Can't get user entity";
+
+            return response()->json($response, 401);
+        }
+
+
+        $groups = DB::table('deploy_groups')
+            ->select('*', DB::raw('(CASE WHEN deployed=1 THEN "Yes" ELSE "No" END) as deployed'))
+            ->leftjoin('users_deploy_groups', 'users_deploy_groups.IDDeployGroup', '=', 'deploy_groups.id')
+            ->where('users_deploy_groups.IDUser', '=', $user->id)
+            ->get();
+       
+        if (!isset($groups)) { 
+            $response['error'] = "This user has no deploy groups";
+
+            return response()->json($response, 401);
+        }
+
+        foreach($groups as $key=>$group) {
+            $groups[$key]->signs = DB::table('ivi_signs_map')
+                    ->select('ivi_signs_map.*')
+                    ->leftJoin('signs_deploy_groups', 'signs_deploy_groups.IDIviSign', '=', 'ivi_signs_map.id')
+                    ->where('signs_deploy_groups.IDDeployGroup', '=', $group->id)
+                    ->get();
+        }
+
+
+        return response()->json($groups, 200);
+
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
