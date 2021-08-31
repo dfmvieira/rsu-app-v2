@@ -56,7 +56,7 @@ export default {
       }).catch(function (error) {
           console.log(error);
       });
-    }
+    },
 
     /* submit() {
       axios.post(this.$$apiAdress + '/api/user/create') 

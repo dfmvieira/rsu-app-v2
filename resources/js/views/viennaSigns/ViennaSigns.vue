@@ -160,8 +160,7 @@ export default {
     },
     methods: {
         getViennaSigns() {
-            axios.get('api/vienna').then(response => {
-                console.log(response.data)
+            axios.get('api/vienna?token=' + localStorage.getItem("api_token")).then(response => {
                 this.signs=response.data
             })
         },
@@ -173,7 +172,7 @@ export default {
 
         deleteSigns(item) {
             let self = this;
-            axios.delete(`api/vienna/${item.id}`)
+            axios.delete(`api/vienna/${item.id}?token=` + localStorage.getItem("api_token"))
                 .then(res => {
                     if (res.data === 'ok')
                         self.message = 'Successfully deleted sign.';
@@ -187,7 +186,7 @@ export default {
         },
         update(item){
             let self = this;
-           axios.put(`api/vienna/${item.id}`, this.viennaSign)
+           axios.put(`api/vienna/${item.id}?token=` + localStorage.getItem("api_token"), this.viennaSign)
                .then(response=>{
                 console.log("sucess")
                 self.message = 'Successfully updated sign.';
@@ -215,7 +214,7 @@ export default {
             await this.$nextTick() // waits for the next event tick before completeing function.
         },
         getCategories() {
-            axios.get('/api/vienna/signscategories').then(response => {
+            axios.get('/api/vienna/signscategories?token=' + localStorage.getItem("api_token")).then(response => {
                 response.data.forEach(item => {
                 let i = {
                     value: item.id,

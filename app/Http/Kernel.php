@@ -56,6 +56,14 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'admin' => \App\Http\Middleware\Admin::class,
+        'deploymanager' => \App\Http\Middleware\DeployManager::class,
+        'entityadmin' => \App\Http\Middleware\EntityAdmin::class,
+        'factory' => \App\Http\Middleware\Factory::class,
+        'maintenanceteam' => \App\Http\Middleware\MaintenanceTeam::class,
+        'monitor' => \App\Http\Middleware\Monitor::class,
+        'planner' => \App\Http\Middleware\Planner::class,
+        'technician' => \App\Http\Middleware\Technician::class,
+
         'cors' => \App\Http\Middleware\Cors::class, 
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

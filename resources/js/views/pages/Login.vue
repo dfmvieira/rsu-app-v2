@@ -25,13 +25,6 @@
                 >
                   <template #prepend-content><CIcon name="cil-lock-locked"/></template>
                 </CInput>
-                <CInput
-                  v-model="entity"
-                  placeholder="Entity"
-                  autocomplete="entity"
-                >
-                  <template #prepend-content><CIcon name="cil-building"/></template>
-                </CInput>
                 <CRow>
                   <CCol col="6" class="text-left">
                     <CButton type="submit" color="primary" class="px-4">Login</CButton>

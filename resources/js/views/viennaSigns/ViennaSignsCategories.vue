@@ -149,7 +149,7 @@ export default {
    
     methods: {
         getViennaCategories() {
-            axios.get('api/vienna/signscategories').then(response => {
+            axios.get('api/vienna/signscategories?token=' + localStorage.getItem("api_token")).then(response => {
                 this.categories=response.data
             })
         },
@@ -165,7 +165,7 @@ export default {
         deleteCategories(item) {
             console.log(item)
             let self = this;
-            axios.delete(`api/vienna/categories/${item.id}`)
+            axios.delete(`api/vienna/categories/${item.id}?token=` + localStorage.getItem("api_token"))
                 .then(res => {
                         if (res.data === 'ok')
                             console.log("sucess")
@@ -186,7 +186,7 @@ export default {
         },
         update(item){
             let self = this;
-            axios.put(`api/vienna/categories/${item.id}`, this.viennaSignCategory)
+            axios.put(`api/vienna/categories/${item.id}?token=` + localStorage.getItem("api_token"), this.viennaSignCategory)
                .then(response=>{
                 console.log("sucess")
                 self.message = 'Successfully updated category.';

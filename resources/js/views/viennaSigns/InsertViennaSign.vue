@@ -40,22 +40,21 @@
           placeholder="Please select category"
         />
 
-        //TODO CInputFile
-        <!-- <CInputFile
+        <CInputFile
           label="Insert image"
           placeholder="Please upload a image"
           horizontal
-          v-on:change="onImageChange"
-        /> -->
+          @change="onImageChange"
+        />
 
 
-        <CRow>
+        <!-- <CRow>
           <CCol sm="3">
           </CCol>
           <CCol sm="9">
             <input type="file" v-on:change="onImageChange">
           </CCol>
-        </CRow>
+        </CRow> -->
 
         <CRow>
           <CButton color="primary" @click="submit">Submit</CButton>
@@ -93,6 +92,7 @@ export default {
       viennaSign: {
         id: '',
         name: '',
+        //image: '',
         image: {
           name: '',
           base64: '',
@@ -172,13 +172,9 @@ export default {
       }
     },
 
-    async load() {
-        this.viennaSign = await this.getEmptyForm();
-        await this.$nextTick() // waits for the next event tick before completeing function.
-    },
-
-    onImageChange(e) {
-      let image = e.target.files[0];
+    onImageChange(file, event) {
+      console.log(file[0])
+      let image = file[0];
       this.viennaSign.image.name = image.name;
       this.createImage(image);
     },
@@ -190,8 +186,13 @@ export default {
         reader.readAsDataURL(file);
     },
 
+    async load() {
+        this.viennaSign = await this.getEmptyForm();
+        await this.$nextTick() // waits for the next event tick before completeing function.
+    },
+
     getCategories() {
-      axios.get('/api/vienna/signscategories').then(response => {
+      axios.get('/api/vienna/signscategories?token=' + localStorage.getItem("api_token")).then(response => {
         response.data.forEach(item => {
           let i = {
               value: item.id,
@@ -204,14 +205,14 @@ export default {
     },
 
     submit() {
-      console.log(this.viennaSign)
-      let self = this;
       axios.post('api/vienna/insertsign', this.viennaSign)
         .then(response => {
-           self.message = 'Successfully created sign.';
-            self.showAlert();
+            this.message = 'Successfully created sign.';
+            this.showAlert();
+
             this.viennaSign = this.getEmptyForm();
-            console.log(response);
+
+            //console.log(response);
             /* this.showSuccess = true;
             this.successMessage = 'Sign Created'; */
             this.submitted = true;

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDeployGroupsTable extends Migration
+class CreateFabricasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateDeployGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('deploy_groups', function (Blueprint $table) {
+        Schema::create('fabricas', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('notes');
-            $table->foreignId('entityID');
-            $table->boolean('deployed');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateDeployGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('deploy_groups');
+        Schema::dropIfExists('fabricas');
     }
 }

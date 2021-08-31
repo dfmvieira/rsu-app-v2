@@ -42,8 +42,8 @@ class IviSignMapController extends Controller
 
 
             // Remove old latitude and longitude from object
-            unset($signs[$key]->latitude);
-            unset($signs[$key]->longitude);
+            /* unset($signs[$key]->latitude);
+            unset($signs[$key]->longitude); */
         }
         
 
@@ -359,5 +359,84 @@ class IviSignMapController extends Controller
             $response['message'] = 'Sign has been unlocked';
         }
         return response()->json($response, 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getpublishedsigns()
+    {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if ($user->hasRole('admin')) {
+            $signs = DB::table('ivi_signs_map')->where('published', '=', 1)->get();
+        } else {
+            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 1)->get();
+        }
+
+        /* foreach($signs as $key => $sign) {
+
+            // Put latitude and longitude in new object inside signs for markers in map
+            $signs[$key]->coordinates = new \stdClass();
+            $signs[$key]->coordinates->lat = $sign->latitude;
+            $signs[$key]->coordinates->lng = $sign->longitude;
+        } */
+        
+
+        return response()->json($signs, 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getunpublishedsigns()
+    {
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
+        if (isset($response['error'])) {
+            return response()->json($response, 401);
+        }
+
+        if ($user->hasRole('admin')) {
+            $signs = DB::table('ivi_signs_map')->where('published', '=', 0)->get();
+        } else {
+            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->where('published', '=', 0)->get();
+        }
+
+        foreach($signs as $key => $sign) {
+
+            // Put latitude and longitude in new object inside signs for markers in map
+            $signs[$key]->coordinates = new \stdClass();
+            $signs[$key]->coordinates->lat = $sign->latitude;
+            $signs[$key]->coordinates->lng = $sign->longitude;
+        }
+        
+
+        return response()->json($signs, 200);
+    }
+
+    /**
+     * Update the published status of a sign.
+     *
+     * @param  \App\Models\IviSignMap  $iviSignMap
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function publishedUpdate (Request $request, $id) {
+        $affected = DB::table('ivi_signs_map')
+              ->where('id', $id)
+              ->update(['published' => $request->published]);
+
+        return response()->json(['message' => 'Sign updated with success'], 200);
     }
 }

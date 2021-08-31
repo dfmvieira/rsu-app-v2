@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSignsDeploysTable extends Migration
+class CreateDeployInfo extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateSignsDeploysTable extends Migration
      */
     public function up()
     {
-        Schema::create('signs_deploys', function (Blueprint $table) {
+        Schema::create('deploy_info', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ID_ivi_signs_map');
-            $table->foreignId('ID_Deploy');
+            $table->date('date');
+            $table->string('observations');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateSignsDeploysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('signs_deploys');
+        Schema::dropIfExists('deploy_info');
     }
 }

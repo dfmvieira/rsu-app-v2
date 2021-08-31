@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSignsGroupsTable extends Migration
+class CreateSignPublicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateSignsGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('signs_groups', function (Blueprint $table) {
+        Schema::create('sign_publications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ID_ivi_signs_map');
-            $table->foreignId('ID_Group');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ class CreateSignsGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('signs_groups');
+        Schema::dropIfExists('sign_publications');
     }
 }
