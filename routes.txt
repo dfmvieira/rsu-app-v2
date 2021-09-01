@@ -1,0 +1,160 @@
++--------+-----------+-----------------------------------------------+-------------------------------+-----------------------------------------------------------------+------------+
+|[32m Domain [39m|[32m Method    [39m|[32m URI                                           [39m|[32m Name                          [39m|[32m Action                                                          [39m|[32m Middleware [39m|
++--------+-----------+-----------------------------------------------+-------------------------------+-----------------------------------------------------------------+------------+
+|        | POST      | api/bread                                     | bread.store                   | App\Http\Controllers\BreadController@store                      | api        |
+|        | GET|HEAD  | api/bread                                     | bread.index                   | App\Http\Controllers\BreadController@index                      | api        |
+|        | GET|HEAD  | api/bread/create                              | bread.create                  | App\Http\Controllers\BreadController@create                     | api        |
+|        | PUT|PATCH | api/bread/{bread}                             | bread.update                  | App\Http\Controllers\BreadController@update                     | api        |
+|        | DELETE    | api/bread/{bread}                             | bread.destroy                 | App\Http\Controllers\BreadController@destroy                    | api        |
+|        | GET|HEAD  | api/bread/{bread}                             | bread.show                    | App\Http\Controllers\BreadController@show                       | api        |
+|        | GET|HEAD  | api/bread/{bread}/edit                        | bread.edit                    | App\Http\Controllers\BreadController@edit                       | api        |
+|        | GET|HEAD  | api/deploy                                    | deploygroup.index             | App\Http\Controllers\DeployGroupController@index                | api        |
+|        | POST      | api/deploy/insert                             | deploygroup.store             | App\Http\Controllers\DeployGroupController@store                | api        |
+|        | PUT       | api/deploy/setdeployed/{id}                   | deployegroup.setdeployed      | App\Http\Controllers\DeployGroupController@setDeployed          | api        |
+|        | GET|HEAD  | api/deploy/signsfordeploy                     | signsfordeploy.signsForDeploy | App\Http\Controllers\DeployGroupController@signsForDeploy       | api        |
+|        | GET|HEAD  | api/deploy/user                               | deploygroup.getGroupsByUser   | App\Http\Controllers\DeployGroupController@getGroupsByUser      | api        |
+|        | GET|HEAD  | api/entity                                    | entity.index                  | App\Http\Controllers\EntityController@index                     | api        |
+|        | POST      | api/entity/insert                             | entity.store                  | App\Http\Controllers\EntityController@store                     | api        |
+|        | PUT       | api/entity/{id}                               | entity.update                 | App\Http\Controllers\EntityController@edit                      | api        |
+|        | GET|HEAD  | api/ivisign                                   | ivisign.index                 | App\Http\Controllers\IviSignMapController@index                 | api        |
+|        | POST      | api/ivisign/insertivisign                     | ivisign.store                 | App\Http\Controllers\IviSignMapController@store                 | api        |
+|        | GET|HEAD  | api/ivisign/ivisignbyid                       | ivisign.getsignbyid           | App\Http\Controllers\IviSignMapController@getSignById           | api        |
+|        | GET|HEAD  | api/ivisign/ivisignsmarkers                   | ivisign.ivisignsmarkers       | App\Http\Controllers\IviSignMapController@getIviSignsMapMarkers | api        |
+|        | PUT       | api/ivisign/publicationupdate/{id}            | ivisign.publishedUpdate       | App\Http\Controllers\IviSignMapController@publishedUpdate       | api        |
+|        | GET|HEAD  | api/ivisign/published                         | ivisign.published             | App\Http\Controllers\IviSignMapController@getpublishedsigns     | api        |
+|        | GET|HEAD  | api/ivisign/unpublished                       | ivisign.unpublished           | App\Http\Controllers\IviSignMapController@getunpublishedsigns   | api        |
+|        | PUT       | api/ivisign/updatecoordinates/{id}            | ivisign.updatecoordinates     | App\Http\Controllers\IviSignMapController@updateCoordinates     | api        |
+|        | PUT       | api/ivisign/updatelockstatus/{id}             | ivisign.updatelockstatus      | App\Http\Controllers\IviSignMapController@updateLockStatus      | api        |
+|        | GET|HEAD  | api/ivisign/zones/{id}                        | ivisign.zones                 | App\Http\Controllers\IviSignMapController@getZones              | api        |
+|        | DELETE    | api/ivisign/{id}                              | ivisign.destoy                | App\Http\Controllers\IviSignMapController@destroy               | api        |
+|        | PUT       | api/ivisign/{id}                              | ivisign.update                | App\Http\Controllers\IviSignMapController@update                | api        |
+|        | GET|HEAD  | api/langlist                                  | generated::72hGXWcCBiQ3fubw   | App\Http\Controllers\LocaleController@getLangList               | api        |
+|        | POST      | api/lazyTable                                 | generated::UDenZX2pVGLebgfL   | App\Http\Controllers\LazyTableController@index                  | api        |
+|        | POST      | api/login                                     | generated::xbHbYhwCfyMUsQ2E   | App\Http\Controllers\AuthController@login                       | api        |
+[39;49m|        | POST      | api/logout                                    | generated::18jlgKOeDxrvVJ07   | App\Http\Controllers\AuthController@logout                      | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+|        | GET|HEAD  | api/mail                                      | mail.index                    | App\Http\Controllers\MailController@index                       | api        |
+|        | POST      | api/mail                                      | mail.store                    | App\Http\Controllers\MailController@store                       | api        |
+|        | GET|HEAD  | api/mail/create                               | mail.create                   | App\Http\Controllers\MailController@create                      | api        |
+|        | PUT|PATCH | api/mail/{mail}                               | mail.update                   | App\Http\Controllers\MailController@update                      | api        |
+|        | DELETE    | api/mail/{mail}                               | mail.destroy                  | App\Http\Controllers\MailController@destroy                     | api        |
+|        | GET|HEAD  | api/mail/{mail}                               | mail.show                     | App\Http\Controllers\MailController@show                        | api        |
+|        | GET|HEAD  | api/mail/{mail}/edit                          | mail.edit                     | App\Http\Controllers\MailController@edit                        | api        |
+|        | POST      | api/mailSend/{id}                             | mailSend                      | App\Http\Controllers\MailController@send                        | api        |
+|        | GET|HEAD  | api/media                                     | media.folder.index            | App\Http\Controllers\MediaController@index                      | api        |
+|        | GET|HEAD  | api/media/file                                | generated::Iq9gDevdOYDPDudU   | App\Http\Controllers\MediaController@file                       | api        |
+|        | GET|HEAD  | api/media/file/copy                           | media.file.copy               | App\Http\Controllers\MediaController@fileCopy                   | api        |
+|        | POST      | api/media/file/cropp                          | generated::WwnTpU0ZRm2X4AiD   | App\Http\Controllers\MediaController@cropp                      | api        |
+|        | POST      | api/media/file/delete                         | media.file.delete             | App\Http\Controllers\MediaController@fileDelete                 | api        |
+|        | GET|HEAD  | api/media/file/download                       | generated::LUinpLHQTZaUsEmO   | App\Http\Controllers\MediaController@fileDownload               | api        |
+|        | POST      | api/media/file/move                           | media.file.move               | App\Http\Controllers\MediaController@fileMove                   | api        |
+|        | POST      | api/media/file/store                          | media.file.add                | App\Http\Controllers\MediaController@fileAdd                    | api        |
+|        | POST      | api/media/file/update                         | media.file.update             | App\Http\Controllers\MediaController@fileUpdate                 | api        |
+|        | GET|HEAD  | api/media/folder                              | media.folder                  | App\Http\Controllers\MediaController@folder                     | api        |
+|        | POST      | api/media/folder/delete                       | media.folder.delete           | App\Http\Controllers\MediaController@folderDelete               | api        |
+|        | POST      | api/media/folder/move                         | media.folder.move             | App\Http\Controllers\MediaController@folderMove                 | api        |
+|        | GET|HEAD  | api/media/folder/store                        | media.folder.add              | App\Http\Controllers\MediaController@folderAdd                  | api        |
+|        | POST      | api/media/folder/update                       | media.folder.update           | App\Http\Controllers\MediaController@folderUpdate               | api        |
+|        | GET|HEAD  | api/menu                                      | generated::PhdNnss5T8N4HFgZ   | App\Http\Controllers\MenuController@index                       | api        |
+[39;49m|        | GET|HEAD  | api/menu/edit                                 | generated::e6OQUCgQgbFTzH6D   | App\Http\Controllers\MenuEditController@index                   | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/edit/selected                        | generated::BI14ANgbRWH9Hg7m   | App\Http\Controllers\MenuEditController@menuSelected            | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/edit/selected/switch                 | generated::j97opmWUyWX9G3zK   | App\Http\Controllers\MenuEditController@switch                  | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element                              | menu.index                    | App\Http\Controllers\MenuElementController@index                | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/create                       | menu.create                   | App\Http\Controllers\MenuElementController@create               | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/delete                       | menu.delete                   | App\Http\Controllers\MenuElementController@delete               | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/edit                         | menu.edit                     | App\Http\Controllers\MenuElementController@edit                 | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/get-parents                  | generated::mYOgrSOgFJH80cw2   | App\Http\Controllers\MenuElementController@getParents           | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/move-down                    | menu.down                     | App\Http\Controllers\MenuElementController@moveDown             | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/move-up                      | menu.up                       | App\Http\Controllers\MenuElementController@moveUp               | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/menu/element/show                         | menu.show                     | App\Http\Controllers\MenuElementController@show                 | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | POST      | api/menu/element/store                        | menu.store                    | App\Http\Controllers\MenuElementController@store                | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | POST      | api/menu/element/update                       | menu.update                   | App\Http\Controllers\MenuElementController@update               | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49m[39;49mauth[39;49m[39;49m       |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49madmin      |
+[39;49m|        | GET|HEAD  | api/notes                                     | notes.index                   | App\Http\Controllers\NotesController@index                      | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | POST      | api/notes                                     | notes.store                   | App\Http\Controllers\NotesController@store                      | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/notes/create                              | notes.create                  | App\Http\Controllers\NotesController@create                     | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | PUT|PATCH | api/notes/{note}                              | notes.update                  | App\Http\Controllers\NotesController@update                     | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | DELETE    | api/notes/{note}                              | notes.destroy                 | App\Http\Controllers\NotesController@destroy                    | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/notes/{note}                              | notes.show                    | App\Http\Controllers\NotesController@show                       | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/notes/{note}/edit                         | notes.edit                    | App\Http\Controllers\NotesController@edit                       | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+|        | GET|HEAD  | api/prepareSend/{id}                          | prepareSend                   | App\Http\Controllers\MailController@prepareSend                 | api        |
+[39;49m|        | POST      | api/refresh                                   | generated::1SFK5L9ZpE3KjV40   | App\Http\Controllers\AuthController@refresh                     | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+|        | POST      | api/register                                  | generated::vIuiA6SxX3ucaMy5   | App\Http\Controllers\AuthController@register                    | api        |
+|        | POST      | api/resource/{table}/resource                 | resource.store                | App\Http\Controllers\ResourceController@store                   | api        |
+|        | GET|HEAD  | api/resource/{table}/resource                 | resource.index                | App\Http\Controllers\ResourceController@index                   | api        |
+|        | GET|HEAD  | api/resource/{table}/resource/create          | resource.create               | App\Http\Controllers\ResourceController@create                  | api        |
+|        | DELETE    | api/resource/{table}/resource/{resource}      | resource.destroy              | App\Http\Controllers\ResourceController@destroy                 | api        |
+|        | PUT|PATCH | api/resource/{table}/resource/{resource}      | resource.update               | App\Http\Controllers\ResourceController@update                  | api        |
+|        | GET|HEAD  | api/resource/{table}/resource/{resource}      | resource.show                 | App\Http\Controllers\ResourceController@show                    | api        |
+|        | GET|HEAD  | api/resource/{table}/resource/{resource}/edit | resource.edit                 | App\Http\Controllers\ResourceController@edit                    | api        |
+|        | POST      | api/roles                                     | roles.store                   | App\Http\Controllers\RolesController@store                      | api        |
+|        | GET|HEAD  | api/roles                                     | roles.index                   | App\Http\Controllers\RolesController@index                      | api        |
+|        | GET|HEAD  | api/roles/create                              | roles.create                  | App\Http\Controllers\RolesController@create                     | api        |
+|        | GET|HEAD  | api/roles/move/move-down                      | roles.down                    | App\Http\Controllers\RolesController@moveDown                   | api        |
+|        | GET|HEAD  | api/roles/move/move-up                        | roles.up                      | App\Http\Controllers\RolesController@moveUp                     | api        |
+|        | GET|HEAD  | api/roles/{role}                              | roles.show                    | App\Http\Controllers\RolesController@show                       | api        |
+|        | PUT|PATCH | api/roles/{role}                              | roles.update                  | App\Http\Controllers\RolesController@update                     | api        |
+|        | DELETE    | api/roles/{role}                              | roles.destroy                 | App\Http\Controllers\RolesController@destroy                    | api        |
+|        | GET|HEAD  | api/roles/{role}/edit                         | roles.edit                    | App\Http\Controllers\RolesController@edit                       | api        |
+[39;49m|        | GET|HEAD  | api/user                                      | user.index                    | App\Http\Controllers\UsersController@index                      | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | POST      | api/user/create                               | user.create                   | App\Http\Controllers\UsersController@create                     | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/user/logged                               | user.username                 | App\Http\Controllers\UsersController@username                   | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/user/techniciansofentity                  | user.usersbyentity            | App\Http\Controllers\UsersController@techniciansOfEntity        | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/users                                     | users.index                   | App\Http\Controllers\UsersController@index                      | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | DELETE    | api/users/{user}                              | users.destroy                 | App\Http\Controllers\UsersController@destroy                    | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/users/{user}                              | users.show                    | App\Http\Controllers\UsersController@show                       | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | PUT|PATCH | api/users/{user}                              | users.update                  | App\Http\Controllers\UsersController@update                     | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+[39;49m|        | GET|HEAD  | api/users/{user}/edit                         | users.edit                    | App\Http\Controllers\UsersController@edit                       | api[39;49m[39;49m        |[39;49m
+[39;49m|        |           |                                               |                               |                                                                 | [39;49mauth:api   |
+|        | GET|HEAD  | api/vienna                                    | vienna.index                  | App\Http\Controllers\ViennaSignController@index                 | api        |
+|        | PUT       | api/vienna/categories/{id}                    | vienna.updatecategories       | App\Http\Controllers\ViennaSignController@updateCategory        | api        |
+|        | DELETE    | api/vienna/categories/{id}                    | vienna.destroycategories      | App\Http\Controllers\ViennaSignController@deleteCategories      | api        |
+|        | POST      | api/vienna/insertcategory                     | vienna.storecategory          | App\Http\Controllers\ViennaSignController@storeCategories       | api        |
+|        | POST      | api/vienna/insertsign                         | vienna.store                  | App\Http\Controllers\ViennaSignController@store                 | api        |
+|        | GET|HEAD  | api/vienna/signscategories                    | vienna.signscategories        | App\Http\Controllers\ViennaSignController@getSignsCategories    | api        |
+|        | PUT       | api/vienna/{id}                               | vienna.update                 | App\Http\Controllers\ViennaSignController@update                | api        |
+|        | GET|HEAD  | api/vienna/{id}                               | vienna.show                   | App\Http\Controllers\ViennaSignController@show                  | api        |
+|        | DELETE    | api/vienna/{id}                               | vienna.destroy                | App\Http\Controllers\ViennaSignController@delete                | api        |
+|        | GET|HEAD  | {any}                                         | generated::tnwZh9WxnbjZZVAN   | Closure                                                         | web        |
++--------+-----------+-----------------------------------------------+-------------------------------+-----------------------------------------------------------------+------------+

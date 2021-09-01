@@ -34,6 +34,8 @@ const DeployGroups = () => import('../views/deployGroups/DeployGroups.vue')
 const DeployGroupsUser = () => import('../views/deployGroups/DeployGroupsUser.vue')
 const NewDeploy = () => import('../views/deployGroups/newDeploy.vue')
 
+const FactorySignsToMake = () => import('../views/factory/SignsToMake.vue')
+
 // Views - Pages
 const Page404 = () => import('../views/pages/Page404.vue')
 const Page500 = () => import('../views/pages/Page500.vue')
@@ -281,6 +283,22 @@ function configRoutes () {
               meta: {
                 requiresAdmin: false
 
+              }
+            }
+          ]
+        },
+        {
+          path: 'factory',
+          meta: { label: 'Factory' },
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '/factory/signstomake',
+              component: FactorySignsToMake,
+              meta: {
+                requiresAdmin: false
               }
             }
           ]
