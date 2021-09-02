@@ -16,7 +16,12 @@ export default {
     },
     methods: {
         getSignsToMake() {
-            axios.get('/api/factory')
+            axios.get('/api/iviSign/signsToFactoryMake?token' + localStorage.getItem("api_token"))
+            .then(response => {
+
+            }).catch(err => {
+                
+            })
         }
     }
 }
