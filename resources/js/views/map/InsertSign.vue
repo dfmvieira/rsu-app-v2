@@ -49,7 +49,7 @@
                 <CButton @click="addDetectionZone()" color="light">Detection Zone</CButton>
             </CCol>
             <CCol lg="4">
-                <CButton @click="addAwarenessZone()" color="light">Awereness Zone</CButton>
+                <CButton @click="addAwarenessZone()" color="light">Awareness Zone</CButton>
             </CCol>
             <CCol lg="4">
                 <CButton @click="addRelevanceZone()" color="light">Relevance Zone</CButton>
@@ -212,9 +212,9 @@ export default {
             axios.get('api/vienna/' + viennaSignId + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
                 var image = {
-                    'id': response.data[0].id,
-                    'src': response.data[0].image,
-                    'alt': response.data[0].name,
+                    'id': response.data.id,
+                    'src': response.data.image,
+                    'alt': response.data.name,
                 }
                 this.onSelectedViennaSign(image)
                 this.updateViennaSign()

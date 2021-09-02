@@ -609,9 +609,9 @@ export default {
             await axios.get('api/vienna/' + viennaId + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
                 this.tempImage = {
-                    id: response.data[0].id,
-                    src: response.data[0].image,
-                    alt: response.data[0].name,
+                    id: response.data.id,
+                    src: response.data.image,
+                    alt: response.data.name,
                 }
             }).catch(err => {
                 console.log(err)
