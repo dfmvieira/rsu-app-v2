@@ -30,7 +30,8 @@ class UsersController extends Controller
     {
         $you = auth()->user()->id;
         $users = DB::table('users')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered')
+        ->leftjoin('entities', 'users.IDEntity', '=', 'entities.id')
+        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered','entities.name as entity')
         ->whereNull('deleted_at')
         ->get();
 

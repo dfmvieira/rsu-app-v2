@@ -19,40 +19,9 @@
                         <CMedia :aside-image-props="{src:entity.logo, height: 200 ,width: 200}"> </CMedia>
                     </CCol>
                     <CCol md="8" >
-                       <CInput
-                            label="Name"
-                            horizontal
-                            :lazy="false"
-                            :value.sync="entity.name"
-                            
-                            
-                            invalidFeedback="This is a required field and must be at least 1 character"
-                        />
-                        <CInput
-                            label="Address"
-                            horizontal
-                            :lazy="false"
-                            :value.sync="entity.address"
-                       
-                           
-                            invalidFeedback="This is a required field and must be at least 1 character"
-                        />
-                        <CInput
-                            label="Phone"
-                            horizontal
-                            :lazy="false"
-                            :value.sync="entity.phone"
-                          
-                           
-                            invalidFeedback="This is a required field and must be at least 1 character"
-                        /> 
-                        <CButton
-                            @click="update()"
-                            size="sm" 
-                            color="primary"
-                            >
-                            Guardar
-                        </CButton>
+                        <label><b>Name: </b> {{ entity.name }}</label> <br><br>
+                        <label><b>Address: </b> {{ entity.address }}</label> <br><br>
+                        <label><b>Phone: </b> {{ entity.phone }}</label> <br><br>
                     </CCol> 
                 </CRow>
             </CForm>
