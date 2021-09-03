@@ -66,7 +66,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/zones/{id}', 'IviSignMapController@getZones')->name('ivisign.zones');
         Route::get('/published', 'IviSignMapController@getpublishedsigns')->name('ivisign.published');
         Route::get('/unpublished', 'IviSignMapController@getunpublishedsigns')->name('ivisign.unpublished');
-        Route::get('/signsToFactoryMake', 'IviSignMapController@getgetSignsToMake')->name('ivisign.signstofactorymake');
+        Route::get('/factorysigns', 'IviSignMapController@getSignsToMake')->name('ivisign.signstofactorymake');
 
         Route::post('/insertivisign', 'IviSignMapController@store')->name('ivisign.store');
 
@@ -74,6 +74,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
         Route::put('/updatecoordinates/{id}', 'IviSignMapController@updateCoordinates')->name('ivisign.updatecoordinates');
         Route::put('/publicationupdate/{id}', 'IviSignMapController@publishedUpdate')->name('ivisign.publishedUpdate');
+        Route::put('/setmade/{id}', 'IviSignMapController@setMade')->name('ivisign.setMade');
 
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });   
