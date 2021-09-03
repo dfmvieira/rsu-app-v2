@@ -23,6 +23,7 @@ class IviSignMap extends Model
         'locked',
         'published',
         'deployed',
+        'madeByFactory',
         'IDDetection',
         'IDAwareness',
         'IDRelevance',

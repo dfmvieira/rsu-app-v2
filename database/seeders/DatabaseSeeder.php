@@ -35,6 +35,11 @@ class DatabaseSeeder extends Seeder
             ViennaSignSeeder::class,
             IviSignMapSeeder::class,
             EntitySeeder::class,
+            DeployGroupSeeder::class,
+            SignsGroupSeeder::class,
+            UserGroupSeeder::class,
+            
+
         ]);
     }
 }

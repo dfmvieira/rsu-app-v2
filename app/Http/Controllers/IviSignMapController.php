@@ -440,4 +440,39 @@ class IviSignMapController extends Controller
 
         return response()->json(['message' => 'Sign updated with success'], 200);
     }
+
+
+    /**
+     * Display a listing of the signs to factory make.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSignsToMake() {
+        $signs = DB::table('ivi_signs_map')
+            ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
+            ->where('ivi_signs_map.madeByFactory', '=', 0)
+            ->where('ivi_signs_map.published', '=', 1)
+            ->select('ivi_signs_map.id', 'ivi_signs_map.entityId', 'ivi_signs_map.GUID', 'ivi_signs_map.viennaSignId', DB::raw('(CASE WHEN madeByFactory=1 THEN "Yes" ELSE "No" END) as madeByFactory'), 'vienna_signs.image')
+            ->get();
+
+        return response()->json($signs, 200);
+    }
+
+    /**
+     * Set group as deployed.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setMade(Request $request, $id) {
+        DB::table('ivi_signs_map')->where('id', '=', $id)->update(['madeByFactory' => 1]);
+
+        /* foreach ($request->signs as $sign) {
+            DB::table('ivi_signs_map')->where('id', '=', $sign['id'])->update(['madeByFactory' => 1]);
+        } */
+      
+
+        return response()->json(['message' => 'The sign with id ' . $id . ' has been marked has made by factory']);
+    }
+
 }
