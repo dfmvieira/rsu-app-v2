@@ -19,7 +19,7 @@
             >
                 <template #madeByFactory="{item}">
                     <td>
-                        <CBadge color="success" v-if="item.madeByFactory == 1" style="font-size: 16px">{{ item.madeByFactory }}</CBadge>
+                        <CBadge color="success" v-if="item.madeByFactory == 'Yes'" style="font-size: 16px">{{ item.madeByFactory }}</CBadge>
                         <CBadge color="danger" v-else style="font-size: 16px">{{ item.madeByFactory }}</CBadge>
                     </td>
                 </template>
@@ -150,7 +150,7 @@
         setMade(sign, index) {
             axios.put('api/ivisign/setmade/' + sign.id + '?token=' + localStorage.getItem("api_token"), sign)
             .then(response => {
-                this.signs[index].madeByFactory = 1
+                this.signs[index].madeByFactory = 'Yes'
                 this.insertToast(response.data.message)
             }).catch(err => {
                 console.log(err)
