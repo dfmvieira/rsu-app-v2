@@ -162,9 +162,9 @@
             this.fixedToasts++
             this.toastMessage = message
         },
-        },
-        mounted() {
-            this.getSignsToMake()
-        }
+    },
+    mounted() {
+        this.getSignsToMake()
+    }
     }
 </script>
