@@ -444,4 +444,20 @@ class IviSignMapController extends Controller
 
         return response()->json(['message' => 'Sign updated with success'], 200);
     }
+
+
+    /**
+     * Display a listing of the signs to factory make.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSignsToMake() {
+        $signs = DB::table('ivi_sign_map')
+            ->leftjoin('signs_deploy_groups', 'signs_deploy_groups.IDIviSign', '=', 'ivi_sign_map.id')
+            ->where('ivi_sign_map.madeByFactory', '=', 0)
+            ->where('ivi_sign_map.published', '=', 1)
+            ->get();
+
+        return response()->json($signs, 200);
+    }
 }
