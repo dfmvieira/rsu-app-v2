@@ -5,7 +5,7 @@
       <CCard>
         <CCardBody>
             <h4>Roles</h4>
-            <CButton color="primary" @click="createRole()">Create Role</CButton>
+            
             <CAlert
               :show.sync="dismissCountDown"
               color="primary"
