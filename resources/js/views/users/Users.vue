@@ -41,9 +41,11 @@
                   User id:  {{item.id}} <br><br>
                   Name:  {{item.name}} <br><br>
                   User roles:  {{item.roles}} <br><br>
-                  User status:  {{item.status}} <br><br>
+                  User entity:  {{item.entity}} <br><br>
                   Registered:  {{item.registered}} <br><br>
 
+                 <!--  <CButton color="primary" @click="showUser( item.id )">Show</CButton> -->
+                  
                   <CButton color="primary" @click="editUser( item.id )">Edit</CButton>
 
                   <CButton v-if="you!=item.id" color="danger" @click="deleteUser( item.id )">Delete</CButton>
@@ -51,12 +53,12 @@
                 </CCardBody>
             </CCollapse>
           </template>       
-          <template #status="{item}">
+         <!--  <template #status="{item}">
             <td>
               <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
             </td>
           </template>
-         <!--  <template #show="{item}">
+          <template #show="{item}">
             <td>
               <CButton color="primary" @click="showUser( item.id )">Show</CButton>
             </td>
@@ -92,7 +94,7 @@ export default {
         'name', 
         'registered', 
         'roles', 
-        'status', 
+        'entity', 
         /* 'show', 
         'edit', 
         'delete', */

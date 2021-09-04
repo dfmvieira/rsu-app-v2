@@ -170,7 +170,14 @@ export default {
                 img: ''
             },
 
-            this.selectedViennaSign = {}
+            this.selectedViennaSign = {},
+
+            this.detectionZoneMarkers =  [],
+            this.detectionZonePolyLine =  '',
+            this.awarenessZoneMarkers =  [],
+            this.awarenessZonePolyLine =  '',
+            this.relevanceZoneMarkers =  [],
+            this.relevanceZonePolyLine =  ''
         },
 
         insertSign() {
@@ -212,9 +219,9 @@ export default {
             axios.get('api/vienna/' + viennaSignId + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
                 var image = {
-                    'id': response.data.id,
-                    'src': response.data.image,
-                    'alt': response.data.name,
+                    'id': response.data[0].id,
+                    'src': response.data[0].image,
+                    'alt': response.data[0].name,
                 }
                 this.onSelectedViennaSign(image)
                 this.updateViennaSign()

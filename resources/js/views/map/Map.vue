@@ -26,6 +26,7 @@
                 :key="index"
                 v-for="(m, index) in iviMapSigns"
                 :position="m.coordinates"
+                :icon="{url: m.image, scaledSize:{width: 30, height: 30, f: 'px', b: 'px'}}"
                 :clickable="true"
                 :draggable="dragToggle"
                 @click="markerHandler(m)"
@@ -292,9 +293,37 @@ export default {
         }
     },
     methods: {
+        initMap() {
+            this.getIviMapSigns()
+
+            /* const toolbox = document.getElementById("toolbox")
+
+            const map = document.getElementsByClassName("vue-map")[0].children
+            console.log(map[0])
+            console.log(map[0].find("gm-style"))
+            console.log(document.getElementsByClassName("gm-style").item(1))
+            //console.log(document.getElementsByClassName("map")[0])
+            this.$refs.mapRef.$el.appendChild(toolbox) */
+
+            //console.log(this.$refs.mapRef.$el)
+            
+
+
+            /* const map = document.getElementById("map")[0]
+            console.log(map)
+            map.appendChild('#toolbox') */
+
+
+           /*  this.$refs.mapRef.$mapPromise.then((map) => {
+                console.log(map)
+                map.appendChild('#toolbox')
+            }) */
+        },
+
         getIviMapSigns() {
             axios.get('api/ivisign?token=' + localStorage.getItem('api_token'))
             .then(response => {
+                console.log(response.data)
                 this.iviMapSigns = response.data
             }).catch(err => {
                 console.log(err)
@@ -313,37 +342,67 @@ export default {
                     this.addToggle = false
                     this.addSignListener.remove()
                 } else {
-                    this.addToggle = true
+                    this.addToggle = true,
+                    this.deleteToggle = false,
+                    this.editToggle = false,
+                    this.selectToggle = false,
+                    this.dragToggle = false,
+                    this.rsuToggle = false
                     this.addSign()
                 }
             } else if (action == 'delete') { // if not edit or select
                 if (this.deleteToggle) {
                     this.deleteToggle = false
                 } else {
-                    this.deleteToggle = true
+                    this.addToggle = false,
+                    this.deleteToggle = true,
+                    this.editToggle = false,
+                    this.selectToggle = false,
+                    this.dragToggle = false,
+                    this.rsuToggle = false
                 }
             } else if (action == 'edit') {
                 if (this.editToggle) {
                     this.editToggle = false
                 } else {
-                    this.editToggle = true
+                    this.addToggle = false,
+                    this.deleteToggle = false,
+                    this.editToggle = true,
+                    this.selectToggle = false,
+                    this.dragToggle = false,
+                    this.rsuToggle = false
                 }
             } else if (action == 'select') {
                 if (this.selectToggle) {
                     this.selectToggle = false
                 } else {
-                    this.selectToggle = true
+                    this.addToggle = false,
+                    this.deleteToggle = false,
+                    this.editToggle = false,
+                    this.selectToggle = true,
+                    this.dragToggle = false,
+                    this.rsuToggle = false
                 }
             } else if (action == 'drag') {
                 if (this.dragToggle) {
                     this.dragToggle = false
                 } else {
-                    this.dragToggle = true
+                    this.addToggle = false,
+                    this.deleteToggle = false,
+                    this.editToggle = false,
+                    this.selectToggle = false,
+                    this.dragToggle = true,
+                    this.rsuToggle = false
                 }
             } else if (action == 'rsu') {
                 if (this.rsuToggle) {
                     this.rsuToggle = false
                 } else {
+                    this.addToggle = false,
+                    this.deleteToggle = false,
+                    this.editToggle = false,
+                    this.selectToggle = false,
+                    this.dragToggle = false,
                     this.rsuToggle = true
                 }
             }
@@ -582,7 +641,30 @@ export default {
             // close modal
             this.showform = false
             this.addToggle = false
-            this.addSignListener.remove()
+            //this.addSignListener.remove()
+
+
+            if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
+                console.log(this.$refs.insertSignRef.detectionZonePolyLine)
+                this.$refs.insertSignRef.detectionZonePolyLine.setMap(null)
+            }
+            if (this.$refs.insertSignRef.awarenessZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.awarenessZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
+
+                this.$refs.insertSignRef.awarenessZonePolyLine.setMap(null)
+            }
+            if (this.$refs.insertSignRef.relevanceZoneMarkers.lenght !== 0) {
+                this.$refs.insertSignRef.relevanceZoneMarkers.forEach((marker) => {
+                    marker.setMap(null)
+                })
+
+                this.$refs.insertSignRef.relevanceZonePolyLine.setMap(null)
+            }
 
             // reset insert sign form
             this.$refs.insertSignRef.resetForm()
@@ -609,9 +691,9 @@ export default {
             await axios.get('api/vienna/' + viennaId + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
                 this.tempImage = {
-                    id: response.data.id,
-                    src: response.data.image,
-                    alt: response.data.name,
+                    id: response.data[0].id,
+                    src: response.data[0].image,
+                    alt: response.data[0].name,
                 }
             }).catch(err => {
                 console.log(err)
@@ -796,7 +878,7 @@ export default {
         }
     },
     mounted() {
-        this.getIviMapSigns()
+        this.initMap()
         this.getCurrentLocation()
         //this.searchAutoComplete()
     },
@@ -810,7 +892,7 @@ export default {
 
     #toolbox {
         position: absolute;
-        z-index: 999999999999;
+        z-index: 2147483647;
         text-align: center;
         background-color: #2c2c34;
         border: 1px #000;

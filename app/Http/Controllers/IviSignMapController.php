@@ -28,9 +28,13 @@ class IviSignMapController extends Controller
         }
 
         if ($user->hasRole('admin')) {
-            $signs = DB::table('ivi_signs_map')->get();
+            $signs = DB::table('ivi_signs_map')
+                ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
+                ->get();
         } else {
-            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)->get();
+            $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)
+                ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
+                ->get();
         }
 
         foreach($signs as $key => $sign) {

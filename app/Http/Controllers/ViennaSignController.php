@@ -6,6 +6,7 @@ use App\Models\ViennaSign;
 use App\Models\ViennaSignCategory;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
@@ -27,7 +28,7 @@ class ViennaSignController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -104,8 +105,12 @@ class ViennaSignController extends Controller
      */
     public function show($id) {
 
-        $viennaSign = ViennaSign::findOrFail($id);
-    
+        //$viennaSign = ViennaSign::findOrFail($id);
+
+        $viennaSign = DB::table('vienna_signs')
+        ->select('*')
+        ->where('id', '=', $id)
+        ->get();
 
         return response()->json($viennaSign, 201);
     }
@@ -114,13 +119,14 @@ class ViennaSignController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\ViennaSign  $viennaSign
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit(Request $request, $id)
     {
         $sign = ViennaSign::findOrFail($id);
 
         $sign->update($request->all());
+
         return response()->json([
             'message'=>'Sign Updated Successfully!!',
         ]); 
@@ -174,7 +180,7 @@ class ViennaSignController extends Controller
     /**
      * Display a listing of the signs categories.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getSignsCategories() {
         $categories = DB::table('vienna_sign_categories')
