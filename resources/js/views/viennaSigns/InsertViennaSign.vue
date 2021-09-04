@@ -51,31 +51,23 @@
 
         <CRow style="margin: 10px 10px 0px 0px; float: right">
           <CButton color="primary" @click="submit">Submit</CButton>
-          
-          <CButton 
-            class="ml-1"
-            color="danger"
-            
-            @click="reset"
-          >
-            Reset
-          </CButton>
+          <CButton class="ml-1" color="danger" @click="reset">Reset</CButton>
         </CRow>
       </CForm>
     </CCardBody>
 
     <CToaster :autohide="3000">
-            <template v-for="toast in fixedToasts">
-                <CToast
-                :key="'toast' + toast"
-                :show="true"
-                header="Info"
-                style="max-height: 100px;"
-                >
-                    {{ toastMessage }}
-                </CToast>
-            </template>
-        </CToaster>
+      <template v-for="toast in fixedToasts">
+          <CToast
+          :key="'toast' + toast"
+          :show="true"
+          header="Info"
+          style="max-height: 100px;"
+          >
+              {{ toastMessage }}
+          </CToast>
+      </template>
+    </CToaster>
   </CCard>
 </template>
 
