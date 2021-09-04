@@ -4,13 +4,6 @@
       <CIcon name="cil-notes"/> Insert Vienna Sign
     </CCardHeader>
     <CCardBody>
-      <CAlert
-              :show.sync="dismissCountDown"
-              color="primary"
-              fade
-            >
-              ({{dismissCountDown}}) {{ message }}
-            </CAlert>
       <CForm>
         <CInput
           label="Vienna ID"
@@ -56,7 +49,7 @@
           </CCol>
         </CRow> -->
 
-        <CRow>
+        <CRow style="margin: 10px 10px 0px 0px; float: right">
           <CButton color="primary" @click="submit">Submit</CButton>
           
           <CButton 
@@ -70,6 +63,19 @@
         </CRow>
       </CForm>
     </CCardBody>
+
+    <CToaster :autohide="3000">
+            <template v-for="toast in fixedToasts">
+                <CToast
+                :key="'toast' + toast"
+                :show="true"
+                header="Info"
+                style="max-height: 100px;"
+                >
+                    {{ toastMessage }}
+                </CToast>
+            </template>
+        </CToaster>
   </CCard>
 </template>
 
@@ -104,6 +110,10 @@ export default {
       dismissSecs: 7,
       dismissCountDown: 0,
       showDismissibleAlert: false,
+
+      // TOAST
+      toastMessage: '',
+      fixedToasts: 0
     }
   },
   computed: {
@@ -138,12 +148,6 @@ export default {
       } 
       return !(field.$invalid || field.$model === '')
     },
-
-    /* submit () {
-      if (this.isValid) {
-        this.submitted = true
-      }
-    }, */
 
     validate () {
       console.log(this.viennaSign)
@@ -207,20 +211,16 @@ export default {
     submit() {
       axios.post('api/vienna/insertsign', this.viennaSign)
         .then(response => {
-            this.message = 'Successfully created sign.';
+            var message = 'Vienna Sign has been Created.';
+            this.insertToast(message)
             this.showAlert();
 
             this.viennaSign = this.getEmptyForm();
 
-            //console.log(response);
-            /* this.showSuccess = true;
-            this.successMessage = 'Sign Created'; */
             this.submitted = true;
-            
-            
         })
         .catch(error => {
-            console.log(error)
+            /* console.log(error)
             if (error.response.data.errors.id) {
                 this.successMessage = error.response.data.errors.id[0];
                 this.showError = true;
@@ -230,7 +230,7 @@ export default {
             } else if (error.response.data.errors.image) {
                 this.successMessage = error.response.data.errors.image[0];
                 this.showError = true;
-            }
+            } */
         })
       },
       countDownChanged (dismissCountDown) {
@@ -238,6 +238,12 @@ export default {
       },
       showAlert () {
           this.dismissCountDown = this.dismissSecs
+      },
+
+      // Insert Toasts
+      insertToast(message) {
+          this.fixedToasts++
+          this.toastMessage = message
       },
   },
 
