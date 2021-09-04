@@ -117,6 +117,7 @@ class UsersController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'integer', 'max:9'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'entity' => ['required']
         ]);
@@ -125,16 +126,19 @@ class UsersController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  \Illuminate\Http\Request  $request
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'entity' => $data['entity']
+            'name' => $request['name'],
+            'phone' => $request['phone'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'IDEntity' => $request['entity'],
+            'menuroles' => $request['role'],
+            'status' => 'Active'
         ]);
     }
 

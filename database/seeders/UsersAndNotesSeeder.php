@@ -120,6 +120,7 @@ class UsersAndNotesSeeder extends Seeder
         /*  insert users   */
         $user = User::create([
             'name' => 'admin',
+            'phone' => '911111111',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -139,6 +140,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'entityadmin',
+            'phone' => '911111111',
             'email' => 'entityadmin@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -151,6 +153,7 @@ class UsersAndNotesSeeder extends Seeder
         
         $user = User::create([
             'name' => 'planner',
+            'phone' => '911111111',
             'email' => 'planner@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -163,6 +166,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'factory',
+            'phone' => '911111111',
             'email' => 'factory@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -175,6 +179,7 @@ class UsersAndNotesSeeder extends Seeder
         
         $user = User::create([
             'name' => 'maintenanceTeam',
+            'phone' => '911111111',
             'email' => 'maintenanceteam@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -187,6 +192,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'monitor',
+            'phone' => '911111111',
             'email' => 'monitor@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -199,6 +205,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'deploymanager',
+            'phone' => '911111111',
             'email' => 'deploymanager@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -211,6 +218,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'worker1',
+            'phone' => '911111111',
             'email' => 'worker1@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -223,6 +231,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'worker2',
+            'phone' => '911111111',
             'email' => 'worker2@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -235,6 +244,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'worker3',
+            'phone' => '911111111',
             'email' => 'worker3@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -247,6 +257,7 @@ class UsersAndNotesSeeder extends Seeder
 
         $user = User::create([
             'name' => 'worker4',
+            'phone' => '911111111',
             'email' => 'worker4@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
