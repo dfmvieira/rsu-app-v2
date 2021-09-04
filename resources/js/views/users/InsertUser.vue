@@ -15,9 +15,25 @@
             <CInput type="text" label="Name" placeholder="Name" v-model="name"></CInput>
             <CInput type="text" label="Email" placeholder="Email" v-model="email"></CInput>
             <CSelect label="Entity" :options="entities"/>
-            <CButton color="primary" @click="update()">Save</CButton>
+            <CRow style="margin: 10px 10px 0px 0px; float: right">
+              <CButton color="primary" @click="submit()">Save</CButton>
+              <CButton class="ml-1" color="danger" @click="reset">Reset</CButton>
+            </CRow>
           </CForm>
         </CCardBody>
+
+        <CToaster :autohide="3000">
+          <template v-for="toast in fixedToasts">
+              <CToast
+              :key="'toast' + toast"
+              :show="true"
+              header="Info"
+              style="max-height: 100px;"
+              >
+                  {{ toastMessage }}
+              </CToast>
+          </template>
+        </CToaster>
       </CCard>
 </template>
 
@@ -41,12 +57,15 @@ export default {
         entities: [],
         dismissSecs: 7,
         dismissCountDown: 0,
-        showDismissibleAlert: false
+        showDismissibleAlert: false,
+
+        // TOAST
+        toastMessage: '',
+        fixedToasts: 0
     }
   },
   methods: {
     getEntities() {
-      /* let self = this; */
       axios.get(this.$apiAdress + '/api/entity')
       .then (response => {
           response.data.forEach(item => {
@@ -58,9 +77,20 @@ export default {
       });
     },
 
-    /* submit() {
-      axios.post(this.$$apiAdress + '/api/user/create') 
-    } */
+    submit() {
+      axios.post('/api/user/create?token' + localStorage.getItem("api_token"))
+        .then(response => {
+          
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+
+    // Insert Toasts
+    insertToast(message) {
+        this.fixedToasts++
+        this.toastMessage = message
+    },
 
   },
   mounted() {

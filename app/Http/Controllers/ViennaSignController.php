@@ -91,7 +91,7 @@ class ViennaSignController extends Controller
 
         $viennaSign = new ViennaSign();
         $viennaSign->fill($request->all());
-        $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : null;
+        $viennaSign->image = $request->image['base64'] ? 'img/ViennaSigns/' . $request->image['name'] : '';
         $viennaSign->save();
 
         return response()->json($viennaSign, 201);
