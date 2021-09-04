@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getEntities() {
-      let self = this;
+      /* let self = this; */
       axios.get(this.$apiAdress + '/api/entity')
       .then (response => {
           response.data.forEach(item => {
@@ -64,7 +64,7 @@ export default {
 
   },
   mounted() {
-    self.getEntities();
+    this.getEntities();
   }
 }
 </script>
