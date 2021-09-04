@@ -25,6 +25,7 @@ class CreateIviSignsMapTable extends Migration
             $table->boolean('locked');
             $table->boolean('deployed');
             $table->boolean('published');
+            $table->boolean('madeByFactory');
             $table->foreignId('IDDetection');
             $table->foreignId('IDAwareness');
             $table->foreignId('IDRelevance');
