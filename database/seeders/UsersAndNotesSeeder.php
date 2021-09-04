@@ -210,8 +210,44 @@ class UsersAndNotesSeeder extends Seeder
         $user->assignRole('deploymanager');
 
         $user = User::create([
-            'name' => 'technician',
-            'email' => 'technician@mail.com',
+            'name' => 'worker1',
+            'email' => 'worker1@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'technician',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('technician');
+
+        $user = User::create([
+            'name' => 'worker2',
+            'email' => 'worker2@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'technician',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('technician');
+
+        $user = User::create([
+            'name' => 'worker3',
+            'email' => 'worker3@mail.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'menuroles' => 'technician',
+            'IDEntity' => 1,
+            'status' => 'Active'
+        ]);
+        $user->assignRole('technician');
+
+        $user = User::create([
+            'name' => 'worker4',
+            'email' => 'worker4@mail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
