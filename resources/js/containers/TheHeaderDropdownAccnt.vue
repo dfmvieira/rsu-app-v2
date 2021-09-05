@@ -13,7 +13,7 @@
        
       </CHeaderNavLink>
     </template>
-    <CDropdownItem onclick="location.href='/users/user';">
+    <CDropdownItem onclick="location.href='/#/users/user';">
       <CIcon name="cil-user" /> Profile
 
     </CDropdownItem>
