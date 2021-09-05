@@ -74,6 +74,10 @@
                                 <CButton color="success" @click="setDeployed(item, index)" style="margin-left: 15px">Mark this group has deployed!</CButton>
                             </CRow>
 
+                            <CRow style="margin-top: 20px; text-align: right" v-if="item.deployed == 'Yes'">
+                                <CButton color="danger" @click="setNotDeployed(item, index)" style="margin-left: 15px">Mark this group has not deployed!</CButton>
+                            </CRow>
+
                             <!-- <CForm>
                                 <CRow>
                                     
@@ -168,6 +172,16 @@
                 axios.put('api/deploy/setdeployed/' + group.id + '?token=' + localStorage.getItem("api_token"), group)
                 .then(response => {
                     this.deployGroups[index].deployed = 'Yes'
+                    this.insertToast(response.data.message)
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+
+            setNotDeployed(group, index) {
+                axios.put('api/deploy/setnotdeployed/' + group.id + '?token=' + localStorage.getItem("api_token"), group)
+                .then(response => {
+                    this.deployGroups[index].deployed = 'No'
                     this.insertToast(response.data.message)
                 }).catch(err => {
                     console.log(err)

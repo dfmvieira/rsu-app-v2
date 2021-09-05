@@ -418,7 +418,7 @@ function configRoutes () {
               name: 'User',
               component: User,
               meta:{
-                requiresAdmin: true
+                requiresAdmin: false
               }
             },
             {

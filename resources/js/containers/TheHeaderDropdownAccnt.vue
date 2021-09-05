@@ -13,9 +13,9 @@
        
       </CHeaderNavLink>
     </template>
-    <CDropdownItem>
+    <CDropdownItem onclick="location.href='/#/users/user';">
       <CIcon name="cil-user" /> Profile
-    
+
     </CDropdownItem>
     <CDropdownItem @click="logout()">
       <CIcon name="cil-lock-locked" /> Logout
@@ -44,7 +44,7 @@ export default {
         console.log(error); 
       });
     },
-
+    
     getUserInfo() {
       let self = this;
       axios.get('api/user/logged?token=' + localStorage.getItem("api_token"))

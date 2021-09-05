@@ -74,7 +74,8 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::put('/updatelockstatus/{id}', 'IviSignMapController@updateLockStatus')->name('ivisign.updatelockstatus');
         Route::put('/updatecoordinates/{id}', 'IviSignMapController@updateCoordinates')->name('ivisign.updatecoordinates');
         Route::put('/publicationupdate/{id}', 'IviSignMapController@publishedUpdate')->name('ivisign.publishedUpdate');
-        Route::put('/setmade/{id}', 'IviSignMapController@setMade')->name('ivisign.setMade');
+        Route::put('/setmade/{id}', 'IviSignMapController@setMade')->name('ivisign.setmade');
+        Route::put('/setnotmade/{id}', 'IviSignMapController@setNotMade')->name('ivisign.setnotmade');
 
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });   
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store');
 
         Route::put('/setdeployed/{id}', 'DeployGroupController@setDeployed')->name('deployegroup.setdeployed');
+        Route::put('/setnotdeployed/{id}', 'DeployGroupController@setNotDeployed')->name('deployegroup.setnotdeployed');
     });
     
 

@@ -454,16 +454,15 @@ class IviSignMapController extends Controller
     public function getSignsToMake() {
         $signs = DB::table('ivi_signs_map')
             ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
-            ->where('ivi_signs_map.madeByFactory', '=', 0)
             ->where('ivi_signs_map.published', '=', 1)
-            ->select('ivi_signs_map.id', 'ivi_signs_map.entityId', 'ivi_signs_map.GUID', 'ivi_signs_map.viennaSignId', DB::raw('(CASE WHEN madeByFactory=1 THEN "Yes" ELSE "No" END) as madeByFactory'), 'vienna_signs.image')
+            ->select('ivi_signs_map.id', 'ivi_signs_map.entityId', 'ivi_signs_map.GUID', 'ivi_signs_map.latitude', 'ivi_signs_map.longitude', 'ivi_signs_map.viennaSignId', DB::raw('(CASE WHEN madeByFactory=1 THEN "Yes" ELSE "No" END) as madeByFactory'), 'vienna_signs.image')
             ->get();
 
         return response()->json($signs, 200);
     }
 
     /**
-     * Set group as deployed.
+     * Set sign as made.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -471,12 +470,22 @@ class IviSignMapController extends Controller
     public function setMade(Request $request, $id) {
         DB::table('ivi_signs_map')->where('id', '=', $id)->update(['madeByFactory' => 1]);
 
-        /* foreach ($request->signs as $sign) {
-            DB::table('ivi_signs_map')->where('id', '=', $sign['id'])->update(['madeByFactory' => 1]);
-        } */
-      
 
         return response()->json(['message' => 'The sign with id ' . $id . ' has been marked has made by factory']);
+    }
+
+    /**
+     * Set sign as not made.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setNotMade(Request $request, $id) {
+        DB::table('ivi_signs_map')->where('id', '=', $id)->update(['madeByFactory' => 0]);
+
+      
+
+        return response()->json(['message' => 'The sign with id ' . $id . ' has been marked has not made by factory']);
     }
 
 }

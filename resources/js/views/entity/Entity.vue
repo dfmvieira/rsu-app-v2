@@ -6,13 +6,6 @@
             </slot>
         </CCardHeader>
         <CCardBody>
-            <CAlert
-              :show.sync="dismissCountDown"
-              color="success"
-              fade
-            >
-              ({{dismissCountDown}}) {{ message }}
-            </CAlert>
             <CForm>
                 <CRow>
                     <CCol lg="4" >
@@ -45,17 +38,13 @@ export default {
                 phone: '',
                 _method:"patch"
             },
-            showMessage: false,
             message: '',
-            dismissSecs: 7,
-            dismissCountDown: 0,
-            showDismissibleAlert: false,
 
         }
     },
     methods: {
         getEntities() {
-            axios.get('api/entity').then(response => {
+            axios.get('api/entity' + localStorage.getItem("api_token")).then(response => {
                 console.log(response.data)
                 this.entities=response.data
                 this.entity=this.entities[0]
@@ -68,33 +57,21 @@ export default {
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
         },
             
-        update(entity){
+        /* update(entity){
             let self = this;
-           axios.put(`api/entity/1`, this.entity)
+           axios.put(`api/entity/1` + localStorage.getItem("api_token"), this.entity)
                .then(response=>{
                 console.log("sucess")
                 self.message = 'Successfully updated Entity.';
                 self.showAlert();
-               /*  this.loadViennaSigns() */
 
                     
                })
                .catch(()=>{
                   console.log("Error.....")
                })
-        },
- /*        async loadViennaSigns() {
-            this.signs = await this.getEntities();
-            this.viennaSign = await this.getEmptyForm();
-            await this.$nextTick() // waits for the next event tick before completeing function.
         }, */
-
-        countDownChanged (dismissCountDown) {
-            this.dismissCountDown = dismissCountDown
-        },
-        showAlert () {
-            this.dismissCountDown = this.dismissSecs
-        },
+        
      
     },
     mounted() {

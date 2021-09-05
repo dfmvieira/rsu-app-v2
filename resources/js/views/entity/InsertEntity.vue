@@ -4,14 +4,6 @@
       <CIcon name="cil-notes"/> Insert Entity
     </CCardHeader>
     <CCardBody>
-      <CAlert
-              :show.sync="dismissCountDown"
-              color="primary"
-              fade
-            >
-              ({{dismissCountDown}}) {{ message }}
-            </CAlert>
-      <CForm>
         
         <CInput
           label="Name"
@@ -38,24 +30,11 @@
           horizontal
           :lazy="false"
           :value.sync="entity.phone"
-          
+          type="number"
           placeholder="Phone"
           invalidFeedback="This is a required field and must be at least 1 characters"
         />
-
-        <CInput
-          label="Logo"
-          horizontal
-          :lazy="false"
-          :value.sync="entity.logo"
-          
-          placeholder="Logo"
-          invalidFeedback="This is a required field and must be at least 1 characters"
-        />
-
         
-
-        //TODO CInputFile
         <!-- <CInputFile
           label="Insert image"
           placeholder="Please upload a image"
@@ -73,7 +52,7 @@
         </CRow>
 
         <CRow>
-          <CButton color="primary" @click="submit">Submit</CButton>
+          <CButton color="primary" @click="insert">Submit</CButton>
           
           <CButton 
             class="ml-1"
@@ -84,7 +63,6 @@
             Reset
           </CButton>
         </CRow>
-      </CForm>
     </CCardBody>
   </CCard>
 </template>
@@ -100,22 +78,26 @@ export default {
    
   data() {
     return {
-      form: this.getEmptyForm(),
+      form: {
+        name: '',
+        logo: '',
+        address: '',
+        phone: '',
+      },
       horizontal: { label:'col-3', input:'col-9' },
       submitted: false,
       options: [],
       filename: '',
       entity: {
         name: '',
-        logo: '',
         address: '',
         phone: '',
+        logo: {
+          name: '',
+          base64: '',
+        },
       },
-      showMessage: false,
-      message: '',
-      dismissSecs: 7,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
+      message: ''
     }
   },
   computed: {
@@ -164,6 +146,35 @@ export default {
       this.$v.$touch()
     },
 
+
+    insert() {
+      let self = this;
+      axios.post('api/entity/insert', this.entity)
+        .then(response => {
+           self.message = 'Successfully created Entity.';
+            self.showAlert();
+            this.entity = this.getEmptyForm();
+            /* this.showSuccess = true;
+            this.successMessage = 'Sign Created'; */
+            
+            
+        })
+        .catch(error => {
+            console.log(error)
+            /* if (error.response.data.errors.id) {
+                this.successMessage = error.response.data.errors.id[0];
+                this.showError = true;
+            } else if (error.response.data.errors.name) {
+                this.successMessage = error.response.data.errors.name[0];
+                this.showError = true;
+            } else if (error.response.data.errors.image) {
+                this.successMessage = error.response.data.errors.image[0];
+                this.showError = true;
+            } */
+        })
+    },
+
+    
     reset () {
       this.entity = this.getEmptyForm()
       this.submitted = false
@@ -186,10 +197,11 @@ export default {
     },
 
     onImageChange(e) {
-      let logo = e.target.files[0];
+      let image = e.target.files[0];
       this.entity.logo.name = image.name;
       this.createImage(image);
     },
+
     createImage(file) {
         let reader = new FileReader();
         reader.onload = (e) => {
@@ -210,42 +222,6 @@ export default {
         })
       })
     }, */
-
-    submit() {
-      console.log(this.entity)
-      let self = this;
-      axios.post('api/entity/insert', this.entity)
-        .then(response => {
-           self.message = 'Successfully created Entity.';
-            self.showAlert();
-            this.entity = this.getEmptyForm();
-            console.log(response);
-            /* this.showSuccess = true;
-            this.successMessage = 'Sign Created'; */
-            this.submitted = true;
-            
-            
-        })
-        .catch(error => {
-            console.log(error)
-            /* if (error.response.data.errors.id) {
-                this.successMessage = error.response.data.errors.id[0];
-                this.showError = true;
-            } else if (error.response.data.errors.name) {
-                this.successMessage = error.response.data.errors.name[0];
-                this.showError = true;
-            } else if (error.response.data.errors.image) {
-                this.successMessage = error.response.data.errors.image[0];
-                this.showError = true;
-            } */
-        })
-      },
-      countDownChanged (dismissCountDown) {
-          this.dismissCountDown = dismissCountDown
-      },
-      showAlert () {
-          this.dismissCountDown = this.dismissSecs
-      },
   },
 
   mounted() {

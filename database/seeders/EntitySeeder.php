@@ -15,17 +15,17 @@ class EntitySeeder extends Seeder
     public function run()
     {
         DB::table('entities')->insert([
-            'name' => 'Admin',
-            'logo' => '',
-            'address' => 'admin',
+            'name' => 'Camera Municipal Leiria',
+            'logo' => 'img/Entities/cmleiria.jpg',
+            'address' => 'Rua principal 2',
             'phone' => 123456789,
         ]);
 
         DB::table('entities')->insert([
-            'name' => 'Teste',
-            'logo' => 'img/Entities/youphones.jpg',
+            'name' => 'Camera Municipal Porto',
+            'logo' => 'img/Entities/cmporto.jpg',
             'address' => 'Rua Principal, 1',
-            'phone' => 262789054,
+            'phone' => 987654321,
         ]);
     }
 }
