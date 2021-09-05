@@ -15,7 +15,7 @@
                 <label><b>Name: </b> {{ user.name }}</label> <br><br>
                 <label><b>Email: </b> {{ user.email }}</label> <br><br>
                 <label><b>Roles: </b> {{ user.menuroles }}</label> <br><br>
-                <label><b>Entity: </b> {{ user.IDEntity }}</label> <br><br>
+                <label><b>Entity: </b> {{ user.entityName }}</label> <br><br>
               </CCol> 
             </CRow>
           </CForm>
@@ -46,6 +46,7 @@ export default {
       let self = this;
       axios.get('api/user/logged?token=' + localStorage.getItem("api_token"))
       .then(function (response) {
+        console.log(response.data)
         self.user = response.data
       }).catch(function (error) {
         console.log(error);

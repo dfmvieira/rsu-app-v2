@@ -47,6 +47,15 @@ class UsersController extends Controller
     public function username()
     {
         $user = auth()->user();
+
+        $entityName = DB::table('entities')
+            ->select('name')
+            ->where('id', '=', $user['IDEntity'])
+            ->get();
+
+        $user['entityName'] = $entityName[0]->name;
+        
+
         return response()->json($user, 200);
     }
 
