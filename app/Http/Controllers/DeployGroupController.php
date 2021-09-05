@@ -217,4 +217,20 @@ class DeployGroupController extends Controller
 
         return response()->json(['message' => 'The group with id ' . $id . ' has been marked has deployed']);
     }
+
+    /**
+     * Set group as Not Deployed.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setNotDeployed(Request $request, $id) {
+        DB::table('deploy_groups')->where('id', '=', $id)->update(['deployed' => 0]);
+
+        foreach ($request->signs as $sign) {
+            DB::table('ivi_signs_map')->where('id', '=', $sign['id'])->update(['deployed' => 0]);
+        }
+
+        return response()->json(['message' => 'The group with id ' . $id . ' has been marked has not deployed']);
+    }
 }

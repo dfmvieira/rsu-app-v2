@@ -89,6 +89,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::post('/insert', 'DeployGroupController@store')->name('deploygroup.store');
 
         Route::put('/setdeployed/{id}', 'DeployGroupController@setDeployed')->name('deployegroup.setdeployed');
+        Route::put('/setnotdeployed/{id}', 'DeployGroupController@setNotDeployed')->name('deployegroup.setnotdeployed');
     });
     
 
