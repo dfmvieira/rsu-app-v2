@@ -6,13 +6,6 @@
             </slot>
         </CCardHeader>
         <CCardBody>
-            <CAlert
-              :show.sync="dismissCountDown"
-              color="success"
-              fade
-            >
-              ({{dismissCountDown}}) {{ message }}
-            </CAlert>
             <CDataTable
             :items="entities"
             :fields="fields"
@@ -40,12 +33,19 @@
             <template #details="{item, index}">
                 <CCollapse :show="details.includes(index)">
                     <CForm>
-                        <CRow>
+                        <CRow style="margin-top: 20px">
                             <CCol lg="4" >
-                                <CMedia :aside-image-props="{src:item.logo, height: 200 ,width: 200}"> </CMedia>
+                                <div style="padding: 0px 30px 30px 30px">
+                                    <CMedia :aside-image-props="{src:item.logo, height: 170 ,width: 170}"> </CMedia>
+                                </div>
                             </CCol>
                             <CCol md="8" >
-                            <CInput
+
+                                <label><b>Name: </b> {{ item.name }}</label><br><br>
+                                <label><b>Address: </b> {{ item.address }}</label><br><br>
+                                <label><b>Phone: </b> {{ item.phone }}</label><br><br>
+
+                            <!-- <CInput
                                     label="Name"
                                     horizontal
                                     :lazy="false"
@@ -71,14 +71,66 @@
                                 
                                 
                                     invalidFeedback="This is a required field and must be at least 1 character"
-                                /> 
+                                />  -->
                                 <CButton
-                                    @click="update()"
+                                    @click="updateModalHandler(item)"
                                     size="sm" 
                                     color="primary"
                                     >
-                                    Guardar
+                                    Editar
                                 </CButton>
+
+                                <CModal 
+                                :show.sync="showEditModal"
+                                :closeOnBackdrop=false
+                                size="lg"
+                                >
+                                    <template #header>
+                                        <h5>Entity</h5>
+                                    </template>
+                                    <CRow>
+                                        <CCol lg=3>
+                                            <CMedia :aside-image-props="{src:editEntity.logo, height: 170 ,width: 170}"> </CMedia>
+                                        </CCol>
+                                        <CCol lg=9>
+                                            <CInput
+                                                label="Name"
+                                                horizontal
+                                                :lazy="false"
+                                                :value.sync="editEntity.name"
+                                                
+                                                placeholder="Name"
+                                                invalidFeedback="This is a required field and must be at least 1 character"
+                                            />
+
+                                            <CInput
+                                                label="Address"
+                                                horizontal
+                                                :lazy="false"
+                                                :value.sync="editEntity.address"
+                                                
+                                                placeholder="Address"
+                                                invalidFeedback="This is a required field and must be at least 1 characters"
+                                            />
+
+                                            <CInput
+                                                label="Phone"
+                                                horizontal
+                                                :lazy="false"
+                                                :value.sync="editEntity.phone"
+                                                type="number"
+                                                
+                                                placeholder="Phone"
+                                                invalidFeedback="This is a required field and must be at least 1 characters"
+                                            />
+                                        </CCol>
+                                    </CRow>
+
+                                    <template #footer>
+                                        <CButton @click="showEditModal = false;" color="danger">Discard</CButton>
+                                        <CButton @click="update" color="success">Accept</CButton>
+                                    </template>
+                                </CModal>
                             </CCol> 
                         </CRow>
                     </CForm>
@@ -91,11 +143,24 @@
 
 <script>
 import axios from 'axios'
+
+import InsertEntity from './InsertEntity.vue'
+
 export default {
     name: 'ViennaSigns',
+    components: {
+        "insert-entity": InsertEntity,
+    },
     data () {
         return {
             entities: [],
+            editEntity: {
+                id: '',
+                name: '',
+                address: '',
+                phone: '',
+                logo: ''
+            },
             fields: [
                 {key: 'id', label: 'ID'},
                 {key: 'name', label: 'Name'},  
@@ -120,21 +185,18 @@ export default {
                 phone: '',
                 _method:"patch"
             },
-            showMessage: false,
             message: '',
-            dismissSecs: 7,
-            dismissCountDown: 0,
-            showDismissibleAlert: false,
+
+            showEditModal: false
+        
 
         }
     },
     methods: {
         getEntities() {
-            axios.get('api/entity').then(response => {
-                console.log(response.data)
-                this.entities=response.data
-                this.entity=this.entities[0]
-                console.log(this.entities)
+            axios.get('api/entity?token=' + localStorage.getItem("api_token")).then(response => {
+                this.entities = response.data
+                this.entity = this.entities[0]
             })
         },
         
@@ -142,35 +204,31 @@ export default {
             const position = this.details.indexOf(index)
             position !== -1 ? this.details.splice(position, 1) : this.details.push(index)
         },
+
+        updateModalHandler(entity) {
+            this.showEditModal = true
+            this.editEntity.id = entity.id
+            this.editEntity.name = entity.name
+            this.editEntity.address = entity.address
+            this.editEntity.phone = entity.phone
+            this.editEntity.logo = entity.logo
+        },
+
             
-        update(entity){
-            let self = this;
-           axios.put(`api/entity/1`, this.entity)
-               .then(response=>{
-                console.log("sucess")
-                self.message = 'Successfully updated Entity.';
-                self.showAlert();
-               /*  this.loadViennaSigns() */
+        update(){
+            axios.put('api/entity/' + this.editEntity.id + '?token=' + localStorage.getItem("api_token"), this.editEntity)
+                .then(response => {
+                    this.message = 'Successfully updated Entity.';
 
-                    
-               })
-               .catch(()=>{
-                  console.log("Error.....")
-               })
+                    this.showEditModal = false
+                    this.getEntities()
+                })
+                .catch(err =>{
+                    console.log(err)
+            })
         },
- /*        async loadViennaSigns() {
-            this.signs = await this.getEntities();
-            this.viennaSign = await this.getEmptyForm();
-            await this.$nextTick() // waits for the next event tick before completeing function.
-        }, */
 
-        countDownChanged (dismissCountDown) {
-            this.dismissCountDown = dismissCountDown
-        },
-        showAlert () {
-            this.dismissCountDown = this.dismissSecs
-        },
-     
+
     },
     mounted() {
         this.getEntities();

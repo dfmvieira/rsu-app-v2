@@ -46,8 +46,23 @@ class EntityController extends Controller
 
         ]);
 
+        if($request->logo['base64']) {
+
+            $image = $request->logo;
+
+            $base64_string = explode(',', $image['base64']);
+            $imageBin = base64_decode($base64_string[1]);
+
+            if (!Storage::disk('public')->exists('img/Entities/' . $image['name'])) {
+                Storage::disk('public')->put('img/Entities/' . $image['name'], $imageBin);
+            }
+        }
+
         $entity = new Entity();
-        $entity->fill($request->all());
+        $entity->name = $request['name'];
+        $entity->phone = $request['phone'];
+        $entity->address = $request['address'];
+        $entity->logo = $request->logo['base64'] ? 'img/Entites/' . $request->logo['name'] : '';
         $entity->save();
 
         return response()->json($entity, 201);
