@@ -278,7 +278,7 @@ class MenusTableSeeder extends Seeder
             $this->endDropdown();
             $this->beginDropdown('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'Entities', '#', 'cil-building');
                 $this->insertLink('admin', 'View All', '/entities');
-                $this->insertLink('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'View Entity', '/entities/view');
+                /* $this->insertLink('admin,planner,factory,maintenanceteam,entityadmin,monitor,deploymanager,technician', 'View Entity', '/entities/view'); */
                 $this->insertLink('admin', 'Add Entity', 'entities/add');
             $this->endDropdown();
         $this->endDropdown();
