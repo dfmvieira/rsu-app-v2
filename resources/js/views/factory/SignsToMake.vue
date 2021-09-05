@@ -44,12 +44,16 @@
                             <!-- <CMedia :aside-image-props="{src:item.image, height: 100 ,width: 100}">
                             <CButton color="success" @click="setMade(item, index)" style="margin-left: 15px">Mark as Made by Factory!</CButton> -->
                             <CRow>
-                                <CCol lg="6">
+                                <CCol lg="4">
                                    <CMedia :aside-image-props="{src:item.image, height: 120 ,width: 120}">
                                    </CMedia>
                                 </CCol>
-                                <CCol lg="6">
-                                    <CButton color="success" @click="setMade(item, index)" style="margin-left: 15px">Mark as Made by Factory!</CButton>
+                                <CCol lg="4">
+                                    <label><b>Coordinates: </b>{{item.latitude}},{{item.longitude}}</label>
+                                </CCol>
+                                <CCol lg="4">
+                                    <CButton color="success" v-if="item.madeByFactory == 'No'" @click="setMade(item, index)" style="margin-left: 15px">Mark as Made!</CButton>
+                                    <CButton color="danger" v-if="item.madeByFactory == 'Yes'" @click="setNotMade(item, index)" style="margin-left: 15px">Mark as Not Made!</CButton>
                                 </CCol>
                             </CRow>
 
@@ -137,7 +141,6 @@
             axios.get('api/ivisign/factorysigns?token=' + localStorage.getItem("api_token"))
             .then(response => {
                 this.signs = response.data
-                console.log(this.signs)
             }).catch(err =>{
                 console.log(err)
             })
@@ -151,6 +154,16 @@
             axios.put('api/ivisign/setmade/' + sign.id + '?token=' + localStorage.getItem("api_token"), sign)
             .then(response => {
                 this.signs[index].madeByFactory = 'Yes'
+                this.insertToast(response.data.message)
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+
+        setNotMade(sign, index) {
+            axios.put('api/ivisign/setmade/' + sign.id + '?token=' + localStorage.getItem("api_token"), sign)
+            .then(response => {
+                this.signs[index].madeByFactory = 'No'
                 this.insertToast(response.data.message)
             }).catch(err => {
                 console.log(err)
