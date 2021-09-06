@@ -69,8 +69,8 @@ class DeployGroupController extends Controller
 
 
         $groups = DB::table('deploy_groups')
-            ->select('*', DB::raw('(CASE WHEN deployed=1 THEN "Yes" ELSE "No" END) as deployed'))
             ->leftjoin('users_deploy_groups', 'users_deploy_groups.IDDeployGroup', '=', 'deploy_groups.id')
+            ->select('deploy_groups.*', 'users_deploy_groups.IDUser', 'users_deploy_groups.IDDeployGroup', DB::raw('(CASE WHEN deploy_groups.deployed=1 THEN "Yes" ELSE "No" END) as deployed'))
             ->where('users_deploy_groups.IDUser', '=', $user->id)
             ->get();
        
@@ -88,6 +88,7 @@ class DeployGroupController extends Controller
                     ->get();
         }
 
+        
 
         return response()->json($groups, 200);
 
