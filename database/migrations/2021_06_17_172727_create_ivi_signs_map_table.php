@@ -29,7 +29,7 @@ class CreateIviSignsMapTable extends Migration
             $table->foreignId('IDDetection');
             $table->foreignId('IDAwareness');
             $table->foreignId('IDRelevance');
-            //$table->foreignId('IDDeployInfo');
+            $table->foreignId('IDRSU');
             $table->timestamps();
         });
     }

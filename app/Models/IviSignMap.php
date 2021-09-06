@@ -27,5 +27,6 @@ class IviSignMap extends Model
         'IDDetection',
         'IDAwareness',
         'IDRelevance',
+        'IDRSU'
     ];
 }

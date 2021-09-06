@@ -1,7 +1,8 @@
 <template>
-    <CContainer style="height: 220px">
+    <CContainer v-bind:class="{ rsuHeight : iviSignInfo.rsu }" style="height: 220px; margin-top: 10px">
         <CRow>
             <CCol lg="8">
+                <h3>Sign</h3>
                 <label class='info'><b>Name: </b> {{ iviSignInfo.name }}</label><br/>
                 <label class='info'><b>Latitude: </b> {{ iviSignInfo.coordinates.lat }}</label><br/>
                 <label class='info'><b>Longitude: </b> {{ iviSignInfo.coordinates.lng }}</label><br/>
@@ -14,6 +15,19 @@
                     <img v-bind:src="iviSignInfo.viennaImage.src" style="width:100px; margin-left: auto; margin-right: auto; display: block">
                     <label class="info" style="text-align:center; display: inline-block">{{ iviSignInfo.viennaImage.id }} - {{ iviSignInfo.viennaImage.alt }}</label>
                 </div>
+            </CCol>
+        </CRow>
+
+        <CRow v-if="iviSignInfo.rsu" style="margin-top: 20px">
+            <CCol lg="8">
+                <h3>RSU</h3>
+                <label class='info'><b>Name: </b> {{ iviSignInfo.rsu.name }}</label><br/>
+                <label class='info'><b>Serial Number: </b> {{ iviSignInfo.rsu.serialNumber }}</label><br/>
+                <label class='info'><b>Range: </b> {{ iviSignInfo.rsu.range }}</label><br/>
+                <label class='info'><b>Hardware Details: </b> {{ iviSignInfo.rsu.hardwareDetails }}</label><br/>
+            </CCol>
+
+            <CCol lg="4">
             </CCol>
         </CRow>
 
@@ -102,5 +116,9 @@ export default {
 <style scoped>
     .info {
         color: black;
+    }
+
+    .rsuHeight {
+        height: 380px !important;
     }
 </style>

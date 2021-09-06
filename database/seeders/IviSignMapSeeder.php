@@ -30,6 +30,7 @@ class IviSignMapSeeder extends Seeder
             'madeByFactory' => 0,
             'comment' => 'passadeira refeitorio',
             'published' => 0,
+            'IDRSU' => 0,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 2,
@@ -47,6 +48,7 @@ class IviSignMapSeeder extends Seeder
             'madeByFactory' => 0,
             'comment' => 'cedencia de passagem',
             'published' => 0,
+            'IDRSU' => 0,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 3,
@@ -64,6 +66,7 @@ class IviSignMapSeeder extends Seeder
             'madeByFactory' => 0,
             'comment' => 'passadeira serviços academicos',
             'published' => 0,
+            'IDRSU' => 1,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 4,
@@ -81,6 +84,7 @@ class IviSignMapSeeder extends Seeder
             'madeByFactory' => 0,
             'comment' => 'passadeira',
             'published' => 1,
+            'IDRSU' => 1,
         ]);
         DB::table('ivi_signs_map')->insert([
             'id' => 5,
@@ -98,6 +102,7 @@ class IviSignMapSeeder extends Seeder
             'madeByFactory' => 0,
             'comment' => 'Cedencia de Passagem',
             'published' => 1,
+            'IDRSU' => 0    ,
         ]);
     }
 }

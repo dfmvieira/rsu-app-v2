@@ -78,7 +78,6 @@
                 <CButton @click="updateViennaSign()" color="success">Accept</CButton>
             </template>
         </CModal>
-
     </CForm>
 </template>
 

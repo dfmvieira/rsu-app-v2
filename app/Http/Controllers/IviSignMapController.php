@@ -30,10 +30,12 @@ class IviSignMapController extends Controller
         if ($user->hasRole('admin')) {
             $signs = DB::table('ivi_signs_map')
                 ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
+                ->select('ivi_signs_map.*', 'vienna_signs.id as viennaSignsId', 'vienna_signs.name as viennaSingsName', 'vienna_signs.image', 'vienna_signs.IDCategory')
                 ->get();
         } else {
             $signs = DB::table('ivi_signs_map')->where('entityId', '=', $entityId)
                 ->leftjoin('vienna_signs', 'vienna_signs.id', '=', 'ivi_signs_map.viennaSignId')
+                ->select('ivi_signs_map.*', 'vienna_signs.id as viennaSignsId', 'vienna_signs.name as viennaSingsName', 'vienna_signs.image', 'vienna_signs.IDCategory')
                 ->get();
         }
 
@@ -129,6 +131,7 @@ class IviSignMapController extends Controller
         $iviSign->IDRelevance = isset($relevanceZone->id) ? $relevanceZone->id : 0;
         $iviSign->deployed = 0;
         $iviSign->published = 0;
+        $iviSign->IDRSU = 0;
         
         $iviSign->save();
 

@@ -68,6 +68,23 @@
         </CModal>
         <!-- ###################################### -->
 
+        <!-- ############ INSERT RSU MODAL ############## -->
+        <CModal 
+        :show.sync="showRSUform"
+        :closeOnBackdrop=false>
+            <insert-rsu ref="insertRSURef"></insert-rsu>
+
+            <template #header>
+                <h5>RSU</h5>
+            </template>
+
+            <template #footer>
+                <CButton @click="cancelRSUForm();" color="danger">Discard</CButton>
+                <CButton @click="insertRSU();" color="success">Accept</CButton>
+            </template>
+        </CModal>
+        <!-- ###################################### -->
+
         <div ref="draggableContainer" id="toolbox">
             <div class="toolboxHeader" @mousedown="dragMouseDown">
                 Toolbox
@@ -199,6 +216,7 @@ import axios from 'axios'
 
 import InsertSign from './InsertSign.vue'
 import SignInfo from './SignInfo.vue'
+import InsertRSU from './InsertRSU.vue'
 
 Vue.use(VueGoogleMaps, {
     load: {
@@ -219,7 +237,8 @@ export default {
     name: 'Map',
     components: {
         "insert-sign": InsertSign,
-        "sign-info": SignInfo
+        "sign-info": SignInfo,
+        "insert-rsu": InsertRSU,
     },
     computed: {
     },
@@ -238,7 +257,7 @@ export default {
             },
             iviMapSigns: null,
 
-            showform: false,
+            
 
             // Toasts
             toastMessage: '',
@@ -269,11 +288,15 @@ export default {
             tempImage: '',
 
 
-            // ADD/EDIT MODAL
+            // ADD/EDIT SIGN MODAL
             addSignListener: '',
             editAddSign: false,
             formModalTitle: 'Insert a Sign',
             newSignMarker: '',
+            showform: false,
+
+            // ADD RSU
+            showRSUform: false,
 
             // DELETE
             showConfirmationModal: false,
@@ -323,7 +346,6 @@ export default {
         getIviMapSigns() {
             axios.get('api/ivisign?token=' + localStorage.getItem('api_token'))
             .then(response => {
-                console.log(response.data)
                 this.iviMapSigns = response.data
             }).catch(err => {
                 console.log(err)
@@ -424,6 +446,12 @@ export default {
                 } else {
                     this.editSign(item)
                 }
+            } else if (this.rsuToggle) {
+                if (item.IDRSU == 0 || item.IDRSU === '') {
+                    this.addRSU(item)
+                } else {
+                    this.insertToast("This sign has already an RSU!")
+                }
             } else if (this.selectToggle) {
                 this.selectSignMarker(item)
             } else {
@@ -511,6 +539,7 @@ export default {
                 console.log(err)
             })
         },
+        
 
         // Updates in map after some action
         updateAfterInsertSign(sign) {
@@ -549,10 +578,19 @@ export default {
 
         },
 
+
+        addRSU(sign) {   
+            this.$refs.insertRSURef.rsu.signId = sign.id
+            this.showRSUform = true
+        },
+
+        insertRSU() {
+            this.$refs.insertRSURef.insertRSU();
+        },
+
         selectSignMarker(marker) {
             axios.get('/api/ivisign/zones/' + marker.id + '?token=' + localStorage.getItem("api_token"))
             .then(response => {
-                console.log(response.data)
                 this.showPolyLines(response.data[0])
             }).catch(err => {
                 console.log(err)
@@ -673,10 +711,21 @@ export default {
             this.newSignMarker = ''
         },
 
+        cancelRSUForm() {
+            this.showRSUform = false
+
+            this.$refs.insertRSURef.resetForm()
+        },
+
         async toggleInfoWindow(item) {
             
             // passing sign data to info component
             await this.getViennaSignImage(item.viennaSignId) //get image data
+
+            if (item.IDRSU != 0) {
+                var rsu = await this.getRSU(item.IDRSU)
+                item.rsu = rsu
+            }
 
             this.$refs.signInfoRef.iviSignInfo = item
             this.$refs.signInfoRef.iviSignInfo.viennaImage = this.tempImage
@@ -684,6 +733,18 @@ export default {
             this.infoWindowPos = item.coordinates
             this.infoContent = this.$refs.signInfoRef.$el.outerHTML
             this.infoWinOpen = true
+        },
+
+        async getRSU(IDRSU) {
+            var rsu = ''
+            await axios.get('api/rsu/' + IDRSU + '?token=' + localStorage.getItem("api_token"))
+                .then(response => {
+                    rsu = response.data[0]
+                }).catch(err => {
+                    console.log(err)
+                })
+
+                return rsu
         },
         
         async getViennaSignImage(viennaId) {
@@ -781,7 +842,6 @@ export default {
                         this.stayToastMessage = ('Click on map to insert the second point for the Point')
                     }
 
-                    console.log(clickCounter)
 
                     if (clickCounter == 2) {
                         this.showform = true
@@ -801,7 +861,6 @@ export default {
                 const input = document.getElementById("map_input")
                 const searchBox = new google.maps.places.SearchBox(input)
 
-                console.log(searchBox)
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
                 // Bias the SearchBox results towards current map's viewport.

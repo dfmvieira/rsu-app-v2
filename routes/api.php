@@ -80,6 +80,11 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::delete('/{id}', 'IviSignMapController@destroy')->name('ivisign.destoy');
     });   
 
+    Route::prefix('rsu')->group(function () {
+        Route::get('/{id}', 'RSUController@show')->name('rsu.show');
+
+        Route::post('/insertrsu', 'RSUController@store')->name('rsu.store');
+    });
 
     Route::prefix('deploy')->group(function () {
         Route::get('/', 'DeployGroupController@index')->name('deploygroup.index');
