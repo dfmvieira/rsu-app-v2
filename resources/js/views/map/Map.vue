@@ -85,7 +85,7 @@
         </CModal>
         <!-- ###################################### -->
 
-        <div ref="draggableContainer" id="toolbox" v-if="userRoles.includes('admin') && userRoles.includes('entityAdmin') && userRoles.includes('planner')">
+        <div ref="draggableContainer" id="toolbox" v-if="userRoles.includes('admin') || userRoles.includes('entityAdmin') || userRoles.includes('planner')">
             <div class="toolboxHeader" @mousedown="dragMouseDown">
                 Toolbox
             </div>
@@ -348,7 +348,7 @@ export default {
             .then(response => {
                 this.userRoles = response.data
                 
-                console.log(this.userRoles.includes('deploymanager'))
+                console.log(this.userRoles.includes('admin'))
             }).catch(err => {
                 console.log(err)
             })
