@@ -31,7 +31,7 @@
             </CCol>
         </CRow>
 
-        <CRow style="margin: 20px 0px 5px 0px" alignVertical="center" v-if="$parent.$parent.$parent.userRoles.includes('admin') && $parent.$parent.$parent.userRoles.includes('entityAdmin') && $parent.$parent.$parent.userRoles.includes('planner')">
+        <CRow style="margin: 20px 0px 5px 0px" alignVertical="center" v-if="$parent.$parent.$parent.userRoles.includes('admin') || $parent.$parent.$parent.userRoles.includes('entityAdmin') || $parent.$parent.$parent.userRoles.includes('planner')">
             <CCol lg="6" style="vertical-align: middle;">
                 <div v-on:click="updateLockStatus()">
                     <CIcon 
