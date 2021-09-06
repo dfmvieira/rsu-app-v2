@@ -19,7 +19,7 @@
             column-filter
             table-filter
             items-per-page-select
-            :items-per-page="5"
+            :items-per-page="10"
             hover
             sorter
             pagination

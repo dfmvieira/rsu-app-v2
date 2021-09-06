@@ -8,6 +8,7 @@
           <CInput type="text" label="Name" placeholder="Name" v-model="form.name"></CInput>
           <CInput type="email" label="Email" placeholder="Email" v-model="form.email"></CInput>
           <CInput type="number" label="Phone" placeholder="Phone" v-model="form.phone"></CInput>
+          <CInput type="password" label="Password" placeholder="Password" v-model="form.password"></CInput>
           <CSelect label="Entity" :value.sync="form.entity" :options="entities"/>
           <CSelect label="Role" :value.sync="form.role" :options="roles"/>
           <CRow style="margin: 10px 10px 0px 0px; float: right">
@@ -49,6 +50,7 @@ export default {
           name: '',
           phone: '',
           email: '',
+          password: '',
           entity: null,
           role: null,
         },
@@ -91,19 +93,20 @@ export default {
     },
 
     submit() {
-
-
       axios.post('/api/user/create?token=' + localStorage.getItem("api_token"), this.form)
         .then(response => {
           this.insertToast("User has been created!")
+          this.reset()
         }).catch(err => {
           console.log(err)
         })
     },
 
     reset() {
-      this.forn.name = ''
+      this.form.name = ''
       this.form.email = ''
+      this.form.phone = ''
+      this.form.password = ''
     },
 
     // Insert Toasts

@@ -104,6 +104,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/techniciansofentity', 'UsersController@techniciansOfEntity')->name('user.usersbyentity');
         Route::get('/logged', 'UsersController@username')->name('user.username');
 
+
         Route::post('/create', 'UsersController@create')->name('user.create');
     });
     
