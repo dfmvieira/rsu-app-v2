@@ -681,22 +681,21 @@ export default {
             this.addToggle = false
             //this.addSignListener.remove()
 
-
-            if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
+            if (typeof this.$refs.insertSignRef.detectionZoneMarkers.length !== 'undefined' && this.$refs.insertSignRef.detectionZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
                 console.log(this.$refs.insertSignRef.detectionZonePolyLine)
                 this.$refs.insertSignRef.detectionZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.awarenessZoneMarkers.lenght !== 0) {
+            if (typeof this.$refs.insertSignRef.awarenessZoneMarkers.length !== 'undefined' && this.$refs.insertSignRef.awarenessZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.awarenessZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
 
                 this.$refs.insertSignRef.awarenessZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.relevanceZoneMarkers.lenght !== 0) {
+            if (typeof this.$refs.insertSignRef.relevanceZoneMarkers.length !== 'undefined' && this.$refs.insertSignRef.relevanceZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.relevanceZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
