@@ -77,7 +77,7 @@
                                     size="sm" 
                                     color="primary"
                                     >
-                                    Editar
+                                    Edit
                                 </CButton>
 
                                 <CModal 

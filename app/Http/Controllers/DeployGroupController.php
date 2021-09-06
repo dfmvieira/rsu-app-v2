@@ -195,8 +195,23 @@ class DeployGroupController extends Controller
 
         $signs = DB::table('ivi_signs_map')
             ->where('deployed', '=', 0)
+            ->where('published', '=', 1)
             ->where('entityId', '=', $entityId)
             ->get();
+            
+
+        foreach($signs as $key=>$sign) {
+            $signGroup = null;
+            $signGroup = DB::table('signs_deploy_groups')
+                ->where('IDIviSign', '=', $sign->id)
+                ->get();
+            
+
+            if (!$signGroup->isEmpty()) {
+
+                unset($signs[$key]);
+            }
+        }
 
         return response()->json($signs, 200);
     }

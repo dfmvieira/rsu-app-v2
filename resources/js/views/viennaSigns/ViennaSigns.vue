@@ -76,7 +76,7 @@
                             </template>
                         </CModal>
                         <CModal
-                            title="Edit category"
+                            title="Edit Vienna Sign"
                             color="primary"
                             :show.sync="editModal"
                             :centered = true

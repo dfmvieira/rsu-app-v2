@@ -143,10 +143,10 @@ export default {
     getIVIS() {
 		axios.get('api/deploy/signsfordeploy?token=' + localStorage.getItem("api_token"))
 		.then(response => {
-			response.data.forEach(item => {
+			Object.keys(response.data).forEach(key => {
 				let i = {
-					id: item.id,
-					label: item.name + ' - ' + item.GUID
+					id: response.data[key].id,
+					label: response.data[key].name + ' - ' + response.data[key].GUID
 				}
 				this.signsOptions.push(i)
 			})
