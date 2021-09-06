@@ -38,10 +38,10 @@ class RSUController extends Controller
     public function store(Request $request)
     {
         $rsu = new RSU();
-        $rsu->name = $request->name;
-        $rsu->serialNumber = $request->serialNumber;
-        $rsu->range = $request->range;
-        $rsu->hardwareDetails = $request->hardwareDetails;
+        $rsu->name = isset($request->name) ? $request->name : '';
+        $rsu->serialNumber = isset($request->serialNumber) ? $request->serialNumber : '';
+        $rsu->range = isset($request->range) ? $request->range : 0;
+        $rsu->hardwareDetails = isset($request->hardwareDetails) ? $request->hardwareDetails : '';
 
         $rsu->save();
 

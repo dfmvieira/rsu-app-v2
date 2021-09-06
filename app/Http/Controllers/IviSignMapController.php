@@ -119,12 +119,12 @@ class IviSignMapController extends Controller
 
         $iviSign = new IviSignMap();
         $iviSign->entityId = $user->IDEntity;
-        $iviSign->name = $request->name;
+        $iviSign->name = isset($request->name) ? $request->name : '';
         $iviSign->guid = (string) Str::uuid();
-        $iviSign->viennaSignId = $request->viennaSignId;
-        $iviSign->latitude = $request->coordinates['lat'];
-        $iviSign->longitude = $request->coordinates['lng'];
-        $iviSign->comment = $request->comment;
+        $iviSign->viennaSignId = isset($request->viennaSignId) ? $request->viennaSignId : 0;
+        $iviSign->latitude = isset($request->coordinates['lat']) ? $request->coordinates['lat'] : 0;
+        $iviSign->longitude = isset($request->coordinates['lng']) ? $request->coordinates['lng'] : 0;
+        $iviSign->comment = isset($request->comment) ? $request->comment : '';
         $iviSign->locked = 1;
         $iviSign->IDDetection = isset($detectionZone->id) ? $detectionZone->id : 0;
         $iviSign->IDAwareness = isset($awarenessZone->id) ? $awarenessZone->id : 0;

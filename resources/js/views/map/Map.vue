@@ -543,38 +543,42 @@ export default {
 
         // Updates in map after some action
         updateAfterInsertSign(sign) {
+            console.log(sign)
             this.insertToast(sign.message)
 
             // update signs on map
             this.getIviMapSigns()
 
-            // reset insert sign form
-            this.$refs.insertSignRef.resetForm()
+            
 
             // Close modal
             this.showform = false
 
-            if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
+            console.log(this.$refs.insertSignRef.detectionZoneMarkers.length)
+            if (this.$refs.insertSignRef.detectionZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
 
                 this.$refs.insertSignRef.detectionZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.awarenessZoneMarkers.lenght !== 0) {
+            if (this.$refs.insertSignRef.awarenessZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.awarenessZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
 
                 this.$refs.insertSignRef.awarenessZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.relevanceZoneMarkers.lenght !== 0) {
+            if (this.$refs.insertSignRef.relevanceZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.relevanceZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
 
                 this.$refs.insertSignRef.relevanceZonePolyLine.setMap(null)
             }
+
+            // reset insert sign form
+            this.$refs.insertSignRef.resetForm()
 
         },
 
@@ -586,6 +590,9 @@ export default {
 
         insertRSU() {
             this.$refs.insertRSURef.insertRSU();
+            // update signs on map
+            this.getIviMapSigns()
+            this.showRSUform = false
         },
 
         selectSignMarker(marker) {
@@ -682,21 +689,21 @@ export default {
             //this.addSignListener.remove()
 
 
-            if (this.$refs.insertSignRef.detectionZoneMarkers.lenght !== 0) {
+            if (this.$refs.insertSignRef.detectionZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
                 console.log(this.$refs.insertSignRef.detectionZonePolyLine)
                 this.$refs.insertSignRef.detectionZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.awarenessZoneMarkers.lenght !== 0) {
+            if (this.$refs.insertSignRef.awarenessZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.awarenessZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
 
                 this.$refs.insertSignRef.awarenessZonePolyLine.setMap(null)
             }
-            if (this.$refs.insertSignRef.relevanceZoneMarkers.lenght !== 0) {
+            if (this.$refs.insertSignRef.relevanceZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.relevanceZoneMarkers.forEach((marker) => {
                     marker.setMap(null)
                 })
@@ -768,6 +775,7 @@ export default {
         },
 
         insertStayToast(message) {
+            this.showStayToast = true
             this.stayToasts++
             this.stayToastMessage = message
         },
@@ -846,6 +854,7 @@ export default {
                     if (clickCounter == 2) {
                         this.showform = true
                         this.showStayToast = false
+                        this.stayToasts = 0
                         listener.remove()
                     }
                 });

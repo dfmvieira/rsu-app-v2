@@ -50,7 +50,7 @@ export default {
             axios.post('api/rsu/insertrsu?token=' + localStorage.getItem("api_token"), this.rsu)
             .then(response => {
                 console.log(response)
-                //this.$parent.$parent.updateAfterInsertSign(response.data)
+                this.$parent.$parent.updateAfterInsertSign(response.data.message)
                 this.resetForm()
             }).catch(err => {
                 console.log(err);
