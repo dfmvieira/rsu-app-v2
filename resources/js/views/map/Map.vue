@@ -48,7 +48,7 @@
 
             <template #footer>
                 <CButton @click="cancelSignForm();" color="danger">Discard</CButton>
-                <CButton @click="insertIviSign();" color="success">Accept</CButton>
+                <CButton @click="signFormHandler();" color="success">Accept</CButton>
             </template>
         </CModal>
         <!-- ###################################### -->
@@ -455,6 +455,7 @@ export default {
                     this.insertToast("Can't edit a locked sign. Unlock it first to edit")
                     this.editToggle = false
                 } else {
+                    this.$refs.insertSignRef.isEditSign = true
                     this.editSign(item)
                 }
             } else if (this.rsuToggle) {
@@ -554,18 +555,16 @@ export default {
 
         // Updates in map after some action
         updateAfterInsertSign(sign) {
-            console.log(sign)
             this.insertToast(sign.message)
 
             // update signs on map
             this.getIviMapSigns()
 
-            
-
             // Close modal
             this.showform = false
 
-            console.log(this.$refs.insertSignRef.detectionZoneMarkers.length)
+            this.newSignMarker.setMap(null)
+
             if (this.$refs.insertSignRef.detectionZoneMarkers.length !== 0) {
                 this.$refs.insertSignRef.detectionZoneMarkers.forEach((marker) => {
                     marker.setMap(null)

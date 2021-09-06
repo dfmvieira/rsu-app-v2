@@ -172,6 +172,10 @@ class IviSignMapController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        $user = auth()->user();
+        $entityId = isset($user->IDEntity) ? $user->IDEntity : $response['error'] = "Can't get user entity";
+
         $sign = IviSignMap::findOrFail($id);
 
         if (isset($request->detectionZone)) {
@@ -208,8 +212,8 @@ class IviSignMapController extends Controller
             $relevanceZone->save();
         }
 
-        $iviSign = new IviSignMap();
-        $iviSign->entityId = $user->IDEntity;
+        /* $iviSign = new IviSignMap();
+        $iviSign->entityId = $entityId;
         $iviSign->name = $request->name;
         $iviSign->guid = (string) Str::uuid();
         $iviSign->viennaSignId = $request->viennaSignId;
@@ -220,7 +224,20 @@ class IviSignMapController extends Controller
         $iviSign->IDDetection = isset($detectionZone->id) ? $detectionZone->id : 0;
         $iviSign->IDAwareness = isset($awarenessZone->id) ? $awarenessZone->id : 0;
         $iviSign->IDRelevance = isset($relevanceZone->id) ? $relevanceZone->id : 0;
-        $iviSign->status = isset($request->status['value']) ? $request->status['value'] : 1;
+        $iviSign->status = isset($request->status['value']) ? $request->status['value'] : 1; */
+
+        $iviSign['entityId'] = isset($entityId) ? $entityId : '';
+        $iviSign['name'] = isset($request->name) ? $request->name : '';
+        $iviSign['guid'] = $sign->GUID;
+        $iviSign['viennaSignId'] = isset($request->viennaSignId) ? $request->viennaSignId : '';
+        $iviSign['latitude'] = isset($request->coordinates['lat']) ? $request->coordinates['lat'] : '';
+        $iviSign['longitude'] = isset($request->coordinates['lng']) ? $request->coordinates['lng'] : '';
+        $iviSign['comment'] = isset($request->comment) ? $request->comment : '';
+        $iviSign['locked'] = $sign->locked;
+        $iviSign['IDDetection'] = isset($detectionZone->id) ? $detectionZone->id : 0;
+        $iviSign['IDAwareness'] = isset($awarenessZone->id) ? $awarenessZone->id : 0;
+        $iviSign['IDRelevance'] = isset($relevanceZone->id) ? $relevanceZone->id : 0;
+        $iviSign['status'] = isset($request->status['value']) ? $request->status['value'] : 1;
 
         $sign->update($iviSign);
 

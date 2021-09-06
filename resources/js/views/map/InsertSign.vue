@@ -190,7 +190,8 @@ export default {
         },
 
         editSign() {
-            axios.put('api/ivisign/insertivisign?token=' + localStorage.getItem("api_token"), this.IviSignMap)
+            console.log("HERE")
+            axios.put('api/ivisign/' + this.IviSignMap.id + '?token=' + localStorage.getItem("api_token"), this.IviSignMap)
             .then(response => {
                 this.$parent.$parent.updateAfterInsertSign(response.data)
             }).catch(err => {
@@ -272,7 +273,7 @@ export default {
         },
         addRelevanceZone() {
             this.$parent.$parent.showform = false
-            this.$parent.$parent.insertStayToast("Click on map to draw a line for Detection Zone")
+            //this.$parent.$parent.insertStayToast("Click on map to draw a line for Detection Zone")
             this.IviSignMap.relevanceZone = this.$parent.$parent.drawPolyLineOnMap(3)
         },
     
