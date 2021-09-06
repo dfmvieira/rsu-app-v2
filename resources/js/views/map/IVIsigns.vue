@@ -103,7 +103,6 @@ export default {
                 {key: 'GUID', label: 'GUID'},
                 {key: 'viennaSignId', label: 'Vienna Sign Id'},
                 {key: 'locked', label: 'Locked'},
-                {key: 'status', label: 'Status'},
                 {key: 'comment', label: 'Comment'},
                 {key: 'latitude', label: 'Latitude'},              
                 {key: 'longitude', label: 'Longitude'}, 
@@ -116,7 +115,6 @@ export default {
                 name: '',
                 GUID: '',
                 viennaID: '',
-                status: '',
                 coordinates:{
                     lat: '',
                     lng: ''
@@ -134,7 +132,6 @@ export default {
     methods: {
         getIVIS() {
             axios.get('api/ivisign'+ '?token=' + localStorage.getItem("api_token")).then(response => {
-                console.log(response.data)
                 this.ivis=response.data
                 this.ivi=this.ivis[0]
                 console.log(this.ivis)
