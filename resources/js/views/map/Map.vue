@@ -85,7 +85,7 @@
         </CModal>
         <!-- ###################################### -->
 
-        <div ref="draggableContainer" id="toolbox">
+        <div ref="draggableContainer" id="toolbox" v-if="userRoles.includes('admin') && userRoles.includes('entityAdmin') && userRoles.includes('planner')">
             <div class="toolboxHeader" @mousedown="dragMouseDown">
                 Toolbox
             </div>
@@ -257,7 +257,7 @@ export default {
             },
             iviMapSigns: null,
 
-            
+            userRoles: '',
 
             // Toasts
             toastMessage: '',
@@ -341,6 +341,17 @@ export default {
                 console.log(map)
                 map.appendChild('#toolbox')
             }) */
+        },
+
+        getUserRole() {
+            axios.get('api/user/roles?token=' + localStorage.getItem('api_token'))
+            .then(response => {
+                this.userRoles = response.data
+                
+                console.log(this.userRoles.includes('deploymanager'))
+            }).catch(err => {
+                console.log(err)
+            })
         },
 
         getIviMapSigns() {
@@ -948,6 +959,7 @@ export default {
     mounted() {
         this.initMap()
         this.getCurrentLocation()
+        this.getUserRole()
         //this.searchAutoComplete()
     },
 }

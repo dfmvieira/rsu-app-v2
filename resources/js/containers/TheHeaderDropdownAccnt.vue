@@ -4,6 +4,7 @@
     class="c-header-nav-items"
     placement="bottom-end"
     add-menu-classes="pt-0"
+    style="margin: 0px 20px 0px 10px"
   >
     <template #toggler>
       <CHeaderNavLink>

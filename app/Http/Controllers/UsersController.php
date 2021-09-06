@@ -116,6 +116,12 @@ class UsersController extends Controller
         return response()->json($users, 200);
     }
 
+    public function getRolesOfUser() {
+        $user = auth()->user();
+
+        return response()->json($user->menuroles, 201);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
