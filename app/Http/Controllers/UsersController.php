@@ -31,7 +31,7 @@ class UsersController extends Controller
         $you = auth()->user()->id;
         $users = DB::table('users')
         ->leftjoin('entities', 'users.IDEntity', '=', 'entities.id')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered','entities.name as entity')
+        ->select('users.id', 'users.name', 'users.email', 'users.phone', 'users.password','users.menuroles as roles', 'users.status', 'users.email_verified_at as registered','entities.name as entity')
         ->whereNull('deleted_at')
         ->get();
 
@@ -160,7 +160,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = DB::table('users')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered')
+        ->select('users.id', 'users.name', 'users.email', 'users.phone', 'users.password', 'users.menuroles as roles', 'users.IDEntity', 'users.status', 'users.email_verified_at as registered')
         ->where('users.id', '=', $id)
         ->first();
         return response()->json( $user );
@@ -175,7 +175,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = DB::table('users')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status')
+        ->select('users.id', 'users.name', 'users.email', 'users.phone', 'users.password', 'users.menuroles as roles', 'users.IDEntity', 'users.status')
         ->where('users.id', '=', $id)
         ->first();
         return response()->json( $user );
@@ -192,11 +192,27 @@ class UsersController extends Controller
     {
         $validatedData = $request->validate([
             'name'       => 'required|min:1|max:256',
-            'email'      => 'required|email|max:256'
+            'email'      => 'required|email|max:256',
+            'phone'      => 'required|max:9'
         ]);
+
         $user = User::find($id);
-        $user->name       = $request->input('name');
-        $user->email      = $request->input('email');
+        $user->name       = $request->name;
+        $user->email      = $request->email;
+        $user->phone      = $request->phone;
+        
+        if (isset($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        if (isset($request->entity)) {
+            $user->IDEntity = $request->entity;
+        }
+
+        if (isset($request->role)) {
+            $user->menuroles = $request->role;
+        }
+
         $user->save();
         //$request->session()->flash('message', 'Successfully updated user');
         return response()->json( ['status' => 'success'] );

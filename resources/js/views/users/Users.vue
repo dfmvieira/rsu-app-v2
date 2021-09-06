@@ -1,25 +1,22 @@
 <template>
   <CRow>
-    <CCol col="12" xl="8">
+    <CCol col="12" xl="12">
       <transition name="slide">
       <CCard>
         <CCardHeader>
             Users
         </CCardHeader>
         <CCardBody>
-          <CAlert
-            :show.sync="dismissCountDown"
-            color="primary"
-            fade
-          >
-            ({{dismissCountDown}}) {{ message }}
-          </CAlert>
           <CDataTable
             hover
             striped
             :items="items"
             :fields="fields"
-            :items-per-page="5"
+            column-filter
+            table-filter
+            items-per-page-select
+            :items-per-page="10"
+            sorter
             pagination
           >
           <template #show_details="{item, index}">
@@ -38,11 +35,12 @@
           <template #details="{item, index}">
             <CCollapse :show="details.includes(index)">
                 <CCardBody>
-                  User id:  {{item.id}} <br><br>
-                  Name:  {{item.name}} <br><br>
-                  User roles:  {{item.roles}} <br><br>
-                  User entity:  {{item.entity}} <br><br>
-                  Registered:  {{item.registered}} <br><br>
+                  <b>User id:</b>  {{item.id}} <br><br>
+                  <b>Name:</b>  {{item.name}} <br><br>
+                  <b>Email:</b>  {{item.email}} <br><br>
+                  <b>Phone:</b>  {{item.phone}} <br><br>
+                  <b>User roles:</b>  {{item.roles}} <br><br>
+                  <b>User entity:</b>  {{item.entity}} <br><br>
 
                  <!--  <CButton color="primary" @click="showUser( item.id )">Show</CButton> -->
                   
@@ -52,29 +50,22 @@
 
                 </CCardBody>
             </CCollapse>
-          </template>       
-         <!--  <template #status="{item}">
-            <td>
-              <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
-            </td>
           </template>
-          <template #show="{item}">
-            <td>
-              <CButton color="primary" @click="showUser( item.id )">Show</CButton>
-            </td>
-          </template>
-          <template #edit="{item}">
-            <td>
-              <CButton color="primary" @click="editUser( item.id )">Edit</CButton>
-            </td>
-          </template>
-          <template #delete="{item}">
-            <td>
-              <CButton v-if="you!=item.id" color="danger" @click="deleteUser( item.id )">Delete</CButton>
-            </td>
-          </template> -->
         </CDataTable>
         </CCardBody>
+
+        <CToaster :autohide="3000">
+          <template v-for="toast in fixedToasts">
+              <CToast
+              :key="'toast' + toast"
+              :show="true"
+              header="Info"
+              style="max-height: 100px;"
+              >
+                  {{ toastMessage }}
+              </CToast>
+          </template>
+        </CToaster>
       </CCard>
       </transition>
     </CCol>
@@ -92,6 +83,8 @@ export default {
       fields: [
         'id', 
         'name', 
+        'email',
+        'phone',
         'registered', 
         'roles', 
         'entity', 
@@ -111,11 +104,10 @@ export default {
       perPage: 5,
       totalRows: 0,
       you: null,
-      message: '',
-      showMessage: false,
-      dismissSecs: 7,
-      dismissCountDown: 0,
-      showDismissibleAlert: false
+
+      // TOAST
+      toastMessage: '',
+      fixedToasts: 0
     }
   },
   paginationProps: {
@@ -156,8 +148,7 @@ export default {
         _method: 'DELETE'
       })
       .then(function (response) {
-          self.message = 'Successfully deleted user.';
-          self.showAlert();
+          self.insertToast('Successfully deleted user.');
           self.getUsers();
       }).catch(function (error) {
         console.log(error);
@@ -181,7 +172,12 @@ export default {
         self.$router.push({ path: '/login' });
       });
     },
-    
+
+    // Insert Toasts
+    insertToast(message) {
+        this.fixedToasts++
+        this.toastMessage = message
+    },
   },
   mounted: function(){
     this.getUsers();
