@@ -164,6 +164,7 @@ class IviSignMapController extends Controller
         //
     }
 
+   
     /**
      * Update the specified resource in storage.
      *
@@ -178,6 +179,8 @@ class IviSignMapController extends Controller
 
         $sign = IviSignMap::findOrFail($id);
 
+        
+
         if (isset($request->detectionZone)) {
             $detectionZone = new DetectionZone();
 
@@ -188,6 +191,10 @@ class IviSignMapController extends Controller
             $detectionZone->longitude2 = $request->detectionZone[1]['lng'];
 
             $detectionZone->save();
+        } else {
+            $zone = DB::table('detection_zones')->select('id')->where('id', '=', $sign->IDDetection)->get();
+
+            $detectionZoneID = $zone[0]->id;
         }
 
         if (isset($request->awarenessZone)) {
@@ -199,6 +206,10 @@ class IviSignMapController extends Controller
             $awarenessZone->longitude2 = $request->awarenessZone[1]['lng'];
 
             $awarenessZone->save();
+        } else {
+            $zone = DB::table('awareness_zones')->select('id')->where('id', '=', $sign->IDAwareness)->get();
+            
+            $awarenessZoneID = $zone[0]->id;
         }
 
         if (isset($request->awarenessZone)) {
@@ -210,6 +221,10 @@ class IviSignMapController extends Controller
             $relevanceZone->longitude2 = $request->relevanceZone[1]['lng'];
 
             $relevanceZone->save();
+        } else {
+            $zone = DB::table('relevance_zones')->select('id')->where('id', '=', $sign->IDRelevance)->get();
+
+            $relevanceZoneID = $zone[0]->id;
         }
 
         /* $iviSign = new IviSignMap();
@@ -234,9 +249,9 @@ class IviSignMapController extends Controller
         $iviSign['longitude'] = isset($request->coordinates['lng']) ? $request->coordinates['lng'] : '';
         $iviSign['comment'] = isset($request->comment) ? $request->comment : '';
         $iviSign['locked'] = $sign->locked;
-        $iviSign['IDDetection'] = isset($detectionZone->id) ? $detectionZone->id : 0;
-        $iviSign['IDAwareness'] = isset($awarenessZone->id) ? $awarenessZone->id : 0;
-        $iviSign['IDRelevance'] = isset($relevanceZone->id) ? $relevanceZone->id : 0;
+        $iviSign['IDDetection'] = isset($detectionZone->id) ? $detectionZone->id : $detectionZoneID;
+        $iviSign['IDAwareness'] = isset($awarenessZone->id) ? $awarenessZone->id : $awarenessZoneID;
+        $iviSign['IDRelevance'] = isset($relevanceZone->id) ? $relevanceZone->id : $relevanceZoneID;
         $iviSign['status'] = isset($request->status['value']) ? $request->status['value'] : 1;
 
         $sign->update($iviSign);
@@ -246,6 +261,7 @@ class IviSignMapController extends Controller
             'message'=>'Sign Updated Successfully!',
         ]); 
     }
+
 
     /**
      * Update the coordinates of the sign.

@@ -190,9 +190,9 @@ export default {
         },
 
         editSign() {
-            console.log("HERE")
             axios.put('api/ivisign/' + this.IviSignMap.id + '?token=' + localStorage.getItem("api_token"), this.IviSignMap)
             .then(response => {
+                this.isEditSign = false
                 this.$parent.$parent.updateAfterInsertSign(response.data)
             }).catch(err => {
                 console.log(err);

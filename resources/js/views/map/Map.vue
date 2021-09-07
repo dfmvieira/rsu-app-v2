@@ -696,6 +696,8 @@ export default {
             // close modal
             this.showform = false
             this.addToggle = false
+            this.editToggle = false
+            this.$refs.insertSignRef.isEditSign = false
             //this.addSignListener.remove()
 
 
