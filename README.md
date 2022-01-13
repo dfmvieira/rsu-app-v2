@@ -1,62 +1,22 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+Link Relatório: https://myipleiria-my.sharepoint.com/:b:/g/personal/2171459_my_ipleiria_pt/EbQTJQLzaqJIvDy7WQUdUjYBu5lJEHq-45qOLU8-5OkfSQ?e=glfQDZ
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+Devido ao crescente número de veículos nas estradas em todo o mundo, os acidentes de trânsito são atualmente reconhecidos como um importante problema de saúde pública e social. As tendências projetadas sugerem que os acidentes de trânsito se tornarão a quinta causa de morte até 2030. Os acidentes e colisões nas estradas têm um grande impacto nas economias nacionais. 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Neste contexto, os sistemas cooperativos de transporte inteligente (C-ITS) são considerados como a tecnologia chave para melhorar a segurança rodoviária, a eficiência do tráfego e a experiência de condução [26]. Atualmente, há uma tendência de implementar essa nova tecnologia em veículos para permitir que se comuniquem, não apenas com hotspots, mas também com outras entidades próximas por meio de comunicações diretas de curto alcance (DSRC), como veículo a veículo (V2V), veículo a infraestrutura (V2I), veículo para pedestre (V2P) e veículo para qualquer coisa (V2X).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+No entanto, ainda há uma falta de implementação experimental e avaliação de desempenho abrangente desses padrões em ambientes reais, carga de tráfego e casos de uso de aplicação, especialmente no que diz respeito à segurança das comunicações veiculares e a segurança das aplicações de ITS. Na verdade, uma vez que esta tecnologia depende fortemente de comunicações sem fios, várias ameaças e ataques podem afetar seu funcionamento e, assim, compromete a segurança das entidades e utilizadores de ITS envolvidos. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+De modo a beneficiar o trânsito nas rodovias, no âmbito deste projeto foi implementada uma solução com o objetivo de gerir a implementação dos RSU’s nas vias rodoviárias. Desta forma, será permitido contribuir de forma positiva para a segurança rodoviária, pois esta solução proporciona uma melhor informação aos condutores e assim é mais uma contribuição para a prevenção de acidentes.
 
-## Learning Laravel
+Ainda no âmbito do projeto, foi desenvolvida uma plataforma/API, direcionada para o uso de administradores, planeadores de sinais de trânsito, gestores de deploy, fábrica de sinais e técnicos para a visualização, análise e gestão da informação sobre os sinais, com recurso à framework Laravel + Vue.js.
+Para o planeamento e implementação de toda a solução, foram traçados objetivos a fim de se conseguir responder da melhor forma a todos os requisitos inicialmente definidos, tendo sempre em vista a garantia da melhor qualidade e rigor técnico:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+•	Criação e gestão de sinais e todas as suas configurações numa interface com mapa
+•	Publicação de Sinais
+•	Criação e gestão de grupos de deploy
+•	Fábrica de sinais com acesso aos sinais a serem fabricados
+•	Gestão de utilizadores, permissões e entidades
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ao longo do documento, é realizada uma abordagem alargada à solução proposta passando pelos seguintes pontos essenciais: Enquadramento, RSU, Implementação inicial, Implementação da aplicação/API para visualização dos dados e a apresentação de Resultados.
