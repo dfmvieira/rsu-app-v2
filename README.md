@@ -12,11 +12,11 @@ De modo a beneficiar o trânsito nas rodovias, no âmbito deste projeto foi impl
 Ainda no âmbito do projeto, foi desenvolvida uma plataforma/API, direcionada para o uso de administradores, planeadores de sinais de trânsito, gestores de deploy, fábrica de sinais e técnicos para a visualização, análise e gestão da informação sobre os sinais, com recurso à framework Laravel + Vue.js.
 Para o planeamento e implementação de toda a solução, foram traçados objetivos a fim de se conseguir responder da melhor forma a todos os requisitos inicialmente definidos, tendo sempre em vista a garantia da melhor qualidade e rigor técnico:
 
-•	Criação e gestão de sinais e todas as suas configurações numa interface com mapa
-•	Publicação de Sinais
-•	Criação e gestão de grupos de deploy
-•	Fábrica de sinais com acesso aos sinais a serem fabricados
-•	Gestão de utilizadores, permissões e entidades
+- Criação e gestão de sinais e todas as suas configurações numa interface com mapa
+- Publicação de Sinais
+- Criação e gestão de grupos de deploy
+- Fábrica de sinais com acesso aos sinais a serem fabricados
+- Gestão de utilizadores, permissões e entidades
 
 
 Ao longo do documento, é realizada uma abordagem alargada à solução proposta passando pelos seguintes pontos essenciais: Enquadramento, RSU, Implementação inicial, Implementação da aplicação/API para visualização dos dados e a apresentação de Resultados.
